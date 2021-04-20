@@ -1,0 +1,825 @@
+/* Template: Aria - Business HTML Landing Page Template
+   Author: Inovatik
+   Created: Jul 2019
+   Description: Master CSS file
+*/
+
+
+/*****************************************
+Table Of Contents:
+
+01. General Styles
+02. Preloader
+03. Navigation
+04. Header
+05. Intro
+06. Description
+07. Services
+08. Details 1
+09. Details 2
+10. Testimonials
+11. Call Me
+12. Projects
+13. Project Lightboxes
+14. Team
+15. About
+16. logint
+17. Footer
+18. Copyright
+19. Back To Top Button
+20. Extra Pages
+21. Media Queries
+******************************************/
+
+
+/*****************************************
+Colors:
+
+- Backgrounds - light gray #fbfbfb
+- Background - dark blue #153e52
+- Backgrounds navbar, footer - dark gray #113448
+- Buttons, bullets, icons - green #14bf98
+- Headings text - black #484a46
+- Body text - gray #787976
+- Body text - light gray #dfe5ec
+******************************************/
+
+
+/******************************/
+
+
+/*     01. General Styles     */
+
+
+/******************************/
+
+body,
+html {
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/image/login_background.jpg");
+    background-size:100% 100%;
+    background-repeat: no-repeat ;
+}
+
+body,
+p {
+    color: #787976;
+    font: 400 1rem/1.5625rem "Open Sans", sans-serif;
+}
+
+.p-large {
+    font: 400 1.125rem/1.625rem "Open Sans", sans-serif;
+}
+
+.p-small {
+    font: 400 0.875rem/1.375rem "Open Sans", sans-serif;
+}
+
+.p-heading {
+    margin-bottom: 3.5rem;
+    text-align: center;
+}
+
+.li-space-lg li {
+    margin-bottom: 0.375rem;
+}
+
+.indent {
+    padding-left: 1.25rem;
+}
+
+h1 {
+    color: #484a46;
+    font: 700 2.5rem/3rem "Montserrat", sans-serif;
+}
+
+h2 {
+    color: #484a46;
+    font: 700 1.75rem/2.125rem "Montserrat", sans-serif;
+}
+
+h3 {
+    color: #484a46;
+    font: 700 1.375rem/1.75rem "Montserrat", sans-serif;
+}
+
+h4 {
+    color: #484a46;
+    font: 700 1.25rem/1.625rem "Montserrat", sans-serif;
+}
+
+h5 {
+    color: #484a46;
+    font: 700 1.125rem/1.5rem "Montserrat", sans-serif;
+}
+
+h6 {
+    color: #484a46;
+    font: 700 1rem/1.375rem "Montserrat", sans-serif;
+}
+
+a {
+    color: #787976;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #787976;
+    text-decoration: underline;
+}
+
+a.green {
+    color: #14bf98;
+}
+
+a.white,
+.white {
+    color: #dfe5ec;
+}
+
+.testimonial-text {
+    font-style: italic;
+}
+
+.testimonial-author {
+    font: 700 1rem/1.375rem "Montserrat", sans-serif;
+}
+
+strong {
+    color: #484a46;
+}
+
+.section-title {
+    color: #14bf98;
+    font: 500 0.8125rem/1.125rem "Montserrat", sans-serif;
+}
+
+.btn-solid-reg {
+    display: inline-block;
+    padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
+    border: 0.125rem solid #14bf98;
+    border-radius: 0.25rem;
+    background-color: #14bf98;
+    color: #fff;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-solid-reg:hover {
+    background-color: transparent;
+    color: #14bf98;
+    text-decoration: none;
+}
+
+.btn-solid-lg {
+    display: inline-block;
+    padding: 1.375rem 2.125rem 1.375rem 2.125rem;
+    border: 0.125rem solid #14bf98;
+    border-radius: 0.25rem;
+    background-color: #14bf98;
+    color: #fff;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-solid-lg:hover {
+    background-color: transparent;
+    color: #14bf98;
+    text-decoration: none;
+}
+
+.btn-outline-reg {
+    display: inline-block;
+    padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
+    border: 0.125rem solid #787976;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: #787976;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-outline-reg:hover {
+    background-color: #787976;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-outline-lg {
+    display: inline-block;
+    padding: 1.375rem 2.125rem 1.375rem 2.125rem;
+    border: 0.125rem solid #787976;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: #787976;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-outline-lg:hover {
+    background-color: #787976;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-outline-sm {
+    display: inline-block;
+    padding: 1rem 1.625rem 0.9375rem 1.625rem;
+    border: 0.125rem solid #787976;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: #787976;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-outline-sm:hover {
+    background-color: #787976;
+    color: #fff;
+    text-decoration: none;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.form-group.has-error.has-danger {
+    margin-bottom: 0.625rem;
+}
+
+.form-group.has-error.has-danger .help-block.with-errors ul {
+    margin-top: 0.375rem;
+}
+
+.label-control {
+    position: absolute;
+    top: 0.8125rem;
+    left: 1.375rem;
+    color: #787976;
+    opacity: 1;
+    font: 400 0.875rem/1.375rem "Open Sans", sans-serif;
+    cursor: text;
+    transition: all 0.2s ease;
+}
+
+
+/* IE10+ hack to solve lower label text position compared to the rest of the browsers */
+
+@media screen and (-ms-high-contrast: active),
+screen and (-ms-high-contrast: none) {
+    .label-control {
+        top: 0.9375rem;
+    }
+}
+
+.form-control-input:focus+.label-control,
+.form-control-input.notEmpty+.label-control,
+.form-control-textarea:focus+.label-control,
+.form-control-textarea.notEmpty+.label-control {
+    top: 0.15rem;
+    opacity: 1;
+    font-size: 0.66rem;
+    font-weight: 500;
+}
+
+.form-control-input,
+.form-control-select {
+    display: block;
+    /* needed for proper display of the label in Firefox, IE, Edge */
+    width: 100%;
+    padding-top: 1.4rem;
+    padding-bottom: 0.7rem;
+    padding-left: 1.3125rem;
+    padding-right: 1.3125rem;
+    border: 1px solid #dadada;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #787976;
+    font: 400 0.875rem/1.375rem "Open Sans", sans-serif;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+    /* removes inner shadow on form inputs on ios safari */
+}
+
+.form-control-select {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: 3.5rem;
+}
+
+
+/* IE10+ hack to solve lower label text position compared to the rest of the browsers */
+
+@media screen and (-ms-high-contrast: active),
+screen and (-ms-high-contrast: none) {
+    .form-control-input {
+        padding-top: 1.25rem;
+        padding-bottom: 0.75rem;
+        line-height: 1.75rem;
+    }
+    .form-control-select {
+        padding-top: 0.875rem;
+        padding-bottom: 0.75rem;
+        height: 3.125rem;
+        line-height: 2.125rem;
+    }
+}
+
+
+select {
+    /* you should keep these first rules in place to maintain cross-browser behavior */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    background-image: url('../../image/down-arrow.png');
+    background-position: 96% 50%;
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+select::-ms-expand {
+    display: none;
+    /* removes the ugly default down arrow on select form field in IE11 */
+}
+
+.form-control-textarea {
+    display: block;
+    /* used to eliminate a bottom gap difference between Chrome and IE/FF */
+    width: 100%;
+    height: 8rem;
+    /* used instead of html rows to normalize height between Chrome and IE/FF */
+    padding-top: 1.25rem;
+    padding-left: 1.3125rem;
+    border: 1px solid #dadada;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    color: #787976;
+    font: 400 1rem/1.5625rem "Open Sans", sans-serif;
+    transition: all 0.2s;
+}
+
+.form-control-input:focus,.form-control-input:hover,
+.form-control-select:focus,.form-control-select:hover,
+.form-control-textarea:focus,.form-control-textarea:hover {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 /8%), 0 0 8px rgb(102 175 233 /60%);
+    /* Removes blue border on focus */
+}
+
+.checkbox {
+    font: 400 0.875rem/1.375rem "Open Sans", sans-serif;
+}
+
+input[type='checkbox'] {
+    vertical-align: -15%;
+    margin-right: 0.375rem;
+}
+
+
+/* IE10+ hack to raise checkbox field position compared to the rest of the browsers */
+
+@media screen and (-ms-high-contrast: active),
+screen and (-ms-high-contrast: none) {
+    input[type='checkbox'] {
+        vertical-align: -9%;
+    }
+}
+
+.form-control-submit-button {
+    display: inline-block;
+    width: 100%;
+    height: 3.125rem;
+    border: 0.125rem solid #64b3f4;
+    border-radius: 0.5rem;
+    background-color: #64b3f4;
+    color: #fff;
+    font: 700 0.75rem/1.75rem "Montserrat", sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.form-control-submit-button:hover {
+    background-color: transparent;
+    color: #64b3f4;
+}
+
+.form-control-submit-button:focus{
+    outline: none;
+}
+
+.form-control-signup-button {
+    display: inline-block;
+    width: 100%;
+    height: 3.125rem;
+    border: 0.125rem solid #fff;
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #5C5C5C;
+    font: 700 0.75rem/1.75rem "Montserrat", sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.form-control-signup-button:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #5C5C5C;
+}
+
+.form-control-signup-button:focus{
+    outline: none;
+}
+
+
+/* Form Success And Error Message Formatting */
+
+#lmsgSubmit.h3.text-center.tada.animated,
+#cmsgSubmit.h3.text-center.tada.animated,
+#pmsgSubmit.h3.text-center.tada.animated,
+#lmsgSubmit.h3.text-center,
+#cmsgSubmit.h3.text-center,
+#pmsgSubmit.h3.text-center {
+    display: block;
+    margin-bottom: 0;
+    color: #b93636;
+    font: 400 1.125rem/1rem "Open Sans", sans-serif;
+}
+
+.help-block.with-errors .list-unstyled {
+    color: #787976;
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+    text-align: left;
+}
+
+.help-block.with-errors ul {
+    margin-bottom: 0;
+}
+
+
+/* end of form success and error message formatting */
+
+
+/* Form Success And Error Message Animation - Animate.css */
+
+@-webkit-keyframes tada {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        -ms-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+    10%,
+    20% {
+        -webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+        -ms-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+        transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+    }
+    30%,
+    50%,
+    70%,
+    90% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+        -ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+    40%,
+    60%,
+    80% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+        -ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        -ms-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes tada {
+    from {
+        -webkit-transform: scale3d(1, 1, 1);
+        -ms-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+    10%,
+    20% {
+        -webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+        -ms-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+        transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+    }
+    30%,
+    50%,
+    70%,
+    90% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+        -ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+    40%,
+    60%,
+    80% {
+        -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+        -ms-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+    to {
+        -webkit-transform: scale3d(1, 1, 1);
+        -ms-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.tada {
+    -webkit-animation-name: tada;
+    animation-name: tada;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+
+/* end of form success and error message animation - Animate.css */
+
+
+/* Fade-move Animation For Lightbox - Magnific Popup */
+
+
+/* at start */
+
+.my-mfp-slide-bottom .zoom-anim-dialog {
+    opacity: 0;
+    transition: all 0.2s ease-out;
+    -webkit-transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+    -ms-transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+    transform: translateY(-1.25rem) perspective(37.5rem) rotateX(10deg);
+}
+
+
+/* animate in */
+
+.my-mfp-slide-bottom.mfp-ready .zoom-anim-dialog {
+    opacity: 1;
+    -webkit-transform: translateY(0) perspective(37.5rem) rotateX(0);
+    -ms-transform: translateY(0) perspective(37.5rem) rotateX(0);
+    transform: translateY(0) perspective(37.5rem) rotateX(0);
+}
+
+
+/* animate out */
+
+.my-mfp-slide-bottom.mfp-removing .zoom-anim-dialog {
+    opacity: 0;
+    -webkit-transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg);
+    -ms-transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg);
+    transform: translateY(-0.625rem) perspective(37.5rem) rotateX(10deg);
+}
+
+
+/* dark overlay, start state */
+
+.my-mfp-slide-bottom.mfp-bg {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+}
+
+
+/* animate in */
+
+.my-mfp-slide-bottom.mfp-ready.mfp-bg {
+    opacity: 0.8;
+}
+
+
+/* animate out */
+
+.my-mfp-slide-bottom.mfp-removing.mfp-bg {
+    opacity: 0;
+}
+
+
+/* end of fade-move animation for lightbox - magnific popup */
+
+
+/* Fade Animation For Image Slider - Magnific Popup */
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    -webkit-animation: fadeIn 0.6s;
+    animation: fadeIn 0.6s;
+}
+
+@-webkit-keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    -webkit-animation: fadeOut 0.8s;
+    animation: fadeOut 0.8s;
+}
+
+
+/* end of fade animation for image slider - magnific popup */
+
+
+/*************************/
+
+
+/*     02. Preloader     */
+
+
+/*************************/
+
+
+
+/***********************/
+
+
+/*     16. logint     */
+
+
+/***********************/
+
+.login-form {
+    top:20%;
+    margin-left:  30%;
+    margin-right: 30%;
+    padding-left:2rem ;
+    padding-right:2rem ;
+    padding-top: 4.3rem;
+    padding-bottom: 5.625rem;
+    border-radius: 0.3rem;
+    background-color: rgba(255, 255, 255, 0.92);
+}
+
+.login-form .text-container {
+    margin-bottom: 3rem;
+}
+
+.login-form .section-title {
+    margin-bottom: 0.5rem;
+}
+
+.login-form h2 {
+    margin-bottom: 1.375rem;
+}
+
+.login-form .list-unstyled {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.625rem;
+}
+
+.login-form .list-unstyled .fas,
+.login-form .list-unstyled .fab {
+    margin-right: 0.5rem;
+    font-size: 0.875rem;
+    color: #14bf98;
+}
+
+.login-form .list-unstyled .fa-phone {
+    vertical-align: 3%;
+}
+
+.login-form h3 {
+    margin-bottom: 1rem;
+}
+
+/*****************************/
+
+
+/*     21. Media Queries     */
+
+
+/*****************************/
+
+
+/* Min-width width 768px */
+@media (min-width: 768px) {
+    /* General Styles */
+    .p-heading {
+        width: 85%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    /* end of general styles */
+
+    /* logint */
+
+    .login-form .list-unstyled li {
+        display: inline-block;
+        margin-right: 1rem;
+    }
+    .login-form .list-unstyled .address {
+        display: block;
+    }
+    /* end of logint */
+}
+
+
+/* end of min-width width 768px */
+
+
+/* Min-width width 992px */
+
+@media (min-width: 992px) {
+    /* General Styles */
+    .p-heading {
+        width: 65%;
+    }
+    /* end of general styles */
+    /* logint */
+    .login-form .text-container {
+        margin-bottom: 0;
+    }
+}
+
+
+/* end of min-width width 992px */
+
+
+/* Min-width width 1200px */
+
+@media (min-width: 1200px) {
+    /* General Styles */
+    .p-heading {
+        width: 55%;
+    }
+
+    /* logint */
+    .login-form .text-container {
+        margin-top: 0.875rem;
+        margin-right: 1.5rem;
+    }
+    .login-form form {
+    }
+    /* end of logint */
+
+}
+
+
+/* end of min-width width 1200px */
+
+
+/* Min-width width 1600px */
+
+@media (min-width: 1600px) {
+    /* Navigation */
+    .navbar-custom {
+        padding-right: 12rem;
+        padding-left: 12rem;
+    }
+    .navbar-custom.top-nav-collapse {
+        padding-right: 12rem;
+        padding-left: 12rem;
+    }
+    /* end of navigation */
+}
+
+
+/* end of min-width width 1200px */

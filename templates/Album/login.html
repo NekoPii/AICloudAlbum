@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/unicons.css" rel="stylesheet">
+    <link href="/static/css/login/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="padding-top: 3rem;">
+    <div id="login" class="login-form">
+        <div class="col-md-12 col-lg-12" style="padding: 0;">
+            <div style="text-align: center;margin-bottom: 1.2rem">
+                <embed src="/static/image/AIAlbum.svg" width="200" height="70" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/">
+                <h5 style="font-family:'SimHei';font-weight: 700;font-size: 12px;color:#757c80; ">让收藏变得更有乐趣</h5>
+            </div>
+            <form id="loginForm" data-toggle="validator" data-focus="false">
+                <div class="form-group">
+
+                    <input type="text" class="form-control-input" id="login_phone" required>
+                    <label class="label-control" for="login_phone"><i class="uil uil-mobile-android-alt"></i>Phone</label>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group" style="margin-bottom: 3rem">
+                    <input type="password" class="form-control-input" id="login_pwd" required>
+                    <label class="label-control" for="login_pwd"><i class="uil uil-padlock"></i>Password</label>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-message">
+                    <div id="cmsgSubmit" class="h3 text-center hidden"></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="form-control-submit-button">Login</button>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="form-control-signup-button">Signup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/login/scripts.js"></script>
+</body>
+</html>
