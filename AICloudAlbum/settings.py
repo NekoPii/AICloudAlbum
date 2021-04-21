@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,"static"),
 ]
+
+#Captcha验证码设置
+CAPTCHA_IMAGE_SIZE=(85,55)
+CAPTCHA_LENGTH=4
+

@@ -55,12 +55,12 @@ Colors:
 
 body,
 html {
-    top:0;
+    top: 0;
     width: 100%;
     height: 100%;
     background-image: url("/static/image/login_background.jpg");
-    background-size:100% 100%;
-    background-repeat: no-repeat ;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 body,
@@ -273,17 +273,16 @@ strong {
 
 /* IE10+ hack to solve lower label text position compared to the rest of the browsers */
 
-@media screen and (-ms-high-contrast: active),
-screen and (-ms-high-contrast: none) {
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
     .label-control {
         top: 0.9375rem;
     }
 }
 
-.form-control-input:focus+.label-control,
-.form-control-input.notEmpty+.label-control,
-.form-control-textarea:focus+.label-control,
-.form-control-textarea.notEmpty+.label-control {
+.form-control-input:focus + .label-control,
+.form-control-input.notEmpty + .label-control,
+.form-control-textarea:focus + .label-control,
+.form-control-textarea.notEmpty + .label-control {
     top: 0.15rem;
     opacity: 1;
     font-size: 0.66rem;
@@ -318,13 +317,13 @@ screen and (-ms-high-contrast: none) {
 
 /* IE10+ hack to solve lower label text position compared to the rest of the browsers */
 
-@media screen and (-ms-high-contrast: active),
-screen and (-ms-high-contrast: none) {
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
     .form-control-input {
         padding-top: 1.25rem;
         padding-bottom: 0.75rem;
         line-height: 1.75rem;
     }
+
     .form-control-select {
         padding-top: 0.875rem;
         padding-bottom: 0.75rem;
@@ -368,13 +367,25 @@ select::-ms-expand {
     transition: all 0.2s;
 }
 
-.form-control-input:focus,.form-control-input:hover,
-.form-control-select:focus,.form-control-select:hover,
-.form-control-textarea:focus,.form-control-textarea:hover {
+.form-control-input:focus,
+.form-control-select:focus,
+.form-control-textarea:focus {
     border-color: #66afe9;
     outline: 0;
     box-shadow: inset 0 1px 1px rgb(0 0 0 /8%), 0 0 8px rgb(102 175 233 /60%);
     /* Removes blue border on focus */
+}
+
+.true_captcha {
+    border-color: #a8e063;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 /8%), 0 0 8px rgb(86 171 47 /60%);
+}
+
+.false_captcha {
+    border-color: #e53935;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgb(0 0 0 /8%), 0 0 8px rgb(229 57 53 /60%);
 }
 
 .checkbox {
@@ -389,8 +400,7 @@ input[type='checkbox'] {
 
 /* IE10+ hack to raise checkbox field position compared to the rest of the browsers */
 
-@media screen and (-ms-high-contrast: active),
-screen and (-ms-high-contrast: none) {
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
     input[type='checkbox'] {
         vertical-align: -9%;
     }
@@ -409,13 +419,11 @@ screen and (-ms-high-contrast: none) {
     transition: all 0.2s;
 }
 
-.form-control-submit-button:hover {
+.form-control-submit-button:hover,
+.form-control-submit-button:focus {
+    outline: none;
     background-color: transparent;
     color: #64b3f4;
-}
-
-.form-control-submit-button:focus{
-    outline: none;
 }
 
 .form-control-signup-button {
@@ -431,23 +439,23 @@ screen and (-ms-high-contrast: none) {
     transition: all 0.2s;
 }
 
-.form-control-signup-button:hover {
+.form-control-signup-button:hover,
+.form-control-signup-button:focus {
+    outline: none;
     background-color: rgba(0, 0, 0, 0.08);
     color: #5C5C5C;
-}
-
-.form-control-signup-button:focus{
-    outline: none;
 }
 
 
 /* Form Success And Error Message Formatting */
 
 #lmsgSubmit.h3.text-center.tada.animated,
-#cmsgSubmit.h3.text-center.tada.animated,
+#login_msg.h3.text-center.tada.animated,
+#signup_msg.h3.text-center.tada.animated,
 #pmsgSubmit.h3.text-center.tada.animated,
 #lmsgSubmit.h3.text-center,
-#cmsgSubmit.h3.text-center,
+#login_msg.h3.text-center,
+#signup_msg.h3.text-center,
 #pmsgSubmit.h3.text-center {
     display: block;
     margin-bottom: 0;
@@ -676,7 +684,6 @@ screen and (-ms-high-contrast: none) {
 /*************************/
 
 
-
 /***********************/
 
 
@@ -685,48 +692,50 @@ screen and (-ms-high-contrast: none) {
 
 /***********************/
 
-.login-form {
-    top:20%;
-    margin-left:  30%;
+.login-form, .signup-form {
+    top: 10%;
+    margin-left: 30%;
     margin-right: 30%;
-    padding-left:2rem ;
-    padding-right:2rem ;
-    padding-top: 4.3rem;
-    padding-bottom: 5.625rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
     border-radius: 0.3rem;
     background-color: rgba(255, 255, 255, 0.92);
 }
 
-.login-form .text-container {
+.login-form .text-container, .signup-form .text-container {
     margin-bottom: 3rem;
 }
 
-.login-form .section-title {
+.login-form .section-title, .signup-form .section-title {
     margin-bottom: 0.5rem;
 }
 
-.login-form h2 {
+.login-form h2, .signup-form h2 {
     margin-bottom: 1.375rem;
 }
 
-.login-form .list-unstyled {
+.login-form .list-unstyled, .signup-form .list-unstyled {
     margin-bottom: 0.25rem;
     font-size: 1rem;
     line-height: 1.625rem;
 }
 
 .login-form .list-unstyled .fas,
-.login-form .list-unstyled .fab {
+.signup-form .list-unstyled .fas,
+.login-form .list-unstyled .fab,
+.signup-form .list-unstyled .fab {
     margin-right: 0.5rem;
     font-size: 0.875rem;
     color: #14bf98;
 }
 
-.login-form .list-unstyled .fa-phone {
+.login-form .list-unstyled .fa-phone, .signup-form .list-unstyled .fa-phone {
     vertical-align: 3%;
 }
 
-.login-form h3 {
+.login-form h3, .signup-form h3 {
     margin-bottom: 1rem;
 }
 
@@ -739,51 +748,64 @@ screen and (-ms-high-contrast: none) {
 /*****************************/
 
 
-/* Min-width width 768px */
-@media (min-width: 768px) {
+/* Max-width width 768px */
+@media (max-width: 768px) {
     /* General Styles */
     .p-heading {
         width: 85%;
         margin-right: auto;
         margin-left: auto;
     }
+
     /* end of general styles */
-
     /* logint */
-
-    .login-form .list-unstyled li {
-        display: inline-block;
-        margin-right: 1rem;
+    .login-form, .signup-form {
+        top: 20%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
-    .login-form .list-unstyled .address {
+
+    .login-form .list-unstyled li, .signup .list-unstyled li {
+        display: inline-block;
+    }
+
+    .login-form .list-unstyled .address, .signup .list-unstyled .address {
         display: block;
     }
+
     /* end of logint */
 }
 
 
-/* end of min-width width 768px */
+/* end of max-width width 768px */
 
 
-/* Min-width width 992px */
+/* Max-width width 992px */
 
-@media (min-width: 992px) {
+@media (max-width: 992px) {
     /* General Styles */
     .p-heading {
         width: 65%;
     }
+
     /* end of general styles */
     /* logint */
-    .login-form .text-container {
+    .login-form, .signup-form {
+        top: 20%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .login-form .text-container, .signup-form .text-container {
         margin-bottom: 0;
     }
 }
 
 
-/* end of min-width width 992px */
+/* end of max-width width 992px */
 
 
-/* Min-width width 1200px */
+/* Max-width width 1200px */
 
 @media (min-width: 1200px) {
     /* General Styles */
@@ -792,18 +814,19 @@ screen and (-ms-high-contrast: none) {
     }
 
     /* logint */
-    .login-form .text-container {
+    .login-form .text-container, .signup-form .text-container {
         margin-top: 0.875rem;
-        margin-right: 1.5rem;
     }
-    .login-form form {
+
+    .login-form form, .signup-form form {
     }
+
     /* end of logint */
 
 }
 
 
-/* end of min-width width 1200px */
+/* end of max-width width 1200px */
 
 
 /* Min-width width 1600px */
@@ -814,10 +837,12 @@ screen and (-ms-high-contrast: none) {
         padding-right: 12rem;
         padding-left: 12rem;
     }
+
     .navbar-custom.top-nav-collapse {
         padding-right: 12rem;
         padding-left: 12rem;
     }
+
     /* end of navigation */
 }
 
