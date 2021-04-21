@@ -93,7 +93,7 @@ def signup(request):
 
 def loginout(request):
     request.session.flush()
-    return redirect("/index/")
+    return redirect("/")
 
 
 def ajax_val(request):
@@ -108,3 +108,8 @@ def ajax_val(request):
         # raise Http404
         json_data = {'status':0}
         return JsonResponse(json_data)
+
+
+def welcome(request):
+    pass
+    return render(request,"Album/welcome.html")
