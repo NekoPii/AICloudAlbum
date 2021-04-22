@@ -54,7 +54,7 @@ html {
     width: 100%;
 	height: 100%;
 	background-repeat: no-repeat;
-	transition: background 2s;
+	transition: background 2s ease-in;
 }
 
 body, p {

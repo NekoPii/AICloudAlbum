@@ -1,5 +1,5 @@
 
-var arrImg = ['/static/image/welcome1.jpg', '/static/image/welcome2.jpg', '/static/image/welcome3.jpg'];
+var arrImg = ['/static/image/welcome1.jpg', '/static/image/welcome2.jpg', '/static/image/welcome3.jpg','/static/image/welcome4.jpg'];
 var len = arrImg.length;
 var index=0;
 
