@@ -62,7 +62,7 @@ html {
 	height: 100%;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
-	transition: background 2s ease-in;
+	transition: background 0.5s ease-in;
 }
 
 body,

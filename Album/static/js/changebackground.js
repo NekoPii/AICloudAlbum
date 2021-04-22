@@ -3,11 +3,11 @@ var arrImg = ['/static/image/welcome1.jpg', '/static/image/welcome2.jpg', '/stat
 var len = arrImg.length;
 var index=0;
 
+
 $(document).ready(function () {
 
         setInterval(function () {
             $("#alpha").css("backgroundImage","url("+arrImg[(index++)%len]+")");
-
 
         }, 10000);
 
