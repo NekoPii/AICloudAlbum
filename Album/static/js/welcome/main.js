@@ -11,7 +11,7 @@ $(document).ready(function () {
             $("#alpha").css("backgroundImage","url("+arrImg[(index++)%len]+")");
 
 
-        }, 5000);
+        }, 6000);
 
 });
 

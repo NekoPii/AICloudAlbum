@@ -24,7 +24,28 @@
     <div id="loader"></div>
 </div>
 
-<div id="content">
+<!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="">HOME <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#intro">INTRO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                </li>
+            </ul>
+        </div>
+    </nav> <!-- end of navbar -->
+    <!-- end of navbar -->
 
 <!-- Header -->
     <header id="header" class="header" id="beta">
@@ -34,7 +55,7 @@
                     <div class="col-lg-12">
                         <div class="text-container">
                             <h1><span id="js-rotating">INTELLIGENT, SWIFT, CONVENIENT</span> ALBUM</h1>
-                            <p class="p-heading p-large">Aria is a top consultancy company specializing in business growth using online marketing and conversion optimization tactics</p>
+                            <p class="p-heading p-large">Album is an intelligent album specializing in photo classification powered by Neutral Network </p>
                             <a class="btn-solid-lg page-scroll" href="/login/" style="font-size: medium">Login</a>
                             {% ifequal request.session.is_login True %}
                             <a class="btn-solid-lg page-scroll" href="/loginout/" style="font-size: medium">Loginout</a>
@@ -47,7 +68,7 @@
         </div> <!-- end of header-content -->
     </header> <!-- end of header -->
     <!-- end of header -->
-</div>
+
 <script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/preload/main.js"></script>

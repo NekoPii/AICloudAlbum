@@ -48,12 +48,13 @@ Colors:
 /******************************/
 body,
 html {
-	background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('/static/image/welcome2.jpg') ;
+	background-image: url('/static/image/welcome2.jpg') ;
 	background-size: 100% 100%;
 	top: 0;
     width: 100%;
 	height: 100%;
 	background-repeat: no-repeat;
+	transition: background 2s;
 }
 
 body, p {
@@ -123,7 +124,7 @@ a:hover {
 }
 
 a.green {
-	color: #14bf98;
+	color: #64b3f4;
 }
 
 a.white,
@@ -144,16 +145,16 @@ strong {
 }
 
 .section-title {
-	color: #14bf98;
+	color: #64b3f4;
 	font: 500 0.8125rem/1.125rem "Montserrat", sans-serif;
 }
 
 .btn-solid-reg {
 	display: inline-block;
 	padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
-	border: 0.125rem solid #14bf98;
+	border: 0.125rem solid #64b3f4;
 	border-radius: 0.25rem;
-	background-color: #14bf98;
+	background-color: #64b3f4;
 	color: #fff;
 	font: 700 0.75rem/0 "Montserrat", sans-serif;
 	text-decoration: none;
@@ -162,25 +163,25 @@ strong {
 
 .btn-solid-reg:hover {
 	background-color: transparent;
-	color: #14bf98;
+	color: #64b3f4;
 	text-decoration: none;
 }
 
 .btn-solid-lg {
 	display: inline-block;
 	padding: 1.375rem 2.125rem 1.375rem 2.125rem;
-	border: 0.125rem solid #14bf98;
+	border: 0.125rem solid #64b3f4;
 	border-radius: 0.25rem;
-	background-color: #14bf98;
-	color: #fff;
+	background-color: transparent;
+	color: #64b3f4;
 	font: 700 0.75rem/0 "Montserrat", sans-serif;
 	text-decoration: none;
 	transition: all 0.2s;
 }
 
 .btn-solid-lg:hover {
-	background-color: transparent;
-	color: #14bf98;
+	background-color: #64b3f4;
+	color: #fff;
 	text-decoration: none;
 }
 
@@ -381,9 +382,9 @@ input[type='checkbox'] {
 	display: inline-block;
 	width: 100%;
 	height: 3.125rem;
-	border: 0.125rem solid #14bf98;
+	border: 0.125rem solid #64b3f4;
 	border-radius: 0.25rem;
-	background-color: #14bf98;
+	background-color: #64b3f4;
 	color: #fff;
 	font: 700 0.75rem/1.75rem "Montserrat", sans-serif;
 	cursor: pointer;
@@ -392,7 +393,7 @@ input[type='checkbox'] {
 
 .form-control-submit-button:hover {
 	background-color: transparent;
-	color: #14bf98;
+	color: #64b3f4;
 }
 
 /* Form Success And Error Message Formatting */
@@ -686,7 +687,7 @@ input[type='checkbox'] {
 
 .navbar-custom .nav-item .nav-link:hover,
 .navbar-custom .nav-item .nav-link.active {
-	color: #14bf98;
+	color: #64b3f4;
 }
 
 /* Dropdown Menu */
@@ -731,7 +732,7 @@ input[type='checkbox'] {
 }
 
 .navbar-custom .dropdown-item:hover .item-text {
-	color: #14bf98;
+	color: #64b3f4;
 }
 
 .navbar-custom .dropdown-items-divide-hr {
@@ -1877,7 +1878,7 @@ a:hover.back-to-top {
 	
 	.navbar-custom .nav-item .nav-link:hover,
 	.navbar-custom .nav-item .nav-link.active {
-		color: #14bf98;
+		color: #64b3f4;
 	}
 
 	.navbar-custom.top-nav-collapse {
