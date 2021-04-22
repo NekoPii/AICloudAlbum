@@ -29,7 +29,7 @@ def login(request):
 
     if request.method == "POST":
         login_form=LoginForm(request.POST)
-        message="请检查输入内容!"
+
         if login_form.is_valid():
             phone=login_form.cleaned_data["phone"]
             pwd=login_form.cleaned_data["pwd"]
@@ -45,6 +45,11 @@ def login(request):
                     message="密码不正确!"
             except:
                 message="该用户不存在!"
+        else:
+            if login_form.has_error("phone"):
+                message = "请输入正确的手机号!";
+            else:
+                message = "请输入正确的验证码!"
 
         return render(request,"Album/login.html",locals())
     login_form=LoginForm()
@@ -57,27 +62,22 @@ def signup(request):
 
     if request.method == "POST":
         signup_form = SignupForm(request.POST)
-        message = "请检查输入内容!"
+        message = "请输入正确的手机号!"
         if signup_form.is_valid():
             phone = signup_form.cleaned_data["phone"]
             name=signup_form.cleaned_data["name"]
             pwd = signup_form.cleaned_data["pwd"]
             re_pwd=signup_form.cleaned_data["re_pwd"]
 
-            if phone==None or phone=="" or phone.strip()=="":
-                message="请正确输入手机号!"
-                return redirect("/index/",locals());
-
-
-            if pwd!=re_pwd:
-                message="两次输入的密码不同!"
+            is_same_phone=models.User.objects.filter(phone=phone)
+            if is_same_phone:
+                message="手机号已注册!"
                 return render(request,"Album/signup.html",locals())
 
             else:
-                is_same_phone=models.User.objects.filter(phone=phone)
-                if is_same_phone:
-                    message="手机号已注册!"
-                    return render(request,"Album/signup.html",locals())
+                if pwd != re_pwd:
+                    message = "两次输入的密码不同!"
+                    return render(request, "Album/signup.html", locals())
 
                 new_user=models.User(name=name,phone=phone,pwd=hash_code(pwd)+"-"+pwd)
                 new_user.save()

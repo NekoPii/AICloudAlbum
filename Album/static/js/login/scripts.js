@@ -1,7 +1,8 @@
 (function ($) {
     //"use strict";
-
+    $("#login").focus();
     $(function () {
+
         if ($("#login_phone").val() != '') {
             $("#login_phone").addClass('notEmpty');
         } else {
