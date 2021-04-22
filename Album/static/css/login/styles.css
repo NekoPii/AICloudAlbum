@@ -55,9 +55,7 @@ Colors:
 
 body,
 html {
-	background-image: url('/static/image/welcome2.jpg') ;
 	background-size: cover;
-	top: 0;
     width: 100%;
 	height: 100%;
 	background-attachment: fixed;
