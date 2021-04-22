@@ -49,10 +49,11 @@ Colors:
 body,
 html {
 	background-image: url('/static/image/welcome2.jpg') ;
-	background-size: 100% 100%;
+	background-size: cover;
 	top: 0;
     width: 100%;
 	height: 100%;
+	background-attachment: fixed;
 	background-repeat: no-repeat;
 	transition: background 2s ease-in;
 }
