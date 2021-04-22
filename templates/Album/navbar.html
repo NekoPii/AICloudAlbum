@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     {% block title %}{% endblock %}
     <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/unicons.css" rel="stylesheet">
     <link href="/static/css/navbar.css" rel="stylesheet">
     {% block css %}{% endblock %}
 </head>
@@ -13,14 +14,14 @@
     <!-- Text Logo - Use this if you don't have a graphic logo -->
     <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
     <!-- Image Logo -->
-    <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
+    <a class="navbar-brand logo-image" href="/"><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto">
 
             {% ifequal request.session.is_login True %}
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="/welcome/">HOME <span class="sr-only">(current)</span></a>
+                    <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="#intro">INTRO</a>

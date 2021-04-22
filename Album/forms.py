@@ -11,7 +11,7 @@ class LoginForm(forms.Form):
                             widget=forms.TextInput(
                             attrs={"class": "form-control-input", "id": "login_phone", "tabindex": "1","autocomplete":"off"}))
     pwd = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control-input", "id": "login_pwd", "tabindex": "2","autocomplete":"off"}))
-    captcha = CaptchaField(widget=CaptchaTextInput(attrs={"class": "form-control-input", "id": "login_captcha", "style": "float:right;width:70%;display:block;",
+    captcha = CaptchaField(widget=CaptchaTextInput(attrs={"class": "form-control-input", "id": "login_captcha", "style": "float:left;width:70%;display:block;margin-right:0.5rem;",
                "tabindex": "3","autocomplete":"off"}))
     def clean_phone(self):
         phone=self.cleaned_data["phone"]

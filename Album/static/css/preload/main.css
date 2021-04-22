@@ -36,7 +36,7 @@ Enjoy responsibly!
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 1000000;
 }
 
 #loader {
@@ -54,7 +54,7 @@ Enjoy responsibly!
     /* Chrome, Opera 15+, Safari 5+ */
     animation: spin 2s linear infinite;
     /* Chrome, Firefox 16+, IE 10+, Opera */
-    z-index: 1001;
+    z-index: 1001000;
 }
 
 #loader:before {

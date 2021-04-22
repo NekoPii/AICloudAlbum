@@ -5,8 +5,6 @@ var index=0;
 
 $(document).ready(function () {
 
-    console.log("99999");
-
         setInterval(function () {
             $("#alpha").css("backgroundImage","url("+arrImg[(index++)%len]+")");
 
