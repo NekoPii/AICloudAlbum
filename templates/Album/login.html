@@ -9,11 +9,15 @@
     <link href="/static/css/login/styles.css" rel="stylesheet">
     <link href="/static/css/preload/main.css" rel="stylesheet">
 </head>
-<body>
+<body id="alpha">
 <div id="loader-wrapper">
     <div id="loader"></div>
 </div>
-<div id="content" class="container" style="padding-top: 3rem;">
+
+<!-- Navbar -->
+{% include "Album/navbar-welcome.html" %}
+
+<div id="content" class="container" style="padding-top: 10rem;">
     <div id="login" class="login-form">
         <div class="col-md-12 col-lg-12" style="padding: 0;">
             <div style="text-align: center;margin-bottom: 1.2rem">
@@ -60,5 +64,6 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/login/scripts.js"></script>
 <script src="/static/js/preload/main.js"></script>
+<script src="/static/js/changebackground.js"></script>
 </body>
 </html>
