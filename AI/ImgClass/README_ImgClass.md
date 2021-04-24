@@ -26,4 +26,4 @@ filename 是图片的路径。
 result为result = [class ,detailed_class, possibility]，分别为
 大致类（14种），具体类（1000种）和概率。
 大概结果如下。
-![Image text](https://raw.githubusercontent.com/hongmaju/light7Local/master/img/productShow/20170518152848.png)
+![Image text](https://github.com/NeKoSaNnn/AICloudAlbum/blob/main/docs/pics/imgclass.jpg)
