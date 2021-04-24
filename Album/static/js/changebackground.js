@@ -2,12 +2,22 @@ var arrImg = ['/static/image/welcome0.jpg', '/static/image/welcome1.jpg', '/stat
 var len = arrImg.length;
 var index = 1;
 
+var imgs=[]
+for(i=0;i<len;++i)
+{
+    var now_img=new Image();
+    now_img.src=arrImg[i];
+    imgs.push(now_img);
+}
+
+
+
 $(document).ready(function () {
-    $("#alpha").css("backgroundImage", "url(" + arrImg[0] + ")");
+    $("#alpha").css("backgroundImage","url("+imgs[0].src+")");
 
     setInterval(function () {
-        $("#alpha").css("backgroundImage", "url(" + arrImg[(index++) % len] + ")");
-    }, 10000);
+        $("#alpha").css("backgroundImage",  "url("+imgs[(index++)%len].src+")");
+    }, 1000);
 
 });
 
