@@ -1,4 +1,4 @@
-var len = 25;
+var len = 5;
 var index = 1;
 var imgs=[]
 var basic_url='/static/image/welcome'
