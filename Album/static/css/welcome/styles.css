@@ -54,6 +54,7 @@ html {
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	transition: background 1.5s ease-in;
+	-moz-transition:background 1.5s ease-in;
 }
 
 body, p {
