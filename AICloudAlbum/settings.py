@@ -15,8 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-PAR_BASE_DIR = BASE_DIR.parent  # 当前总文件包AICloudAlbum的上一层路径
-
 SECURE_CONTENT_TYPE_NOSNIFF = False
 
 import mimetypes
@@ -138,5 +136,5 @@ CAPTCHA_IMAGE_SIZE = (85, 55)
 CAPTCHA_LENGTH = 4
 
 # 上传文件路径
-MEDIA_URL="/upload_imgs/"
-MEDIA_ROOT=os.path.join(PAR_BASE_DIR,"upload_imgs")
+MEDIA_URL = "/upload_imgs/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")

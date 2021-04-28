@@ -19,7 +19,7 @@ from threading import Thread,Lock
 import time
 # Create your views here.
 
-root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+root_dir = os.path.dirname(os.path.dirname(__file__))
 store_dir = os.path.join(root_dir, "upload_imgs")
 if not os.path.exists(store_dir):
     os.mkdir(store_dir)
@@ -211,14 +211,14 @@ def upload_upload(request):
             now_user.now_capacity += new_img.size
             now_user.save()
 
-            print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+            #print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
             ALLFolder.cnt += 1
             ALLFolder.total_size += new_img.size
             ALLFolder.modify_time = datetime.datetime.now()
             ALLFolder.save(force_update=True)
 
-            print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+            #print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
             now_img_name = str(new_img.fake_name) + "." + img_type
             now_img_path = os.path.join(store_dir, now_img_name)
