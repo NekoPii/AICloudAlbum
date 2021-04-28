@@ -1,0 +1,34 @@
+{% extends "Album/navbar.html" %}
+
+{% block title %}<title>Upload</title>{% endblock %}
+
+{% block css %}
+
+    <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
+    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
+    <!-- link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
+    <!-- the font awesome icon library if using with `fas` theme (or Bootstrap 4.x). Note that default icons used in the plugin are glyphicons that are bundled only with Bootstrap 3.x. -->
+    <link href="/static/css/preload/main.css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+    <div id="content" class="container" style="padding-top: 7rem;background: rgba(245,245,245,0.3)">
+        <input id="upload-file" type="file" class="file-loading" name="attachment" multiple>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/fileinput.min.js"></script>
+    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/piexif.min.js"></script>
+    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/sortable.min.js"></script>
+    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js"></script>
+    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js"></script>
+    <script src="/static/js/upload/main.js"></script>
+    <script src="/static/js/preload/main.js"></script>
+
+{% endblock %}

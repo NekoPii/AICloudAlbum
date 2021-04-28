@@ -113,3 +113,7 @@ def ajax_val(request):
 def welcome(request):
     pass
     return render(request,"Album/welcome.html")
+
+def upload(request):
+    pass
+    return render(request,"Album/upload.html")
