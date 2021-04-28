@@ -11,6 +11,7 @@
     <!-- link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
     <!-- the font awesome icon library if using with `fas` theme (or Bootstrap 4.x). Note that default icons used in the plugin are glyphicons that are bundled only with Bootstrap 3.x. -->
     <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/upload/main.css" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
@@ -18,7 +19,9 @@
         <div id="loader"></div>
     </div>
     <div id="content" class="container" style="padding-top: 7rem;background: rgba(245,245,245,0.3)">
-        <input id="upload-file" type="file" class="file-loading" name="attachment" multiple>
+        <h2>{{ file_path }}</h2>
+        <h2>{{ file_dir }}</h2>
+        <input id="upload-img" type="file" class="file-loading" name="upload_img" multiple>
     </div>
 {% endblock %}
 

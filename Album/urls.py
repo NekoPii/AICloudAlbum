@@ -11,5 +11,6 @@ urlpatterns = [
     path("signup/",views.signup,name="signup"),
     path("loginout/",views.loginout,name="loginout"),
     path("ajax_val/",views.ajax_val,name="ajax_val"),#验证码Ajax获取
-    path("upload/",views.upload,name="upload"),
+    path("upload/",views.upload_index,name="upload_index"),
+    path("upload_upload/",views.upload_upload,name="upload_upload" ),
 ]

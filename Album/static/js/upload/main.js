@@ -1,11 +1,23 @@
 var aryFiles = Array();
-$('#upload-file').fileinput({
-    theme:"fas",
+$('#upload-img').fileinput({
+    theme: "fas",
+    //browseClass:"btn btn-primary btn-block",
     //language: 'zh',     // 设置中文，需要引入locales/zh.js文件
-    uploadUrl: '/att_upload/',     // 上传路径
+    uploadUrl: '/upload_upload/',     // 上传路径
     maxFileSize: 0,     // 上传文件大小限制，触发 msgSizeTooLarge 提示
+    previewFileType: "image",
+    browseClass: "btn btn-success browse_btn",
+    browseLabel: "Pick Image",
+    browseIcon: "<i class=\"fa fa-image\"></i> ",
+    removeClass: "btn btn-danger remove_btn",
+    removeLabel: "Delete",
+    removeIcon: "<i class=\"fa fa-trash\"></i> ",
+    uploadClass: "btn btn-info upload_btn",
+    uploadLabel: "Upload",
+    uploadIcon: "<i class=\"fa fa-arrow-up\"></i> ",
+    allowedFileExtensions: ['jpg', 'jpeg', 'jpe', 'gif', 'png', 'pns', 'bmp', 'png', 'tif'],
     // {name}：将被上传的文件名替换，{size}：将被上传的文件大小替换，{maxSize}：将被maxFileSize参数替换。
-    msgSizeTooLarge: '"{name}" ({size} KB) 超过允许的最大上传大小 {maxSize} KB。请重新上传!',
+    //msgSizeTooLarge: '"{name}" ({size} KB) 超过允许的最大上传大小 {maxSize} KB。请重新上传!',
     showPreview: true,  // 展示预览
     showUpload: true,   // 是否显示上传按钮
     showCaption: true,  // 是否显示文字描述
@@ -13,6 +25,7 @@ $('#upload-file').fileinput({
     uploadAsync: true, // 是否异步上传
     initialPreviewShowDelete: true, // 预览中的删除按钮
     autoReplace: true,  // 达到最大上传数时，自动替换之前的附件
+    //enctype: 'multipart/form-data',
     //uploadExtraData: function () {  // uploadExtraData携带附加参数，上传时携带csrftoken
     //    return {csrfmiddlewaretoken: $.cookie('csrftoken'), doc_uuid: $('[name=doc_uuid]').val()}
     //},
