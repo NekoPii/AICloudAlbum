@@ -77,30 +77,69 @@ $(document).ready(function () {
         aryFiles.push(file.name);
     }).on("filebatchuploadsuccess ", function (e, data, previewId, index) {
         // 同步上传全部上传完触发的事件，异步上传会每上传一个都调用
-        //console.log("data:"+data+"\npreviewId:"+previewId+"\nindex:"+index);
-        //console.log("count:"+GetCount("upload-input"));
+        console.log("e" + e + "\ndata:" + data.response.status + "\npreviewId:" + previewId + "\nindex:" + index);
+        console.log("count:" + GetCount("upload-input"));
+        if (data.response.status == false) {
+            $('#upload-input').fileinput("clear");
+            return new Promise(function (resolve, reject) {
+                $.confirm({
+                    title: 'Error!',
+                    content: "Something wrong!",
+                    type: 'red',
+                    buttons: {
+                        ok: {
+                            btnClass: 'btn-danger text-white',
+                            keys: ['enter'],
+                            action: function () {
+                                resolve();
+                                window.location.href = "";
+                            }
+                        },
+                    }
+                });
+            });
+        } else if (data.response.status == true) {
+            return new Promise(function (resolve, reject) {
+                $.confirm({
+                    title: 'Success!',
+                    content: GetCount("upload-input"),
+                    type: 'green',
+                    buttons: {
+                        continue: {
+                            btnClass: 'btn-success text-white',
+                            keys: ['enter'],
+                            action: function () {
+                                resolve();
+                                $('#upload-input').fileinput("clear");
+                            }
+                        },
+                        complete: {
+                            btnClass: 'btn-primary text-white',
+                            keys: ['enter'],
+                            action: function () {
+                                resolve();
+                                window.location.href = "/";
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    }).on('filebatchuploaderror', function (event, data, msg) {
         return new Promise(function (resolve, reject) {
             $.confirm({
-                title: 'Success!',
-                content: GetCount("upload-input"),
-                type: 'green',
+                title: 'Error!',
+                content: "Something wrong!",
+                type: 'red',
                 buttons: {
-                    continue: {
-                        btnClass: 'btn-success text-white',
+                    ok: {
+                        btnClass: 'btn-danger text-white',
                         keys: ['enter'],
                         action: function () {
                             resolve();
                             $('#upload-input').fileinput("clear");
                         }
                     },
-                    complete: {
-                        btnClass: 'btn-primary text-white',
-                        keys: ['enter'],
-                        action: function () {
-                            resolve();
-                            window.location.href = "/";
-                        }
-                    }
                 }
             });
         });

@@ -233,6 +233,7 @@ def upload_upload_syn(request):
 
                 except:  # 数据库加入失败，则不保留上传图片
                     os.remove(img_path)
+                    return HttpResponse(json.dumps({"status": False}))#data.response.status=false 表示当前发生传输错误
 
                 '''
                 if img_type in img_type_list:
