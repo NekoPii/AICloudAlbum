@@ -4,13 +4,14 @@ from . import views
 app_name = "Album"  # 为app设置命名空间，方便{% url "Album:..."}区分
 
 urlpatterns = [
-    path("",views.welcome,name="welcome"),
-    path("welcome/",views.welcome,name="welcome"),
-    path("index/",views.index,name="index"),
-    path("login/",views.login,name="login"),
-    path("signup/",views.signup,name="signup"),
-    path("loginout/",views.loginout,name="loginout"),
-    path("ajax_val/",views.ajax_val,name="ajax_val"),#验证码Ajax获取
-    path("upload/",views.upload_index,name="upload_index"),
-    path("upload_upload/",views.upload_upload,name="upload_upload" ),
+    path("", views.welcome, name="welcome"),
+    path("welcome/", views.welcome, name="welcome"),
+    path("index/", views.index, name="index"),
+    path("login/", views.login, name="login"),
+    path("signup/", views.signup, name="signup"),
+    path("loginout/", views.loginout, name="loginout"),
+    path("ajax_val/", views.ajax_val, name="ajax_val"),  # 验证码Ajax获取
+    path("upload/", views.upload_index, name="upload_index"),
+    path("upload_upload_syn/", views.upload_upload_syn, name="upload_upload_syn"),#同步上传
+    path("upload_upload_asyn/", views.upload_upload_asyn, name="upload_upload_asyn"),#异步上传
 ]

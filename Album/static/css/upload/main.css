@@ -12,3 +12,119 @@
     text-align: center;
     margin: 1rem;
 }
+
+.browser-btn-solid-lg {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 2rem;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-clip: padding-box;
+    display: inline-block;
+    border: 0.125rem solid #64b3f4;
+    border-radius: 0.25rem;
+    background-color: #64b3f4;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.browser-btn-solid-lg:hover {
+    background-color: transparent;
+    color: #64b3f4;
+    text-decoration: none;
+}
+
+.remove-btn-solid-lg {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 2rem;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-clip: padding-box;
+    display: inline-block;
+    border: 0.125rem solid #f46b45;
+    border-radius: 0.25rem;
+    background-color: #f46b45;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.remove-btn-solid-lg:hover {
+    background-color: transparent;
+    color: #f46b45;
+    text-decoration: none;
+}
+
+.upload-btn-solid-lg {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-clip: padding-box;
+    display: inline-block;
+    border: 0.125rem solid #00bf8f;
+    border-radius: 0.25rem;
+    background-color: #00bf8f;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.upload-btn-solid-lg:hover {
+    background-color: transparent;
+    color: #00bf8f;
+    text-decoration: none;
+}
+
+.cancel-btn-solid-lg {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem 2rem;
+    margin-left:0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 0.125rem solid #dc2430;
+    background-color: #dc2430;
+    border-radius: 0.25rem;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.cancel-btn-solid-lg:hover {
+    background-color: transparent;
+    text-decoration: none;
+    color: #dc2430;
+}
+
+.btn-solid-lg {
+	display: inline-block;
+	padding: 1.375rem 2.125rem 1.375rem 2.125rem;
+	border: 0.125rem solid #64b3f4;
+	border-radius: 0.25rem;
+	background-color: #64b3f4;
+	color: #fff;
+	font: 700 0.75rem/0 "Montserrat", sans-serif;
+	text-decoration: none;
+	transition: all 0.2s;
+}
+
+.btn-solid-lg:hover {
+	background-color: transparent;
+	color: #64b3f4;
+	text-decoration: none;
+}

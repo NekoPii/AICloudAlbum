@@ -15,8 +15,9 @@ from . import models
 from .forms import LoginForm, SignupForm
 import hashlib
 from PIL import Image
-from threading import Thread,Lock
+from threading import Thread, Lock
 import time
+
 # Create your views here.
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
@@ -158,10 +159,115 @@ def upload_index(request):
     else:
         return redirect("/login/")
 
-mutex_x = Lock()
 
 @csrf_exempt
-def upload_upload(request):
+def upload_upload_syn(request):
+    if request.session.get("is_login"):
+        user_phone = request.session.get("phone")
+        all_imgs = request.FILES.getlist("upload_img", None)
+
+        initialPreview = []
+        initialPreviewConfig = []
+
+        if all_imgs:
+            for now_img in all_imgs:
+                img_path = os.path.join(store_dir, now_img.name)
+
+                f = open(img_path, "wb")
+                for chunk in now_img.chunks():  # 分块写入
+                    f.write(chunk)
+                f.close()
+
+                with Image.open(img_path) as img:
+                    h, w = img.size[0], img.size[1]
+
+                img_name = now_img.name.rsplit('.', 1)[0]
+                img_type = now_img.name.rsplit('.', 1)[1]
+
+                img_type_list = ['jpg', 'jpeg', 'jpe', 'gif', 'png', 'pns', 'bmp', 'png', 'tif']
+
+                now_size = os.path.getsize(img_path) / 1024 / 1024
+
+                try:
+
+                    ALLFolder = models.Folder.objects.get(user_id=user_phone, name="ALL")
+
+                    NoneTag = models.Tag.objects.get(tag="None")
+
+                    new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
+                                             modify_time=datetime.datetime.now(), size=now_size,
+                                             height=h, width=w, is_tag=False, is_face=False, folder_id=ALLFolder.pk,
+                                             tag_id=NoneTag.pk, user_id=user_phone)
+
+                    new_img.save()
+                    new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
+                    new_img.save()
+
+                    try:
+                        now_folder_cover = models.FolderCover.objects.get(folder_id=ALLFolder.pk)
+                    except:
+                        now_folder_cover = models.FolderCover(folder_id=ALLFolder.pk, pic_id=new_img.pk)
+                    finally:
+                        now_folder_cover.pic_id = new_img.pk
+                        now_folder_cover.save()
+
+                    now_user = models.User.objects.get(phone=user_phone)
+                    now_user.now_capacity += new_img.size
+                    now_user.save()
+
+                    # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+
+                    ALLFolder.cnt += 1
+                    ALLFolder.total_size += new_img.size
+                    ALLFolder.modify_time = datetime.datetime.now()
+                    ALLFolder.save(force_update=True)
+
+                    # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+
+                    now_img_name = str(new_img.fake_name) + "." + img_type
+                    now_img_path = os.path.join(store_dir, now_img_name)
+
+                    url = settings.MEDIA_URL + now_img_name
+
+                    os.rename(img_path, now_img_path)
+
+                except:  # 数据库加入失败，则不保留上传图片
+                    os.remove(img_path)
+
+                '''
+                if img_type in img_type_list:
+                    initialPreview.append(
+                        "<img src='" + url + "' class='file-preview-image' style='max_width:100%;max_height:100%;'>")
+                else:
+                    initialPreview.append(
+                        "<div class='file-preview-other'><span class='file-other-icon'><i class='glyphicon glyphicon-file'></i></span></div>")
+
+                initialPreviewConfig.append([{
+                    "caption": now_img.name,
+                    "type": img_type,
+                    "downloadUrl": url,
+                    "url": '/del_img/',  # 预览中的删除按钮的url
+                    "size": os.path.getsize(now_img_path),
+                    "key": now_img.name,
+                }])
+                '''
+
+            return HttpResponse(json.dumps(
+                {"status": True}
+                # 取消回显，异步暂未取消
+                # {"initialPreview": initialPreview, "initialPreviewConfig": initialPreviewConfig, "append": True}
+            ))
+        else:
+            return HttpResponse(json.dumps({"status": False}))
+    else:
+        return redirect("/login/")
+
+
+mutex_x = Lock()
+
+
+@csrf_exempt
+def upload_upload_asyn(request):
     if request.session.get("is_login"):
         mutex_x.acquire()
         user_phone = request.session.get("phone")
@@ -186,46 +292,51 @@ def upload_upload(request):
 
             now_size = os.path.getsize(img_path) / 1024 / 1024
 
-            ALLFolder = models.Folder.objects.get(user_id=user_phone, name="ALL")
-
-            NoneTag = models.Tag.objects.get(tag="None")
-
-            new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
-                                     modify_time=datetime.datetime.now(), size=now_size,
-                                     height=h, width=w, is_tag=False, is_face=False, folder_id=ALLFolder.pk,
-                                     tag_id=NoneTag.pk, user_id=user_phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-            new_img.save()
-
             try:
-                now_folder_cover = models.FolderCover.objects.get(folder_id=ALLFolder.pk)
-            except:
-                now_folder_cover = models.FolderCover(folder_id=ALLFolder.pk, pic_id=new_img.pk)
-            finally:
-                now_folder_cover.pic_id = new_img.pk
-                now_folder_cover.save()
 
-            now_user = models.User.objects.get(phone=user_phone)
-            now_user.now_capacity += new_img.size
-            now_user.save()
+                ALLFolder = models.Folder.objects.get(user_id=user_phone, name="ALL")
 
-            #print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+                NoneTag = models.Tag.objects.get(tag="None")
 
-            ALLFolder.cnt += 1
-            ALLFolder.total_size += new_img.size
-            ALLFolder.modify_time = datetime.datetime.now()
-            ALLFolder.save(force_update=True)
+                new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
+                                         modify_time=datetime.datetime.now(), size=now_size,
+                                         height=h, width=w, is_tag=False, is_face=False, folder_id=ALLFolder.pk,
+                                         tag_id=NoneTag.pk, user_id=user_phone)
 
-            #print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+                new_img.save()
+                new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
+                new_img.save()
 
-            now_img_name = str(new_img.fake_name) + "." + img_type
-            now_img_path = os.path.join(store_dir, now_img_name)
+                try:
+                    now_folder_cover = models.FolderCover.objects.get(folder_id=ALLFolder.pk)
+                except:
+                    now_folder_cover = models.FolderCover(folder_id=ALLFolder.pk, pic_id=new_img.pk)
+                finally:
+                    now_folder_cover.pic_id = new_img.pk
+                    now_folder_cover.save()
 
-            url = settings.MEDIA_URL + now_img_name
+                now_user = models.User.objects.get(phone=user_phone)
+                now_user.now_capacity += new_img.size
+                now_user.save()
 
-            os.rename(img_path, now_img_path)
+                # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+
+                ALLFolder.cnt += 1
+                ALLFolder.total_size += new_img.size
+                ALLFolder.modify_time = datetime.datetime.now()
+                ALLFolder.save(force_update=True)
+
+                # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
+
+                now_img_name = str(new_img.fake_name) + "." + img_type
+                now_img_path = os.path.join(store_dir, now_img_name)
+
+                url = settings.MEDIA_URL + now_img_name
+
+                os.rename(img_path, now_img_path)
+
+            except:  # 数据库加入失败，则不保留上传图片
+                os.remove(img_path)
 
             mutex_x.release()
 

@@ -4,7 +4,7 @@
 
 {% block css %}
 
-    <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.css" rel="stylesheet">
     <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
@@ -18,18 +18,42 @@
     <div id="loader-wrapper">
         <div id="loader"></div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+         aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">UPLOAD</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="file-loading">
+                        <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
+                               accept="image/*">
+                    </div>
+                    <div id="kartik-file-errors"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="padding: 0.5rem 3rem;">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="content" class="container" style="padding-top: 7rem;background: rgba(245,245,245,0.3)">
+        {% comment %}
         <div class="text-center">
-            <input id="select-img" type="file" class="file-loading" name="upload_img" multiple accept="image/*">
+            <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple accept="image/*">
         </div>
-        <div class="text-center">
-            <button id="uploadall-img" type="button" class="btn btn-lg btn-info btn-upload-3"><i
-                    class="fa fa-upload"></i> Upload
-            </button>
-                        <button id="deleteall-img" type="button" class="btn btn-lg btn-secondary btn-reset-3"><i
-                    class="fa fa-ban"></i> Clear
-            </button>
-        </div>
+        {% endcomment %}
+
+        <button type="button" class="upload-btn-solid-lg" data-toggle="modal" data-target="#launch-upload">
+            UPLOAD
+        </button>
+
+
     </div>
 {% endblock %}
 

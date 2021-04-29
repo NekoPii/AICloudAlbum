@@ -207,7 +207,7 @@
 }
 
 .krajee-default.file-preview-frame {
-    margin: 8px;
+    margin: 0.25rem;/*mjx*/
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     padding: 6px;
