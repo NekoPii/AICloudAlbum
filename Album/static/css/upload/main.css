@@ -1,14 +1,14 @@
-.upload_btn {
+#select-img {
     text-align: center;
-    margin: 0 auto;
+    margin: 1rem auto;
 }
 
-.browse_btn {
+#uploadall-img {
     text-align: center;
-    margin: 0 auto;
+    margin: 1rem;
 }
 
-.remove_btn {
+#deleteall-img {
     text-align: center;
-    margin: 0 auto;
+    margin: 1rem;
 }

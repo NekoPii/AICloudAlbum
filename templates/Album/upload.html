@@ -19,9 +19,17 @@
         <div id="loader"></div>
     </div>
     <div id="content" class="container" style="padding-top: 7rem;background: rgba(245,245,245,0.3)">
-        <h2>{{ file_path }}</h2>
-        <h2>{{ file_dir }}</h2>
-        <input id="upload-img" type="file" class="file-loading" name="upload_img" multiple>
+        <div class="text-center">
+            <input id="select-img" type="file" class="file-loading" name="upload_img" multiple accept="image/*">
+        </div>
+        <div class="text-center">
+            <button id="uploadall-img" type="button" class="btn btn-lg btn-info btn-upload-3"><i
+                    class="fa fa-upload"></i> Upload
+            </button>
+                        <button id="deleteall-img" type="button" class="btn btn-lg btn-secondary btn-reset-3"><i
+                    class="fa fa-ban"></i> Clear
+            </button>
+        </div>
     </div>
 {% endblock %}
 

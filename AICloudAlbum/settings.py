@@ -83,7 +83,8 @@ WSGI_APPLICATION = 'AICloudAlbum.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "aicloudalbumdb",
+        # 'NAME': "aicloudalbumdb",
+        'NAME': "aicloudalbumdb_test",  # 本地测试使用该数据库，不和服务器专用数据库混淆
         "USER": "lab415",
         "PASSWORD": "Lab441155",
         "PORT": 3306,
