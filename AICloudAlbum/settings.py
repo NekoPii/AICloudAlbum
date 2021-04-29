@@ -15,9 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECURE_CONTENT_TYPE_NOSNIFF=False
+SECURE_CONTENT_TYPE_NOSNIFF = False
 
 import mimetypes
+
 mimetypes.add_type('text/css', '.css')
 mimetypes.add_type('application/javascript', '.js')
 
@@ -30,8 +31,7 @@ SECRET_KEY = '#pbk6n0rcclnxtctv%#)wb&gujayk!+d@peo0c-)7fdaz0)=oo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AICloudAlbum.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -85,13 +84,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "aicloudalbumdb",
-        "USER":"lab415",
-        "PASSWORD":"Lab441155",
-        "PORT":3306,
-        "HOST":"101.132.28.19",
+        "USER": "lab415",
+        "PASSWORD": "Lab441155",
+        "PORT": 3306,
+        "HOST": "101.132.28.19",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -111,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -123,19 +120,21 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
-
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,"static"),
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
 ]
 
-#Captcha验证码设置
-CAPTCHA_IMAGE_SIZE=(85,55)
-CAPTCHA_LENGTH=4
+# Captcha验证码设置
+CAPTCHA_IMAGE_SIZE = (85, 55)
+CAPTCHA_LENGTH = 4
 
+# 上传文件路径
+MEDIA_URL = "/upload_imgs/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")

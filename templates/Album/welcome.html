@@ -28,8 +28,12 @@
                             <p class="p-heading p-large">Album is an intelligent album specializing in photo
                                 classification
                                 powered by Neutral Network </p>
-                            <a class="btn-solid-lg page-scroll" href="/login/" style="font-size: medium">LOGIN</a>
+                            {% ifequal request.session.is_login None %}
+                                <a class="btn-solid-lg page-scroll" href="/login/" style="font-size: medium">LOGIN</a>
+                            {% endifequal %}
+
                             {% ifequal request.session.is_login True %}
+                                <a class="btn-solid-lg page-scroll" href="/upload/" style="font-size: medium">UPLOAD</a>
                                 <a class="btn-solid-lg page-scroll" href="/loginout/"
                                    style="font-size: medium">LOGINOUT</a>
                             {% endifequal %}
