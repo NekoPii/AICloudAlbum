@@ -158,6 +158,7 @@ def welcome(request):
 
 def upload_index(request):
     if request.session.get("is_login", None):
+        testi=range(20)
         return render(request, "Album/upload.html", locals())
     else:
         return redirect("/login/")

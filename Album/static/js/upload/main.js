@@ -18,7 +18,7 @@ $(document).ready(function () {
         theme: "fas",
         //browseClass:"btn btn-primary btn-block",
         //language: 'zh',     // 设置中文，需要引入locales/zh.js文件
-        uploadUrl: '/upload_upload_asyn/',     // 上传路径
+        uploadUrl: '/upload_upload_asyn/',     // 上传路径 *****************************************
         maxFileSize: 0,     // 上传文件大小限制，触发 msgSizeTooLarge 提示
         previewFileType: "image",
         browseClass: "browser-btn-solid-lg",
