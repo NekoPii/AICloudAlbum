@@ -118,7 +118,7 @@ def signup(request):
                                                modify_time=datetime.datetime.now(),
                                                )
                 new_ini_folder.save()
-                new_ini_folder.fake_name=hash_code(str(new_ini_folder.pk),salt="neko_folder")
+                new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
                 new_ini_folder.save()
 
                 request.session["is_login"] = True
@@ -236,7 +236,7 @@ def upload_upload_syn(request):
 
                 except:  # 数据库加入失败，则不保留上传图片
                     os.remove(img_path)
-                    return HttpResponse(json.dumps({"status": False}))#data.response.status=false 表示当前发生传输错误
+                    return HttpResponse(json.dumps({"status": False}))  # data.response.status=false 表示当前发生传输错误
 
                 '''
                 if img_type in img_type_list:
@@ -276,7 +276,6 @@ def upload_upload_asyn(request):
         mutex_x.acquire()
         user_phone = request.session.get("phone")
         all_imgs = request.FILES.get("upload_img", None)
-        all_imgs_parm = request.POST.get("doc_uuid", None)
 
         if all_imgs:
             img_path = os.path.join(store_dir, all_imgs.name)
@@ -341,8 +340,12 @@ def upload_upload_asyn(request):
 
             except:  # 数据库加入失败，则不保留上传图片
                 os.remove(img_path)
+                mutex_x.release()
+                return HttpResponse(json.dumps({"status": False}))  # data.response.status=false 表示当前发生传输错误
 
             mutex_x.release()
+
+            '''
 
             initialPreview = []
 
@@ -362,9 +365,13 @@ def upload_upload_asyn(request):
                 "extra": {"doc_uuid": all_imgs_parm},
                 "key": all_imgs.name,
             }]
+            '''
 
-            return HttpResponse(json.dumps(
-                {"initialPreview": initialPreview, "initialPreviewConfig": initialPreviewConfig, "append": True}))
+            return HttpResponse(json.dumps
+                (
+                # {"initialPreview": initialPreview, "initialPreviewConfig": initialPreviewConfig, "append": True}
+                {"status": True})
+            )
         else:
             return HttpResponse(json.dumps({"status": False}))
     else:

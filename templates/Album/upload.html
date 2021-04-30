@@ -20,7 +20,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-         aria-hidden="true" data-backdrop="static">
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
         <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -29,7 +29,7 @@
                 <div class="modal-body">
                     <div class="file-loading">
                         <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
-                               accept="image/*">
+                               accept="image/*" data-browse-on-zone-click="true">
                     </div>
                     <div id="kartik-file-errors"></div>
                 </div>
