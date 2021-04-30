@@ -47,6 +47,7 @@ class Folder(models.Model):
     name = models.CharField(max_length=200, default='')
     cnt = models.IntegerField(default=0)
     total_size = models.FloatField(default=0)
+    fake_name=models.CharField(max_length=200,default="")
     create_time = models.DateTimeField()
     modify_time = models.DateTimeField()
 

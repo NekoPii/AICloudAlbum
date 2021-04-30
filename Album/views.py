@@ -115,7 +115,10 @@ def signup(request):
                 new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
                                                cnt=0, total_size=0.0,
                                                create_time=datetime.datetime.now(),
-                                               modify_time=datetime.datetime.now())
+                                               modify_time=datetime.datetime.now(),
+                                               )
+                new_ini_folder.save()
+                new_ini_folder.fake_name=hash_code(str(new_ini_folder.pk),salt="neko_folder")
                 new_ini_folder.save()
 
                 request.session["is_login"] = True
