@@ -1,0 +1,20 @@
+{% extends "Album/navbar.html" %}
+
+{% block title %}
+    <title>My Pics</title>
+{% endblock %}
+
+{% block css %}
+    <link href="/static/css/preload/main.css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+<div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/preload/main.js"></script>
+    <script src="/static/js/mypics/main.js"></script>
+{% endblock %}
