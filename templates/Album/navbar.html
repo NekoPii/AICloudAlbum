@@ -8,74 +8,88 @@
     <link href="/static/vendor/Semantic/semantic.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css" rel="stylesheet">
     {% block css %}{% endblock %}
+    <link href="/static/css/scrollbar.css" rel="stylesheet">
     <link href="/static/css/unicons.css" rel="stylesheet">
     <link href="/static/css/navbar.css" rel="stylesheet">
 
 </head>
-<body id="alpha" >
-<div class="ui sidebar left inverted vertical menu " style="background-color: rgb(187,187,187)">
-    <a class="item">
-      <i class="home icon"></i>
-      Home
+<body id="alpha">
+<div class="ui sidebar left inverted vertical menu " style="background-color:white;width: 15rem ">
+    <div style="height: 5rem">
+        <i class="large sidebar icon sidebar-button-side"
+           style="color: rgb(187,187,187);margin-top: 1.5rem;margin-left:2rem"></i>
+        <img src="/static/image/AIAlbum.svg" alt="alternative" style="width: 6rem;margin-top: 1rem">
+    </div>
+    <a class="item i1" style="color: rgb(187,187,187)">
+        <div><i class="large image icon" style="color: rgb(187,187,187)"></i>
+            My Pics
+        </div>
+
     </a>
-    <a class="item">
-      <i class="block layout icon"></i>
-      Topics
+    <a class="item i2" style="color: rgb(187,187,187)">
+        <div>
+            <i class="large tags icon" style="color: rgb(187,187,187)"></i>
+            AI Tags
+        </div>
     </a>
-    <a class="item">
-      <i class="smile icon"></i>
-      Friends
+    <a class="item i3" style="color: rgb(187,187,187)">
+        <div>
+            <i class="large tags icon" style="color: rgb(187,187,187)"></i>
+            Face Tags
+        </div>
     </a>
-    <a class="item">
-      <i class="calendar icon"></i>
-      History
+    <a class="item i4" style="color: rgb(187,187,187)">
+        <div>
+            <i class="large closed captioning outline icon" style="color: rgb(187,187,187)"></i>
+            Wonderful Moment
+        </div>
     </a>
 </div>
 <div class="pusher">
-<!-- Navbar -->
-<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top ">
-    <!-- Text Logo - Use this if you don't have a graphic logo -->
-    <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
-    <!-- Image Logo -->
-    {% ifequal request.session.is_login None %}
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
-    {% endifequal %}
-    {% ifequal request.session.is_login True %}
-        <a class="item sidebar-button">
-            <i class="sidebar icon" style="color:rgb(187,187,187)"></i>
-        </a>
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
-        <form action="/search/" method="post" id="searchForm" style="width: auto">
-            <div class="ui left icon input" style="font-size: 13px ;width: 500px;">
-                <input type="text" placeholder="搜索Album" style="background-color: rgb(250,250,250)">
-                <i class="search icon"></i>
-            </div>
-        </form>
-    {% endifequal %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top " style="height: 50px">
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
+        <!-- Image Logo -->
+        {% ifequal request.session.is_login None %}
+            <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
+        {% endifequal %}
+        {% ifequal request.session.is_login True %}
+            <a class="item sidebar-button-nav">
+                <i class=" large sidebar icon" style="color:rgb(187,187,187)"></i>
+            </a>
+            <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
+            <form action="/search/" method="post" id="searchForm" style="width: auto; ">
+                <div class="ui left icon input" style="font-size: 13px ;width: 500px;margin-left: 10rem">
+                    <input type="text" placeholder="搜索Album" style="background-color: rgb(250,250,250);">
+                    <i class="search icon"></i>
+                </div>
+            </form>
+        {% endifequal %}
 
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav ml-auto">
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
 
-            {% ifequal request.session.is_login True %}
+                {% ifequal request.session.is_login True %}
 
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#intro">INTRO</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+
+                {% endifequal %}
+
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#intro">INTRO</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link page-scroll" href="#contact">CONTACT</a>
-
-            {% endifequal %}
-
-            </li>
-        </ul>
-    </div>
-</nav> <!-- end of navbar -->
-<!-- end of navbar -->
-{% block main %}{% endblock %}
+            </ul>
+        </div>
+    </nav> <!-- end of navbar -->
+    <!-- end of navbar -->
+    {% block main %}{% endblock %}
 </div>
 
 <script src="/static/vendor/jquery/jquery.min.js"></script>

@@ -48,22 +48,33 @@
             $(".navbar-collapse").collapse('hide');
     });
 
-    $('.item.sidebar-button').on("click", function (event) {
+    $('.item.sidebar-button-nav').on("click", function (event) {
 
         $('.ui.sidebar').sidebar({
                 context: 'body',
-                //dimPage: false,
-                scrollLock:true,
+                dimPage: false,
+                scrollLock: true,
+                transition: 'overlay',
                 onVisible: function () {
                     $('#alpha').addClass('pushable');
                 },
                 onShow: function () {
+                    var mo = function (e) {
+                        passive: false;
+                    };
+                    document.body.style.overflow = 'hidden';
+                    document.addEventListener("touchmove", mo, false);
                     //$('#alpha').removeClass('pushable');
                 },
-                onHide:function (){
+                onHide: function () {
                     $('#alpha').addClass('pushable');
                 },
                 onHidden: function () {
+                    var mo = function (e) {
+                        passive: false
+                    };
+                    document.body.style.overflow = '';//出现滚动条
+                    document.removeEventListener("touchmove", mo, false);
                     $('#alpha').removeClass('pushable');
                 }
             }
@@ -72,6 +83,36 @@
 
         // $('#alpha').removeClass('pushable');
     });
+    $('.sidebar-button-side').on("click", function (event) {
+        $('.ui.sidebar').sidebar('hide');
+
+    })
+
+    $(".item.i1").hover(function (){
+        $(".item.i1").css('background-color','rgb(245,245,245)');
+    },
+        function (){
+        $(".item.i1").css('background-color','white');
+    })
+    $(".item.i2").hover(function (){
+        $(".item.i2").css('background-color','rgb(245,245,245)');
+    },
+        function (){
+        $(".item.i2").css('background-color','white');
+    })
+    $(".item.i3").hover(function (){
+        $(".item.i3").css('background-color','rgb(245,245,245)');
+    },
+        function (){
+        $(".item.i3").css('background-color','white');
+    })
+    $(".item.i4").hover(function (){
+        $(".item.i4").css('background-color','rgb(245,245,245)');
+    },
+        function (){
+        $(".item.i4").css('background-color','white');
+    })
+
 
 
 })(jQuery);
