@@ -158,6 +158,23 @@ def welcome(request):
 
 def mypics_index(request):
     if request.session.get("is_login", None):
+        name=request.session['name']
+        phone=request.session['phone']
+        user=models.User.objects.get(phone=phone)
+        pics=user.picture_set.all()
+        id=0
+        for p in pics:
+            name=p.fake_name+'.'+p.type
+            dir=os.path.join('/upload_imgs/',name)
+            p.fake_name=dir
+            p.id=str(id)
+            id+=1
+        count=pics.count()
+        capacity_now=int(user.now_capacity)
+
+
+
+
         return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
