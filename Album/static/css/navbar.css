@@ -141,6 +141,14 @@
 
 }
 
+#left_bar .item {
+    color: rgb(187, 187, 187);
+}
+
+#left_bar .item:hover {
+    background-color: rgb(245, 245, 245);
+}
+
 @media (min-width: 768px) {
 
     /* General Styles */

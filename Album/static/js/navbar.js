@@ -32,14 +32,17 @@
     $('#search_1').bind('keyup', function (event) {
 
         if (event.keyCode == "13") {
-
             //回车执行查询
-
             console.log('click');
-            ;
-
         }
+    });
 
+    $("#left_bar .item").on("click",function (){
+        let lis= $("#left_bar .item");
+        for(let i=0;i<lis.length;++i){
+            lis[i].remove("active");
+        }
+        //lis.setAttribute("class","active");
     });
 
     // closes the responsive menu on menu item click
@@ -86,31 +89,6 @@
     $('.sidebar-button-side').on("click", function (event) {
         $('.ui.sidebar').sidebar('hide');
 
-    })
-
-    $(".item.i1").hover(function (){
-        $(".item.i1").css('background-color','rgb(245,245,245)');
-    },
-        function (){
-        $(".item.i1").css('background-color','white');
-    })
-    $(".item.i2").hover(function (){
-        $(".item.i2").css('background-color','rgb(245,245,245)');
-    },
-        function (){
-        $(".item.i2").css('background-color','white');
-    })
-    $(".item.i3").hover(function (){
-        $(".item.i3").css('background-color','rgb(245,245,245)');
-    },
-        function (){
-        $(".item.i3").css('background-color','white');
-    })
-    $(".item.i4").hover(function (){
-        $(".item.i4").css('background-color','rgb(245,245,245)');
-    },
-        function (){
-        $(".item.i4").css('background-color','white');
     })
 
 

@@ -56,6 +56,17 @@
             <h2>{{ i }}</h2>
         {% endfor %}
 
+        <form action="/download/" method="post">
+            <button class="upload-modal-btn-solid-lg" name="img_name" value="176" type="submit">DOWNLOAD</button>
+        </form>
+
+        <form action="/download_select/" method="post">
+            <input type="checkbox" value="176" name="img_name"> 176img<br>
+            <input type="checkbox" value="180" name="img_name"> 180img<br>
+            <input type="checkbox" value="181" name="img_name"> 181img<br>
+            <button class="upload-modal-btn-solid-lg" type="submit">DOWNLOAD</button>
+        </form>
+
     </div>
 {% endblock %}
 

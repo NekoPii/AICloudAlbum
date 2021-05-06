@@ -14,5 +14,7 @@ urlpatterns = [
     path("upload/", views.upload_index, name="upload_index"),
     path("upload_upload_syn/", views.upload_upload_syn, name="upload_upload_syn"),#同步上传
     path("upload_upload_asyn/", views.upload_upload_asyn, name="upload_upload_asyn"),#异步上传
-    path("mypics/",views.mypics_index,name="mypics")
+    path("mypics/",views.mypics_index,name="mypics"),
+    path("download/",views.download,name="download"),
+    path("download_select/",views.download_select,name="download_select"),
 ]
