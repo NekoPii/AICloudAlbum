@@ -412,37 +412,49 @@ def upload_upload_asyn(request):
 def download(request):
     if request.method == "POST":
         id = request.POST["img_name"]
-        now_pic = models.Picture.objects.get(pk=id)
-        path = os.path.join(MEDIA_ROOT, now_pic.fake_name + "." + now_pic.type)
-        with open(path, "rb") as f:
-            img = f.read()
-        img_name = now_pic.name + "." + now_pic.type
-        response = HttpResponse(img)
-        response["Content-Type"] = "application/octet-stream"
-        response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
-        return response
-    return upload_index(request)
+        try:
+            now_pic = models.Picture.objects.get(fake_name=id)
+            path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+            with open(path, "rb") as f:
+                img = f.read()
+            img_name = now_pic.name + "." + now_pic.type
+            response = HttpResponse(img)
+            response["Content-Type"] = "application/octet-stream"
+            response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
+            return response
+        except:
+            return redirect("/upload/")
+    return redirect("/upload/")
 
 
 @csrf_exempt
 def download_select(request):
     chunk_size = 8192
+
     if request.method == "POST":
         check_list = request.POST.getlist("img_name")
         if check_list:
+            cnt = 0
             temp=tempfile.TemporaryFile()
             img_zip=zipfile.ZipFile(temp,"w",zipfile.ZIP_DEFLATED)
             for now in check_list:
-                now_pic = models.Picture.objects.get(pk=now)
-                path = os.path.join(MEDIA_ROOT, now_pic.fake_name + "." + now_pic.type)
-                img_name = now_pic.name + "." + now_pic.type
-                img_zip.write(path,img_name)
+                try:
+                    now_pic = models.Picture.objects.get(pk=now)
+                    path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                    img_name = now_pic.name + "." + now_pic.type
+                    img_zip.write(path,img_name)
+                    cnt+=1
+                except:
+                    continue
             img_zip.close()
             wrapper=FileWrapper(temp,chunk_size)
             size=temp.tell()
             temp.seek(0)
-            response = HttpResponse(wrapper,content_type="application/zip")
-            response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path("imgSet.zip"))
-            response['Content-Length'] = size
-            return response
-    return upload_index(request)
+            if cnt>0:
+                response = HttpResponse(wrapper,content_type="application/zip")
+                response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(time.strftime("%Y%m%d-%H%M%S-")+"AlbumImages.zip"))
+                response['Content-Length'] = size
+                return response
+            else:
+                return redirect("/upload/")
+    return redirect("/upload/")
