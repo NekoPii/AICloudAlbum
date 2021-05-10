@@ -20,30 +20,25 @@
                     <img src="/static/image/AIAlbum.svg" width="200" height="70">
                     <h5 style="font-family:'SimHei';font-weight: 700;font-size: 12px;color:#757c80; ">让收藏变得更有乐趣</h5>
                 </div>
-                <form action="/login/" method="post" id="loginForm">
+                <form id="loginForm">
                     {% csrf_token %}
                     <div class="form-group">
                         {{ login_form.phone }}
                         <label class="label-control" for="login_phone"><i
                                 class="uil uil-mobile-android-alt"></i>Phone</label>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
                         {{ login_form.pwd }}
                         <label class="label-control" for="login_pwd"><i class="uil uil-padlock"></i>Password</label>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group" style="margin-bottom: 1rem;height: 4rem;">
                         {{ login_form.captcha }}
                         <label class="label-control" for="login_captcha_1"><i
                                 class="uil uil-arrow-down-right"></i>Captcha</label>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-message" style="margin-bottom: 1rem;height: 1rem">
-                        <div id="login_msg" class="h3 text-center hidden">{{ message }}</div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="form-control-submit-button" tabindex="4">Login</button>
+                        <button type="button" id="login_btn" class="form-control-submit-button" tabindex="4">Login
+                        </button>
                     </div>
                     <div class="form-group">
                         <button type="button" class="form-control-signup-button"

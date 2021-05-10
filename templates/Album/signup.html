@@ -2,7 +2,7 @@
 
 {% block title %}
     <title>Signup</title>
- {% endblock %}
+{% endblock %}
 
 {% block css %}
     <link href="/static/css/login/styles.css" rel="stylesheet">
@@ -22,34 +22,27 @@
                     <img src="/static/image/AIAlbum.svg" width="200" height="70">
                     <h5 style="font-family:'SimHei';font-weight: 700;font-size: 12px;color:#757c80; ">让收藏变得更有乐趣</h5>
                 </div>
-                <form action="/signup/" method="post" id="signupForm" data-focus="false">
+                <form id="signupForm" data-focus="false">
                     {% csrf_token %}
                     <div class="form-group">
                         {{ signup_form.phone }}
                         <label class="label-control" for="signup_phone"><i
                                 class="uil uil-mobile-android-alt"></i>Phone</label>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
                         {{ signup_form.name }}
                         <label class="label-control" for="signup_name"><i class="uil uil-user"></i>Name</label>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
                         {{ signup_form.pwd }}
                         <label class="label-control" for="signup_pwd"><i class="uil uil-padlock"></i>Password</label>
-                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group" style="margin-bottom: 1.5rem">
                         {{ signup_form.re_pwd }}
-                        <label class="label-control" for="re_signup_pwd"><i class="uil uil-padlock"></i>Password</label>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-message" style="margin-bottom: 1rem;height: 1rem">
-                        <div id="signup_msg" class="h3 text-center hidden">{{ message }}</div>
+                        <label class="label-control" for="re_signup_pwd"><i class="uil uil-padlock"></i>Re-Password</label>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="form-control-submit-button" tabindex="5">Signup</button>
+                        <button type="button" id="signup_btn" class="form-control-submit-button" tabindex="5">Signup</button>
                     </div>
                     <div class="form-group">
                         <button type="button" class="form-control-signup-button"

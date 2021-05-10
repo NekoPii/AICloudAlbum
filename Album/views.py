@@ -62,6 +62,7 @@ def login(request):
         return redirect("/")
 
     if request.method == "POST":
+        res = {"loginIn": None, "message": None, "error_type": None}
         login_form = LoginForm(request.POST)
 
         if login_form.is_valid():
@@ -74,18 +75,18 @@ def login(request):
                     request.session["is_login"] = True
                     request.session["phone"] = user.phone
                     request.session["name"] = user.name
-                    return redirect("/")
+                    res["loginIn"] = "true"
+                    res["message"] = "Login Successfully 🌸 ~"
+                    return HttpResponse(json.dumps(res))
                 else:
-                    message = "密码不正确!"
+                    res["loginIn"] = "false"
+                    res["message"] = "Incorrect Password!"
+                    res["error_type"] = "pwd"
             except:
-                message = "该用户不存在!"
-        else:
-            if login_form.has_error("phone"):
-                message = "请输入正确的手机号!"
-            else:
-                message = "请输入正确的验证码!"
-
-        return render(request, "Album/login.html", locals())
+                res["loginIn"] = "false"
+                res["message"] = "User does not exist!"
+                res["error_type"] = "phone"
+        return HttpResponse(json.dumps(res))
     login_form = LoginForm()
     return render(request, "Album/login.html", locals())
 
@@ -95,8 +96,8 @@ def signup(request):
         return redirect("/")
 
     if request.method == "POST":
+        res = {"signup": None, "message": None, "error_type": None}
         signup_form = SignupForm(request.POST)
-        message = "请输入正确的手机号!"
         if signup_form.is_valid():
             phone = signup_form.cleaned_data["phone"]
             name = signup_form.cleaned_data["name"]
@@ -105,13 +106,16 @@ def signup(request):
 
             is_same_phone = models.User.objects.filter(phone=phone)
             if is_same_phone:
-                message = "手机号已注册!"
-                return render(request, "Album/signup.html", locals())
-
+                res["signup"] = "false"
+                res["error_type"]="phone"
+                res["message"] = "Phone number has been registered !"
+                return HttpResponse(json.dumps(res))
             else:
                 if pwd != re_pwd:
-                    message = "两次输入的密码不同!"
-                    return render(request, "Album/signup.html", locals())
+                    res["signup"] = "false"
+                    res["error_type"] = "re_pwd"
+                    res["message"] = "Two passwords are Inconsistent !"
+                    return HttpResponse(json.dumps(res))
 
                 new_user = models.User(name=name, phone=phone, pwd=hash_code(pwd) + "-" + pwd,
                                        max_capacity=getFreeDiskSize())
@@ -130,7 +134,9 @@ def signup(request):
                 request.session["phone"] = new_user.phone
                 request.session["name"] = new_user.name
 
-                return redirect("/")
+                res["signup"] = "true"
+                res["message"] = "Signup Successfully 🌸 ~"
+                return HttpResponse(json.dumps(res))
 
     signup_form = SignupForm()
     return render(request, "Album/signup.html", locals())

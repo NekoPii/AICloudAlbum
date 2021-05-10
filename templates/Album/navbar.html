@@ -8,6 +8,7 @@
     <link href="/static/vendor/Semantic/semantic.css" rel="stylesheet">
     <link href="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css" rel="stylesheet">
     {% block css %}{% endblock %}
+    <link href="/static/vendor/toastr/toastr.min.css" rel="stylesheet">
     <link href="/static/css/scrollbar.css" rel="stylesheet">
     <link href="/static/css/unicons.css" rel="stylesheet">
     <link href="/static/css/navbar.css" rel="stylesheet">
@@ -87,6 +88,7 @@
                     </li>
                     <li class="nav-item">
                     <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                    <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
 
                 {% endifequal %}
 
@@ -104,8 +106,7 @@
 <script src="/static/vendor/bootstrap-4.6.0/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 {% block js %}{% endblock %}
-
-
+<script src="/static/vendor/toastr/toastr.min.js"></script>
 <script src="/static/js/navbar.js"></script>
 
 </body>
