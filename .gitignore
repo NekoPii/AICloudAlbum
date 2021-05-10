@@ -1,3 +1,5 @@
 /.idea/
 /build/
 __pycache__
+/Album/migrations/
+/upload_imgs/

@@ -163,22 +163,19 @@ def welcome(request):
 
 def mypics_index(request):
     if request.session.get("is_login", None):
-        name=request.session['name']
-        phone=request.session['phone']
-        user=models.User.objects.get(phone=phone)
-        pics=user.picture_set.all()
-        id=0
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        pics = user.picture_set.all()
+        id = 0
         for p in pics:
-            name=p.fake_name+'.'+p.type
-            dir=os.path.join('/upload_imgs/',name)
-            p.fake_name=dir
-            p.id=str(id)
-            id+=1
-        count=pics.count()
-        capacity_now=int(user.now_capacity)
-
-
-
+            name = p.fake_name + '.' + p.type
+            dir = os.path.join('/upload_imgs/', name)
+            p.fake_name = dir
+            p.id = str(id)
+            id += 1
+        count = pics.count()
+        capacity_now = int(user.now_capacity)
 
         return render(request, "Album/mypics.html", locals())
     else:
@@ -435,24 +432,25 @@ def download_select(request):
         check_list = request.POST.getlist("img_name")
         if check_list:
             cnt = 0
-            temp=tempfile.TemporaryFile()
-            img_zip=zipfile.ZipFile(temp,"w",zipfile.ZIP_DEFLATED)
+            temp = tempfile.TemporaryFile()
+            img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
             for now in check_list:
                 try:
                     now_pic = models.Picture.objects.get(pk=now)
                     path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                     img_name = now_pic.name + "." + now_pic.type
-                    img_zip.write(path,img_name)
-                    cnt+=1
+                    img_zip.write(path, img_name)
+                    cnt += 1
                 except:
                     continue
             img_zip.close()
-            wrapper=FileWrapper(temp,chunk_size)
-            size=temp.tell()
+            wrapper = FileWrapper(temp, chunk_size)
+            size = temp.tell()
             temp.seek(0)
-            if cnt>0:
-                response = HttpResponse(wrapper,content_type="application/zip")
-                response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(time.strftime("%Y%m%d-%H%M%S-")+"AlbumImages.zip"))
+            if cnt > 0:
+                response = HttpResponse(wrapper, content_type="application/zip")
+                response["Content-Disposition"] = "attachment;filename={}".format(
+                    escape_uri_path(time.strftime("%Y%m%d-%H%M%S-") + "AlbumImages.zip"))
                 response['Content-Length'] = size
                 return response
             else:
