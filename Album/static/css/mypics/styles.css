@@ -22,6 +22,10 @@
     background-size: cover;
 }
 
+.choose_model_img{
+    cursor: pointer;
+}
+
 .btn-local0 {
     display: flex;
     flex-direction: column;
