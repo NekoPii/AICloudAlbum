@@ -107,7 +107,7 @@ def signup(request):
             is_same_phone = models.User.objects.filter(phone=phone)
             if is_same_phone:
                 res["signup"] = "false"
-                res["error_type"]="phone"
+                res["error_type"] = "phone"
                 res["message"] = "Phone number has been registered !"
                 return HttpResponse(json.dumps(res))
             else:
@@ -416,7 +416,7 @@ def download(request):
     if request.method == "POST":
         id = request.POST["img_name"]
         try:
-            now_pic = models.Picture.objects.get(fake_name=id)
+            now_pic = models.Picture.objects.get(pk=id)
             path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
             with open(path, "rb") as f:
                 img = f.read()
@@ -424,10 +424,13 @@ def download(request):
             response = HttpResponse(img)
             response["Content-Type"] = "application/octet-stream"
             response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
+            response["download_status"] = "true"
             return response
         except:
-            return redirect("/upload/")
-    return redirect("/upload/")
+            response = HttpResponse()
+            response["download_status"] = "false"
+            return response
+    return render(request, "Album/upload.html", locals())
 
 
 @csrf_exempt

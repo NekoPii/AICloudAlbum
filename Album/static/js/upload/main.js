@@ -1,6 +1,22 @@
 var asyn_cnt = 0;
 var syn_cnt = 0;
+
 $(document).ready(function () {
+    toastr.options = {
+        "closeButton": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "showDuration": "100",
+        "hideDuration": "1000",
+        "timeOut": "2500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
     var aryFiles = Array();
     var GetCount = function () {
         var cnt = syn_cnt;
@@ -276,4 +292,31 @@ $("#modal_close").on("click", function () {
     $('#upload-input').fileinput("clear");
     asyn_cnt = 0;
     syn_cnt = 0;
+});
+
+$("#download_one").click(function () {
+    var nowinput = $(".download_input").prop("outerHTML");
+    $.ajax({
+        url: "/download/",
+        type: "POST",
+        data: $("#downloadOneForm").serialize(),
+        success: function (response, status, request) {
+            console.log(request.getResponseHeader("download_status"))
+            if (request.getResponseHeader("download_status") == "false") {
+                toastr.warning("Image download failed !")
+            } else if (request.getResponseHeader("download_status") == "true") {
+                var disp = request.getResponseHeader("Content-Disposition");
+                if (disp && disp.search("attachment") != -1) {
+                    toastr.success("Download will start right away ~")
+                    var form = $("<form action='/download/' method='post'></form>");
+                    $("body").append(form);
+                    form.append(nowinput);
+                    form.submit();
+                }
+            }
+        },
+        error: function () {
+            alert("error");
+        }
+    });
 });
