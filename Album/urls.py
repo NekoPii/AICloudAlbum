@@ -11,7 +11,6 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("loginout/", views.loginout, name="loginout"),
     path("ajax_val/", views.ajax_val, name="ajax_val"),  # 验证码Ajax获取
-    path("upload/", views.upload_index, name="upload_index"),
     path("upload_upload_syn/", views.upload_upload_syn, name="upload_upload_syn"),#同步上传
     path("upload_upload_asyn/", views.upload_upload_asyn, name="upload_upload_asyn"),#异步上传
     path("mypics/",views.mypics_index,name="mypics"),

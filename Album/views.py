@@ -187,15 +187,6 @@ def mypics_index(request):
     else:
         return redirect("/login/")
 
-
-def upload_index(request):
-    if request.session.get("is_login", None):
-        testi = range(20)
-        return render(request, "Album/upload.html", locals())
-    else:
-        return redirect("/login/")
-
-
 @csrf_exempt
 def upload_upload_syn(request):
     if request.session.get("is_login"):
