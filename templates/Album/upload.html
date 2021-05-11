@@ -52,19 +52,21 @@
         <button type="button" class="upload-modal-btn-solid-lg" data-toggle="modal" data-target="#launch-upload">
             <i class="uil uil-image-upload"></i>&nbsp;&nbsp;UPLOAD
         </button>
-        {% for i in testi %}
-            <h2>{{ i }}</h2>
-        {% endfor %}
-
-        <form id="downloadOneForm">
-            <input value="210" class="download_input" type="hidden" name="img_name">
-            <button id="download_one" class="upload-modal-btn-solid-lg" type="button">DOWNLOAD</button>
+        <br><br><br>
+        <form class="downloadOneForm">
+            <input class="download_input" value="213" type="hidden" name="img_name">
+            <button class="download_one upload-modal-btn-solid-lg" type="button">DOWNLOAD213</button>
         </form>
-
-        <form action="/download_select/" method="post" id="downloadFewForm">
-            <input type="checkbox" value="210" name="img_name"> 210img<br>
-            <input type="checkbox" value="211" name="img_name"> 211img<br>
-            <input type="checkbox" value="212" name="img_name"> 212img<br>
+        <br>
+        <form class="downloadOneForm">
+            <input class="download_input" value="214" type="hidden" name="img_name">
+            <button class="download_one upload-modal-btn-solid-lg" type="button">DOWNLOAD214</button>
+        </form>
+        <br>
+        <form id="downloadFewForm">
+            <input class="download_select" type="checkbox" value="212" name="img_name"> 212img<br>
+            <input class="download_select" type="checkbox" value="213" name="img_name"> 213img<br>
+            <input class="download_select" type="checkbox" value="214" name="img_name"> 214img<br>
             <button id="download_few" class="upload-modal-btn-solid-lg" type="button">DOWNLOAD</button>
         </form>
 
@@ -79,6 +81,7 @@
     <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js"></script>
     <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js"></script>
     <script src="/static/js/upload/main.js"></script>
+    <script src="/static/js/download/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 
 {% endblock %}

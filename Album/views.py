@@ -168,20 +168,20 @@ def welcome(request):
 
 
 def mypics_index(request):
-    if request.session.get("is_login", None):
+    if request.session.get("is_login"):
         name = request.session['name']
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         pics = user.picture_set.all()
-        id = 0
+        cnt=1
         for p in pics:
-            name = p.fake_name + '.' + p.type
-            dir = os.path.join('/upload_imgs/', name)
-            p.fake_name = dir
-            p.id = str(id)
-            id += 1
+            p.size = round(p.size, 2)
+            p.path = os.path.join('/upload_imgs/',p.fake_name + '.' + p.type)
+            p.id=cnt
+            cnt+=1
+
         count = pics.count()
-        capacity_now = int(user.now_capacity)
+        capacity_now = round(user.now_capacity,2)
 
         return render(request, "Album/mypics.html", locals())
     else:
@@ -414,9 +414,9 @@ def upload_upload_asyn(request):
 @csrf_exempt
 def download(request):
     if request.method == "POST":
-        id = request.POST["img_name"]
+        fake_name = request.POST["img_name"]
         try:
-            now_pic = models.Picture.objects.get(pk=id)
+            now_pic = models.Picture.objects.get(fake_name=fake_name)
             path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
             with open(path, "rb") as f:
                 img = f.read()
@@ -435,17 +435,17 @@ def download(request):
 
 @csrf_exempt
 def download_select(request):
-    chunk_size = 8192
-
     if request.method == "POST":
+        chunk_size = 8192
         check_list = request.POST.getlist("img_name")
+        total_cnt = len(check_list)
         if check_list:
             cnt = 0
             temp = tempfile.TemporaryFile()
             img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
             for now in check_list:
                 try:
-                    now_pic = models.Picture.objects.get(pk=now)
+                    now_pic = models.Picture.objects.get(fake_name=now)
                     path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                     img_name = now_pic.name + "." + now_pic.type
                     img_zip.write(path, img_name)
@@ -461,7 +461,20 @@ def download_select(request):
                 response["Content-Disposition"] = "attachment;filename={}".format(
                     escape_uri_path(time.strftime("%Y%m%d-%H%M%S-") + "AlbumImages.zip"))
                 response['Content-Length'] = size
+                response["download_status"] = "true"
+                response["download_cnt"] = cnt
+                response["select_cnt"] = total_cnt
                 return response
             else:
-                return redirect("/upload/")
-    return redirect("/upload/")
+                response = HttpResponse()
+                response["download_status"] = "false"
+                response["download_cnt"] = 0
+                response["select_cnt"] = total_cnt
+                return response
+        else:
+            response = HttpResponse()
+            response["download_status"] = "false"
+            response["download_cnt"] = 0
+            response["select_cnt"] = total_cnt
+            return response
+    return render(request, "Album/upload.html", locals())

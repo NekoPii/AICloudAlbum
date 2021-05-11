@@ -293,30 +293,3 @@ $("#modal_close").on("click", function () {
     asyn_cnt = 0;
     syn_cnt = 0;
 });
-
-$("#download_one").click(function () {
-    var nowinput = $(".download_input").prop("outerHTML");
-    $.ajax({
-        url: "/download/",
-        type: "POST",
-        data: $("#downloadOneForm").serialize(),
-        success: function (response, status, request) {
-            console.log(request.getResponseHeader("download_status"))
-            if (request.getResponseHeader("download_status") == "false") {
-                toastr.warning("Image download failed !")
-            } else if (request.getResponseHeader("download_status") == "true") {
-                var disp = request.getResponseHeader("Content-Disposition");
-                if (disp && disp.search("attachment") != -1) {
-                    toastr.success("Download will start right away ~")
-                    var form = $("<form action='/download/' method='post'></form>");
-                    $("body").append(form);
-                    form.append(nowinput);
-                    form.submit();
-                }
-            }
-        },
-        error: function () {
-            alert("error");
-        }
-    });
-});

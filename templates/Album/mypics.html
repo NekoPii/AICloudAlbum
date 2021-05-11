@@ -9,6 +9,7 @@
     <link href="/static/css/mypics/swiper.css" rel="stylesheet">
     <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
+    <link href="/static/css/download/main.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -43,19 +44,35 @@
                     <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
+            <div>
+                <button id="change_model" class="btn-solid-reg" type="button" value="select" style="display:inline-block">SELECT
+                </button>
+                <button id="download_few" class="btn-solid-reg" type="button" style="display: none;">Download&nbsp;<span id="select_cnt" style="font-weight: bold;">0</span> Selected
+                </button>
+                <button id="select_all" class="btn-solid-reg" type="button" value="zero" style="display: none;">SELECT ALL</button>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid">
+                        <form id="downloadFewForm">
+                            {% for p in pics %}
+                                <div class="element-item development" >
+                                    <div>
+                                        <a class="popup-with-move-anim" href='#{{ p.id }}'>
+                                            <div class="element-item-overlay"><span>{{ p.name }} </span></div>
+                                            <div class="zoomImage11" style="background-image: url({{ p.path }})"></div>
+                                        </a>
+                                        <a class="choose_model_img">
+                                            <div class="zoomImage11" style="background-image: url({{ p.path }})"></div>
+                                            <input class="download_select" type="checkbox"
+                                                   style="display: none"
+                                                   value={{ p.fake_name }} name="img_name">
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
 
-                        {% for p in pics %}
-                            <div class="element-item development">
-                                <a class="popup-with-move-anim" href='#{{ p.id }}'>
-                                    <div class="element-item-overlay"><span>{{ p.name }} </span></div>
-                                    <div class="zoomImage53" style="background-image: url({{ p.fake_name }})"></div>
-                                </a>
-                            </div>
-                        {% endfor %}
-
+                        </form>
 
                     </div> <!-- end of grid -->
                     <!-- end of filter -->
@@ -73,20 +90,25 @@
             <div class="row">
                 <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
                 <div class="col-lg-8">
-                    <img class="img-fluid" src={{ p.fake_name }} alt="alternative">
+                    <img class="img-fluid" src={{ p.path }} alt={{ p.name }}>
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0">
                     <h3>{{ p.name }}</h3>
                     <hr class="line-heading">
-                    <b>Upload Time:</b>
-                    <p> {{ p.upload_time }}</p>
-                    <b>Size:</b>
-                    <p> {{ p.size }}MB</p>
-                    <b>Width*Height</b>
-                    <p> {{ p.height }}*{{ p.width }}</p>
-                    <div class="btn-local1">
-                        <a class="btn-solid-reg" href='{{ p.fake_name }}' download>DownLoad</a>
-                        <a class="btn-outline-reg mfp-close as-button" href="#projects">BACK</a>
+                    <h4>Upload Time:</h4>
+                    <b> {{ p.upload_time }}</b>
+                    <h4>Size:</h4>
+                    <b> {{ p.size }}&nbsp;MB</b>
+                    <h4>Width:</h4>
+                    <b> {{ p.height }}&nbsp;px</b>
+                    <h4>Height:</h4>
+                    <b>{{ p.width }}&nbsp;px</b>
+                    <div class="btn-local1" style="margin-top: 2rem;">
+                        <form class="downloadOneForm">
+                            <input class="download_input" value={{ p.fake_name }} type="hidden" name="img_name">
+                            <button class="download_one btn-solid-reg" type="button">DownLoad</button>
+                        </form>
+                        <a class="btn-outline-reg mfp-close as-button">BACK</a>
                     </div>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -105,5 +127,6 @@
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
     <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
     <script src="/static/js/mypics/main.js"></script>
+    <script src="/static/js/download/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 {% endblock %}
