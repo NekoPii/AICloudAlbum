@@ -97,7 +97,7 @@
 
 
     $("#login_btn").click(function () {
-            var phone_reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+            var phone_reg = /^[1][3,4,5,7,8,9][0-9]{9}|root$/;
             var phone = $("#login_phone").val();
             var pwd = $("#login_pwd").val();
             var captcha = $("#login_captcha_1").val();
@@ -130,7 +130,6 @@
                             'hashkey': $('#login_captcha_0').val()
                         }
                         $.getJSON('/ajax_val', json_data, function (data) {
-                            console.log(data);
                             if (data['status'] == 1) {
                                 $.ajax({
                                     url: "/login/",
@@ -141,6 +140,7 @@
                                         if (data.loginIn == "true") {
                                             toastr.success(data.message)
                                             setTimeout(function () {
+                                                alert(data.code)
                                                 location.href = "/";
                                             }, 500);
                                         }
@@ -206,7 +206,7 @@
     );
 
     $("#signup_btn").click(function () {
-        var phone_reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+        var phone_reg = /^[1][3,4,5,7,8,9][0-9]{9}|root$/;
         var phone = $("#signup_phone").val();
         var name = $("#signup_name").val();
         var pwd = $("#signup_pwd").val();
@@ -232,7 +232,6 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-
         if (phone && phone_reg.test(phone)) {
             if (name != null && name != "") {
                 if (pwd != null && pwd != "") {

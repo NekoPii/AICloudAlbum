@@ -2,4 +2,8 @@
 /build/
 __pycache__
 /Album/migrations/
+
+!/upload_imgs/f0375ba70ca4829e22b471c2f64ebc74282fe55eb0373f62b5d343391f232ab9.png
+
 /upload_imgs/
+

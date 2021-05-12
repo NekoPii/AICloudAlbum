@@ -1,37 +1,39 @@
 var current_page = 1;
+var now_folder_fake_name=$("#now_folder_fake_name").val()
 (function ($) {
     "use strict";
 
     var pics;
     var pics_count;
 
-
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
+    $("#download_few").css("display", "none");
     $("#delete_few").css("display", "none");
     $("#select_all").css("display", "none");
     $(".download_select").prop("checked", false);
 
 
-    $.getJSON("/ajax_folders/", function (data) {
-        pics = data["folders"];
+    $.getJSON("/ajax_pics/"+now_folder_fake_name+"/", function (data) {
+        pics = data["pics"];
         pics_count = data["count"];
         if (pics_count <= 16) {
-            $("#next").css("display", "none");
+            $("#next").css("display","none");
         }
+
     });
 
 
     $("#back")
-        .css("display", "none")
+        .css("display","none")
         .click(function () {
             if (current_page > 1) {
                 current_page--;
-                $("#next").css("display", "inline-block")
-                $("#back").css("display", "inline-block")
+                $("#next").css("display","inline-block")
+                $("#back").css("display","inline-block")
                 if (current_page === 1) {
-                    $("#next").css("display", "inline-block")
-                    $("#back").css("display", "none")
+                    $("#next").css("display","inline-block")
+                    $("#back").css("display","none")
                 }
                 for (var i = 1; i <= 16; i++) {
                     var pic_number = (current_page - 1) * 16 + i;
@@ -42,35 +44,46 @@ var current_page = 1;
                     var element5 = "#img_" + i + " .element_3";
                     var element6 = "#img_" + i + " .element_4";
                     var element7 = "#img_" + i + " .element_5";
+                    var element8 = "#box_" + i + " .element_6";
+                    var element9 = "#box_" + i + " .element_7";
+                    var element10 = "#box_" + i + " .element_8";
+                    var element11 = "#box_" + i + " .element_9";
+                    var element12 = "#box_" + i + " .element_10";
+                    var element13 = "#box_" + i + " .element_11";
+                    var element14 = "#box_" + i + " .element_12";
 
                     pic_number--;
                     $(element1).attr("title", pics[pic_number]["name"]);
-                    $(element1).href(pics[pic_number]["href"]);
                     $(element2).text(pics[pic_number]["name"]);
                     $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                     $(element4).attr("title", pics[pic_number]["name"]);
                     $(element5).text(pics[pic_number]["name"]);
                     $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                     $(element7).val(pics[pic_number]["fake_name"]);
-
+                    $(element8).attr("src", pics[pic_number]["path"]);
+                    $(element8).attr("alt", pics[pic_number]["name"]);
+                    $(element9).text(pics[pic_number]["name"]);
+                    $(element10).text(pics[pic_number]["upload_time"]);
+                    $(element11).text(pics[pic_number]["size"]);
+                    $(element12).text(pics[pic_number]["height"]);
+                    $(element13).text(pics[pic_number]["width"]);
+                    $(element14).val(pics[pic_number]["fake_name"]);
                     pic_number++;
-                    $("#img_" + i).css("display", "block")
+                    $("#img_" + i).css("display","block")
+                    $("#box_" + i).css("display","block")
 
                 }
-
-
             }
-
         })
 
     $("#next")
         .click(function () {
             if ((pics_count - current_page * 16) > 0) {
-                $("#next").css("display", "inline-block")
-                $("#back").css("display", "inline-block")
+                $("#next").css("display","inline-block")
+                $("#back").css("display","inline-block")
                 if (pics_count - (1 + current_page) * 16 <= 0) {
-                    $("#next").css("display", "none")
-                    $("#back").css("display", "inline-block")
+                    $("#next").css("display","none")
+                    $("#back").css("display","inline-block")
                 }
                 for (var i = 1; i <= 16; i++) {
                     var pic_number = current_page * 16 + i;
@@ -83,22 +96,36 @@ var current_page = 1;
                         var element5 = "#img_" + i + " .element_3";
                         var element6 = "#img_" + i + " .element_4";
                         var element7 = "#img_" + i + " .element_5";
-
+                        var element8 = "#box_" + i + " .element_6";
+                        var element9 = "#box_" + i + " .element_7";
+                        var element10 = "#box_" + i + " .element_8";
+                        var element11 = "#box_" + i + " .element_9";
+                        var element12 = "#box_" + i + " .element_10";
+                        var element13 = "#box_" + i + " .element_11";
+                        var element14 = "#box_" + i + " .element_12";
                         pic_number--;
                         $(element1).attr("title", pics[pic_number].name);
-                        $(element1).href(pics[pic_number]["href"]);
                         $(element2).text(pics[pic_number]["name"]);
                         $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                         $(element4).attr("title", pics[pic_number]["name"]);
                         $(element5).text(pics[pic_number]["name"]);
                         $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                         $(element7).val(pics[pic_number]["fake_name"]);
-
+                        $(element8).attr("src", pics[pic_number]["path"]);
+                        $(element8).attr("alt", pics[pic_number]["name"]);
+                        $(element9).text(pics[pic_number]["name"]);
+                        $(element10).text(pics[pic_number]["upload_time"]);
+                        $(element11).text(pics[pic_number]["size"] + " MB");
+                        $(element12).text(pics[pic_number]["height"] + " px");
+                        $(element13).text(pics[pic_number]["width"] + " px");
+                        $(element14).val(pics[pic_number]["fake_name"]);
                         pic_number++;
-                        $("#img_" + i).css("display", "block")
+                        $("#img_" + i).css("display","block")
+                        $("#box_" + i).css("display","block")
 
                     } else {
-                        $("#img_" + i).css("display", "none")
+                        $("#img_" + i).css("display","none")
+                        $("#box_" + i).css("display","none")
                     }
 
                 }
@@ -163,6 +190,19 @@ var current_page = 1;
         }
     });
 
+    /* Lightbox - Magnific Popup */
+    $('.popup-with-move-anim').magnificPopup({
+        type: 'inline',
+        fixedContentPos: false, /* keep it false to avoid html tag shift with margin-right: 17px */
+        fixedBgPos: true,
+        overflowY: 'auto',
+        closeBtnInside: true,
+        preloader: false,
+        midClick: true,
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom'
+    });
+
     /* Filter - Isotope */
     var $grid = $('.grid').isotope({
         // options
@@ -189,12 +229,13 @@ var current_page = 1;
 
 $("#change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
-        $(".upload_btn").css("display", "none");
-        $("#next").css("display", "none");
-        $("#back").css("display", "none");
+        $(".upload_btn").css("display","none");
+        $("#next").css("display","none");
+        $("#back").css("display","none");
         $(this).val("view");
         $(this).text("VIEW");
-        $("#delete_few").css("display", "inline-block")
+        $("#download_few").css("display", "inline-block")
+        $("#delete_few").css("display", "inline-block");
         $("#select_all").css("display", "inline-block")
         $(".popup-with-move-anim").css("display", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
@@ -203,19 +244,20 @@ $("#change_model").click(function () {
         cnt = 0;
         $("#select_cnt").text(cnt.toString());
     } else if ($(this).val() == "view") {// 退出选择
-        $(".upload_btn").css("display", "inline-block");
+        $(".upload_btn").css("display","inline-block");
         if (current_page == 1) {
-            $("#next").css("display", "inline-block");
+            $("#next").css("display","inline-block");
         } else if ((pics_count - current_page * 16) > 0) {
-            $("#back").css("display", "inline-block");
+            $("#back").css("display","inline-block");
         } else {
-            $("#next").css("display", "inline-block");
-            $("#back").css("display", "inline-block");
+            $("#next").css("display","inline-block");
+            $("#back").css("display","inline-block");
         }
 
         $(this).val("select");
         $(this).text("SELECT");
-        $("#delete_few").css("display", "none")
+        $("#download_few").css("display", "none")
+        $("#delete_few").css("display", "none");
         $("#select_all").css("display", "none")
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
@@ -273,4 +315,3 @@ $("#select_all").click(function () {
         $(this).text("SELECT ALL");
     }
 });
-

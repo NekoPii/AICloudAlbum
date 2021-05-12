@@ -7,7 +7,7 @@ from . import models
 
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(min_length=11, max_length=11,
+    phone = forms.CharField(max_length=11,
                             widget=forms.TextInput(
                                 attrs={"class": "form-control-input", "id": "login_phone", "tabindex": "1",
                                        "autocomplete": "off"}))
@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
 
     def clean_phone(self):
         phone = self.cleaned_data["phone"]
-        pattern = re.compile(r"^(1[3-9][0-9]{9})")
+        pattern = re.compile("1[3-9][0-9]{9}|root")
         if pattern.match(phone):
             pass
         else:
@@ -30,7 +30,7 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(forms.Form):
-    phone = forms.CharField(min_length=11, max_length=11,
+    phone = forms.CharField(max_length=11,
                             widget=forms.TextInput(
                                 attrs={"class": "form-control-input", "id": "signup_phone", "tabindex": "1",
                                        "autocomplete": "off"}))
@@ -46,7 +46,7 @@ class SignupForm(forms.Form):
 
     def clean_phone(self):
         phone = self.cleaned_data["phone"]
-        pattern = re.compile(r"^(1[3-9][0-9]{9})")
+        pattern = re.compile("1[3-9][0-9]{9}|root")
         if pattern.match(phone):
             pass
         else:

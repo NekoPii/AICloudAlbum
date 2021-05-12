@@ -9,6 +9,7 @@ import zipfile
 from wsgiref.util import FileWrapper
 
 from captcha.models import CaptchaStore
+from django.db.models import Max
 from django.http import Http404, HttpResponse, JsonResponse, FileResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from django.utils.encoding import escape_uri_path
@@ -77,6 +78,7 @@ def login(request):
                     request.session["name"] = user.name
                     res["loginIn"] = "true"
                     res["message"] = "Login Successfully 🌸 ~"
+                    res["code"]=hash_code("1",salt="neko_img")
                     return HttpResponse(json.dumps(res))
                 else:
                     res["loginIn"] = "false"
@@ -130,6 +132,11 @@ def signup(request):
                 new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
                 new_ini_folder.save()
 
+                zero_img=models.Picture.objects.get(pk=1)
+
+                new_ini_folder_cover=models.FolderCover(pic_id=zero_img.id,folder_id=new_ini_folder.id)
+                new_ini_folder_cover.save()
+
                 request.session["is_login"] = True
                 request.session["phone"] = new_user.phone
                 request.session["name"] = new_user.name
@@ -162,11 +169,12 @@ def ajax_val(request):
         return JsonResponse(json_data)
 
 
-def ajax_pics(request):
+def ajax_pics(request,folder_fake_name):
     if request.is_ajax():
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        pics = user.picture_set.all()
+        now_folder=models.Folder.objects.get(fake_name=folder_fake_name)
+        pics = models.Picture.objects.filter(folder_id=now_folder.id)
         json_data = {}
         json_data["pics"] = []
         cnt = 1
@@ -178,6 +186,34 @@ def ajax_pics(request):
             json_data["pics"].append(pic)
             cnt += 1
         count = pics.count()
+        json_data["count"] = count
+        json_data["status"]=1
+
+        return JsonResponse(json_data)
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+def ajax_folders(request):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        folders=models.Folder.objects.filter(user_id=user.phone)
+        json_data = {}
+        json_data["folders"] = []
+        cnt = 1
+        for p in folders:
+            foldercover=models.FolderCover.objects.get(folder_id=p.id)
+            cover_img=models.Picture.objects.get(pk=foldercover.pic_id)
+            p.href = "/mypics/" + p.fake_name + "/"
+            p.size = round(p.total_size, 2)
+            p.path = os.path.join('/upload_imgs/', cover_img.fake_name + '.' + cover_img.type)
+            p.id = cnt
+            folder = {"size": p.total_size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,"href":p.href}
+            json_data["folders"].append(folder)
+            cnt += 1
+        count = folders.count()
         json_data["count"] = count
         json_data["status"]=1
 
@@ -201,32 +237,58 @@ def mypics_index(request):
         name = request.session['name']
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        pics = user.picture_set.all()
-        load_data={}
-        load_data["pics"]=[]
-        cnt=1
-        for p in pics:
-            p.size = round(p.size, 2)
-            p.path = os.path.join('/upload_imgs/',p.fake_name + '.' + p.type)
-            p.id=cnt
-            pic= {"size": p.size,"path":p.path,"id":p.id,"name":p.name,"fake_name":p.fake_name,"height":p.height,"width":p.width,"upload_time":p.upload_time}
-            load_data["pics"].append(pic)
-            cnt+=1
-            if cnt==17:
+        folders = models.Folder.objects.filter(user_id=user.phone)
+        cnt = 1
+        for p in folders:
+            foldercover = models.FolderCover.objects.get(folder_id=p.id)
+            cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
+            p.href = "/mypics/" + p.fake_name + "/"
+            p.size = round(p.total_size, 2)
+            p.path = os.path.join('/upload_imgs/', cover_img.fake_name + '.' + cover_img.type)
+            p.id = cnt
+            cnt += 1
+            if cnt == 17:
                 break
-        count = pics.count()
-        capacity_now = round(user.now_capacity,2)
-        load_data["count"]=count
-        load_data["capacity_now"]=capacity_now
+        count = folders.count()
+        capacity_now = round(user.now_capacity, 2)
 
         return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
 
 
+def mypics_folder(request, folder_fake_name):
+    if request.session.get("is_login"):
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        now_folder = models.Folder.objects.filter(fake_name=folder_fake_name)
+        if now_folder:
+
+            pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
+            cnt = 1
+            for p in pics:
+                p.size = round(p.size, 2)
+                p.path = os.path.join('/upload_imgs/', p.fake_name + '.' + p.type)
+                p.id = cnt
+                cnt += 1
+
+            count = pics.count()
+            capacity_now = round(now_folder[0].total_size, 2)
+
+            now_folder_name = now_folder[0].name
+            now_folder_fake_name = now_folder[0].fake_name
+
+            return render(request, "Album/mypics_folder.html", locals())
+        else:
+            return render(request, "Album/mypics.html", locals())
+    else:
+        return redirect("/login/")
+
+
 
 @csrf_exempt
-def upload_upload_syn(request):
+def upload_upload_syn(request, folder_fake_name):
     if request.session.get("is_login"):
         user_phone = request.session.get("phone")
         all_imgs = request.FILES.getlist("upload_img", None)
@@ -255,13 +317,13 @@ def upload_upload_syn(request):
 
                 try:
 
-                    ALLFolder = models.Folder.objects.get(user_id=user_phone, name="ALL")
+                    nowFolder = models.Folder.objects.get(user_id=user_phone, fake_name=folder_fake_name)
 
                     NoneTag = models.Tag.objects.get(tag="None")
 
                     new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
                                              modify_time=datetime.datetime.now(), size=now_size,
-                                             height=h, width=w, is_tag=False, is_face=False, folder_id=ALLFolder.pk,
+                                             height=h, width=w, is_tag=False, is_face=False, folder_id=nowFolder.pk,
                                              tag_id=NoneTag.pk, user_id=user_phone)
 
                     new_img.save()
@@ -269,9 +331,9 @@ def upload_upload_syn(request):
                     new_img.save()
 
                     try:
-                        now_folder_cover = models.FolderCover.objects.get(folder_id=ALLFolder.pk)
+                        now_folder_cover = models.FolderCover.objects.get(folder_id=nowFolder.pk)
                     except:
-                        now_folder_cover = models.FolderCover(folder_id=ALLFolder.pk, pic_id=new_img.pk)
+                        now_folder_cover = models.FolderCover(folder_id=nowFolder.pk, pic_id=new_img.pk)
                     finally:
                         now_folder_cover.pic_id = new_img.pk
                         now_folder_cover.save()
@@ -282,10 +344,10 @@ def upload_upload_syn(request):
 
                     # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
-                    ALLFolder.cnt += 1
-                    ALLFolder.total_size += new_img.size
-                    ALLFolder.modify_time = datetime.datetime.now()
-                    ALLFolder.save(force_update=True)
+                    nowFolder.cnt += 1
+                    nowFolder.total_size += new_img.size
+                    nowFolder.modify_time = datetime.datetime.now()
+                    nowFolder.save(force_update=True)
 
                     # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -333,7 +395,7 @@ mutex_x = Lock()
 
 
 @csrf_exempt
-def upload_upload_asyn(request):
+def upload_upload_asyn(request, folder_fake_name):
     if request.session.get("is_login"):
         mutex_x.acquire()
         user_phone = request.session.get("phone")
@@ -359,13 +421,13 @@ def upload_upload_asyn(request):
 
             try:
 
-                ALLFolder = models.Folder.objects.get(user_id=user_phone, name="ALL")
+                nowFolder = models.Folder.objects.get(user_id=user_phone, fake_name=folder_fake_name)
 
                 NoneTag = models.Tag.objects.get(tag="None")
 
                 new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
                                          modify_time=datetime.datetime.now(), size=now_size,
-                                         height=h, width=w, is_tag=False, is_face=False, folder_id=ALLFolder.pk,
+                                         height=h, width=w, is_tag=False, is_face=False, folder_id=nowFolder.pk,
                                          tag_id=NoneTag.pk, user_id=user_phone)
 
                 new_img.save()
@@ -373,9 +435,9 @@ def upload_upload_asyn(request):
                 new_img.save()
 
                 try:
-                    now_folder_cover = models.FolderCover.objects.get(folder_id=ALLFolder.pk)
+                    now_folder_cover = models.FolderCover.objects.get(folder_id=nowFolder.pk)
                 except:
-                    now_folder_cover = models.FolderCover(folder_id=ALLFolder.pk, pic_id=new_img.pk)
+                    now_folder_cover = models.FolderCover(folder_id=nowFolder.pk, pic_id=new_img.pk)
                 finally:
                     now_folder_cover.pic_id = new_img.pk
                     now_folder_cover.save()
@@ -386,10 +448,10 @@ def upload_upload_asyn(request):
 
                 # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
-                ALLFolder.cnt += 1
-                ALLFolder.total_size += new_img.size
-                ALLFolder.modify_time = datetime.datetime.now()
-                ALLFolder.save(force_update=True)
+                nowFolder.cnt += 1
+                nowFolder.total_size += new_img.size
+                nowFolder.modify_time = datetime.datetime.now()
+                nowFolder.save(force_update=True)
 
                 # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -442,68 +504,297 @@ def upload_upload_asyn(request):
 
 @csrf_exempt
 def download(request):
-    if request.method == "POST":
-        fake_name = request.POST["img_name"]
-        try:
-            now_pic = models.Picture.objects.get(fake_name=fake_name)
-            path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
-            with open(path, "rb") as f:
-                img = f.read()
-            img_name = now_pic.name + "." + now_pic.type
-            response = HttpResponse(img)
-            response["Content-Type"] = "application/octet-stream"
-            response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
-            response["download_status"] = "true"
-            return response
-        except:
-            response = HttpResponse()
-            response["download_status"] = "false"
-            return response
-    return render(request, "Album/upload.html", locals())
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            fake_name = request.POST["img_name"]
+            try:
+                now_pic = models.Picture.objects.get(fake_name=fake_name)
+                path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                with open(path, "rb") as f:
+                    img = f.read()
+                img_name = now_pic.name + "." + now_pic.type
+                response = HttpResponse(img)
+                response["Content-Type"] = "application/octet-stream"
+                response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
+                response["download_status"] = "true"
+                return response
+            except:
+                response = HttpResponse()
+                response["download_status"] = "false"
+                return response
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
 
 
 @csrf_exempt
 def download_select(request):
-    if request.method == "POST":
-        chunk_size = 8192
-        check_list = request.POST.getlist("img_name")
-        total_cnt = len(check_list)
-        if check_list:
-            cnt = 0
-            temp = tempfile.TemporaryFile()
-            img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
-            for now in check_list:
-                try:
-                    now_pic = models.Picture.objects.get(fake_name=now)
-                    path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
-                    img_name = now_pic.name + "." + now_pic.type
-                    img_zip.write(path, img_name)
-                    cnt += 1
-                except:
-                    continue
-            img_zip.close()
-            wrapper = FileWrapper(temp, chunk_size)
-            size = temp.tell()
-            temp.seek(0)
-            if cnt > 0:
-                response = HttpResponse(wrapper, content_type="application/zip")
-                response["Content-Disposition"] = "attachment;filename={}".format(
-                    escape_uri_path(time.strftime("%Y%m%d-%H%M%S-") + "AlbumImages.zip"))
-                response['Content-Length'] = size
-                response["download_status"] = "true"
-                response["download_cnt"] = cnt
-                response["select_cnt"] = total_cnt
-                return response
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            chunk_size = 8192
+            check_list = request.POST.getlist("img_name")
+            total_cnt = len(check_list)
+            if check_list:
+                cnt = 0
+                temp = tempfile.TemporaryFile()
+                img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
+                for now in check_list:
+                    try:
+                        now_pic = models.Picture.objects.get(fake_name=now)
+                        path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                        img_name = now_pic.name + "." + now_pic.type
+                        img_zip.write(path, img_name)
+                        cnt += 1
+                    except:
+                        continue
+                img_zip.close()
+                wrapper = FileWrapper(temp, chunk_size)
+                size = temp.tell()
+                temp.seek(0)
+                if cnt > 0:
+                    response = HttpResponse(wrapper, content_type="application/zip")
+                    response["Content-Disposition"] = "attachment;filename={}".format(
+                        escape_uri_path(time.strftime("%Y%m%d-%H%M%S-") + "AlbumImages.zip"))
+                    response['Content-Length'] = size
+                    response["download_status"] = "true"
+                    response["download_cnt"] = cnt
+                    response["select_cnt"] = total_cnt
+                    return response
+                else:
+                    response = HttpResponse()
+                    response["download_status"] = "false"
+                    response["download_cnt"] = 0
+                    response["select_cnt"] = total_cnt
+                    return response
             else:
                 response = HttpResponse()
                 response["download_status"] = "false"
                 response["download_cnt"] = 0
                 response["select_cnt"] = total_cnt
                 return response
-        else:
-            response = HttpResponse()
-            response["download_status"] = "false"
-            response["download_cnt"] = 0
-            response["select_cnt"] = total_cnt
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def delete_img(request, folder_fake_name):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+
+            fake_name = request.POST["img_name"]
+
+            res = {"delete_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+            now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
+            now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
+            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+
+            flag = False
+            try:
+                now_pic = models.Picture.objects.get(fake_name=fake_name)
+                if now_pic.id == now_choose_foldercover.pic_id:
+                    now_choose_foldercover.update(pic_id=zero_pic.id)
+                    flag = True
+                now_choose_folder.cnt -= 1
+                now_choose_folder.total_size -= now_pic.size
+                now_user.now_capacity -= now_pic.size
+                path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                now_pic.delete()
+                os.remove(path)
+                if (flag):
+                    now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
+                        "id").annotate(maxid=Max("id"))
+                    if (now_user_max_img_id):
+                        now_choose_foldercover.update(pic_id=now_user_max_img_id)
+                res["delete_status"] = True
+            except:
+                res["delete_status"] = False
+
+            response = HttpResponse(json.dumps(res))
             return response
-    return render(request, "Album/upload.html", locals())
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def delete_select_img(request, folder_fake_name):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+
+            check_list = request.POST.getlist("img_name")
+            total_cnt = len(check_list)
+
+            res = {"select_cnt": total_cnt, "delete_cnt": None, "delete_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+            now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
+            now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
+            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+
+            if check_list:
+                cnt = 0
+                for now in check_list:
+                    flag = False
+                    try:
+                        now_pic = models.Picture.objects.get(fake_name=now)
+                        if now_pic.id == now_choose_foldercover.pic_id:
+                            now_choose_foldercover.update(pic_id=zero_pic.id)
+                            flag = True
+                        now_choose_folder.cnt -= 1
+                        now_choose_folder.total_size -= now_pic.size
+                        now_user.now_capacity -= now_pic.size
+                        path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                        now_pic.delete()
+                        os.remove(path)
+                        if (flag):
+                            now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
+                                "id").annotate(maxid=Max("id"))
+                            if (now_user_max_img_id):
+                                now_choose_foldercover.update(pic_id=now_user_max_img_id)
+                        cnt += 1
+                    except:
+                        continue
+                res["delete_cnt"] = cnt
+                if cnt > 0:
+                    res["delete_status"] = True
+                    response = HttpResponse(json.dumps(res))
+                    return response
+                else:
+                    res["delete_status"] = False
+                    response = HttpResponse(json.dumps(res))
+                    return response
+            else:
+                response = HttpResponse(json.dumps(res))
+                return response
+        return mypics_folder(request,folder_fake_name)
+    return redirect("/login/")
+
+
+@csrf_exempt
+def delete_folder(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+
+            fake_name = request.POST["folder_name"]
+
+            res = {"delete_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+            now_choose_folder = models.Folder.objects.get(fake_name=fake_name)
+
+            if now_choose_folder.name == "ALL":  # “ALL文件夹”无法删除
+                return HttpResponse()
+
+            try:
+                models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
+                now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
+                now_user.now_capacity -= now_choose_folder.total_size
+                for img in now_imgs:
+                    path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                    img.delete()
+                    os.remove(path)
+
+                res["delete_status"] = True
+            except:
+                res["delete_status"] = False
+
+            response = HttpResponse(json.dumps(res))
+            return response
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def delete_select_folder(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+
+            check_list = request.POST.getlist("folder_name")
+            total_cnt = len(check_list)
+
+            res = {"select_cnt": total_cnt, "delete_cnt": None, "delete_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+
+            if check_list:
+                cnt = 0
+                for now in check_list:
+                    try:
+                        now_folder = models.Folder.objects.get(fake_name=now)
+                        if now_folder.name == "ALL":
+                            continue
+                        models.FolderCover.objects.get(folder_id=now_folder.id).delete()
+                        now_user.now_capacity -= now_folder.total_size
+                        now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
+                        for img in now_imgs:
+                            path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                            img.delete()
+                            os.remove(path)
+                        cnt += 1
+                    except:
+                        continue
+                res["delete_cnt"] = cnt
+                if cnt > 0:
+                    res["delete_status"] = True
+                    response = HttpResponse(json.dumps(res))
+                    return response
+                else:
+                    res["delete_status"] = False
+                    response = HttpResponse(json.dumps(res))
+                    return response
+            else:
+                response = HttpResponse(json.dumps(res))
+                return response
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def add_folder(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+            folder_name = request.POST["folder_name"]
+
+            res = {"add_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+
+            is_same_foldername = models.Folder.objects.filter(name=folder_name)
+
+            if is_same_foldername:
+                res["add_status"] = False
+
+            else:
+                try:
+
+                    new_folder = models.Folder(name=folder_name, user_id=now_user.phone,
+                                               cnt=0, total_size=0.0,
+                                               create_time=datetime.datetime.now(),
+                                               modify_time=datetime.datetime.now(),
+                                               )
+                    new_folder.save()
+                    new_folder.fake_name = hash_code(str(new_folder.pk), salt="neko_folder")
+                    new_folder.save()
+
+                    new_foldercover = models.FolderCover(folder_id=new_folder.id, pic_id=zero_pic.id)
+                    new_foldercover.save()
+
+                    res["add_status"] = True
+                except:
+                    res["add_status"] = False
+
+            response = HttpResponse(json.dumps(res))
+            return response
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")

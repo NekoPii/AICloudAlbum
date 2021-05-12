@@ -1,7 +1,7 @@
 {% extends "Album/navbar.html" %}
 
 {% block title %}
-    <title>My Pics</title>
+    <title>My Pics / {{ now_folder_name }}</title>
 {% endblock %}
 
 {% block css %}
@@ -9,10 +9,10 @@
     <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/upload/main.css" rel="stylesheet">
     <link href="/static/css/mypics/swiper.css" rel="stylesheet">
     <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
-    <link href="/static/css/upload/main.css" rel="stylesheet">
     <link href="/static/css/download/main.css" rel="stylesheet">
 
 {% endblock %}
@@ -22,21 +22,21 @@
         <div id="loader"></div>
     </div>
 
-    <div class="modal fade" id="launch-add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+    <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
         <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
+                    <h5 class="modal-title" id="uploadModalLabel">UPLOAD</h5>
                 </div>
                 <div class="modal-body">
-                    <input class="input" type="text" >
+                    <div class="file-loading">
+                        <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
+                               accept="image/*" data-browse-on-zone-click="true">
+                    </div>
                     <div id="kartik-file-errors"></div>
                 </div>
                 <div class="modal-footer">
-                    <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="padding: 0.5rem 3rem;">OK
-                    </button>
                     <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
                             style="padding: 0.5rem 3rem;">Close
                     </button>
@@ -49,16 +49,13 @@
     <div id="counter">
         <div class="cell">
             <div class="counter-value number-count" data-count={{ count }}>1</div>
-            <div class="counter-info">Folder(s)<br>In Total</div>
+            <div class="counter-info">Images<br>In Total</div>
         </div>
         <div class="cell">
             <div class="counter-value number-count" data-count={{ capacity_now }}>1</div>
             <div class="counter-info">MB<br>Used</div>
         </div>
-        <div class="cell">
-            <div class="counter-value number-count" data-count="5">1</div>
-            <div class="counter-info">GB<br>In Total</div>
-        </div>
+        <input id="now_folder_fake_name" type="hidden" style="display: none;" value={{ now_folder_fake_name }}>
     </div>
     <!-- end of counter -->
 
@@ -67,50 +64,47 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">FOLDER</div>
-                    <h2 class="test">FOLDER That You're Proud Of</h2>
+                    <div class="section-title">Images</div>
+                    <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
             <div>
-                <button type="button" class="upload-modal-btn-solid-lg" data-toggle="modal"
-                        data-target="#launch-add" style="display: inline-block;">
-                    <i class="uil uil-folder-plus"></i>&nbsp;Add Folder
+                <button type="button" class="upload_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                        data-target="#launch-upload" style="display: inline-block;">
+                    <i class="uil uil-image-upload"></i>&nbsp;UPLOAD
                 </button>
-
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
                         style="display:inline-block;float: right;margin: 0 1rem;">SELECT
                 </button>
-
-
+                <button id="download_few" class="btn-solid-reg" type="button"
+                        style="display: none;float: right;margin: 0 1rem;">Download&nbsp;<span
+                        id="select_cnt" style="font-weight: bold;">0</span> Selected
+                </button>
                 <button id="delete_few" class="btn-solid-reg" type="button"
                         style="display: none;float: right;margin: 0 1rem;">Delete&nbsp;<span
                         id="select_cnt" style="font-weight: bold;">0</span> Selected
                 </button>
-
                 <button id="select_all" class="btn-solid-reg" type="button" value="zero"
                         style="display: none;float: right;margin: 0 1rem;">SELECT
                     ALL
                 </button>
-
-
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid">
                         <form id="downloadFewForm">
-                            {% for p in folders %}
-                                <div id='img_{{ p.id }}' class="element-item development">
+                            {% for p in pics %}
+                                <div class="element-item development">
                                     <div>
-                                        <a title={{ p.name }} class="popup-with-move-anim" href={{ p.href }}>
+                                        <a title={{ p.name }} class="popup-with-move-anim" href='#{{ p.id }}'>
                                             <div class="element-item-overlay"><span class="element_1"
-                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
+                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
                                             </div>
-                                            <div class="zoomImage11 element_2"
-                                                 style="background-image: url({{ p.path }})"></div>
+                                            <div class="zoomImage11 element_2" style="background-image: url({{ p.path }})"></div>
                                         </a>
                                         <a title={{ p.name }} class="choose_model_img">
-                                            <div class="element-item-overlay "><span class="element_3"
-                                                                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                            <div class="element-item-overlay"><span element_3
+                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
                                             </div>
                                             <div class="zoomImage11 choose_zoomImage11 element_4"
                                                  style="background-image: url({{ p.path }});"></div>
@@ -133,19 +127,54 @@
     </div> <!-- end of filter -->
     <!-- end of projects -->
 
-    <!-- pages-->
+        <!-- pages-->
     <div style="text-align: center">
-        <button id="back" class="btn-small" type="button"
-                style="display:inline-block;">
-            <<
-        </button>
-        <button id="next" class="btn-small" type="button"
-                style="display: none;">
-            >>
-        </button>
+    <button id="back" class="btn-small" type="button" value="zero"
+            style="display: inline;margin: 0 auto;">
+        <<
+    </button>
+    <button id="next" class="btn-small" type="button" value="zero"
+            style="display: inline;margin: 0 auto;">
+        >>
+    </button>
     </div>
 
     <!--end of pages-->
+
+    <!-- Lightbox -->
+    {% for p in pics %}
+        <div id='{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
+            <div class="row">
+                <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
+                <div class="col-lg-8">
+                    <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
+                </div> <!-- end of col -->
+                <div class="col-lg-4 btn-local0">
+                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="element_7">{{ p.name }}</h3>
+                    <hr class="line-heading">
+                    <h4>Upload Time:</h4>
+                    <b class="element_8"> {{ p.upload_time }}</b>
+                    <h4>Size:</h4>
+                    <b class="element_9"> {{ p.size }}&nbsp;MB</b>
+                    <h4>Width:</h4>
+                    <b class="element_10"> {{ p.height }}&nbsp;px</b>
+                    <h4>Height:</h4>
+                    <b class="element_11">{{ p.width }}&nbsp;px</b>
+                    <div class="btn-local1" style="margin-top: 2rem;">
+                        <form class="downloadOneForm">
+                            <input class="download_input element_12" value={{ p.fake_name }} type="hidden" name="img_name">
+                            <button class="download_one btn-solid-reg" type="button">DownLoad</button>
+                            <button class="delete_one btn-solid-reg" type="button">Delete</button>
+                        </form>
+                        <a class="btn-outline-reg mfp-close as-button">BACK</a>
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of lightbox-basic -->
+    {% endfor %}
+    <!-- end of lightbox -->
+
+
 
 {% endblock %}
 
@@ -162,6 +191,7 @@
     <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
     <script src="/static/js/upload/main.js"></script>
     <script src="/static/js/mypics/main.js"></script>
-    <script src="/static/js/delete_folder/main.js"></script>
+    <script src="/static/js/download/main.js"></script>
+    <script src="/static/js/delete_img/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 {% endblock %}

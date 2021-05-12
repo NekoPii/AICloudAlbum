@@ -7,7 +7,7 @@ import datetime
 
 class User(models.Model):
     phone = models.CharField(max_length=11, default="",
-                             validators=[validators.RegexValidator("1[345678]\d{9}", message="请输入正确格式的手机号")],
+                             validators=[validators.RegexValidator("1[345678]\d{9}|root", message="请输入正确格式的手机号")],
                              verbose_name="手机号", primary_key=True)
     name = models.CharField(max_length=200, default='',
                             validators=[validators.MinLengthValidator(0, message="用户昵称不可为空")], verbose_name="昵称")
@@ -70,8 +70,6 @@ class Picture(models.Model):
     fake_name=models.CharField(max_length=200,default="")
     type = models.CharField(max_length=200, default='')
     upload_time = models.DateTimeField(auto_now_add=True)
-    modify_time = models.DateTimeField()
-    description = models.CharField(max_length=1000, default='')
     size = models.FloatField(default=0)
     height = models.IntegerField(default=0)
     width = models.IntegerField(default=0)
@@ -80,7 +78,6 @@ class Picture(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class UserTag(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
@@ -113,3 +110,4 @@ class FacePic(models.Model):
 
     class Meta:
         unique_together = ['pic', 'face']
+
