@@ -162,9 +162,38 @@ def ajax_val(request):
         return JsonResponse(json_data)
 
 
+def ajax_pics(request):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        pics = user.picture_set.all()
+        json_data = {}
+        json_data["pics"] = []
+        cnt = 1
+        for p in pics:
+            p.size = round(p.size, 2)
+            p.path = os.path.join('/upload_imgs/', p.fake_name + '.' + p.type)
+            p.id = cnt
+            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,"height":p.height,"width":p.width,"upload_time":p.upload_time}
+            json_data["pics"].append(pic)
+            cnt += 1
+        count = pics.count()
+        json_data["count"] = count
+        json_data["status"]=1
+
+        return JsonResponse(json_data)
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+
+
 def welcome(request):
     pass
     return render(request, "Album/welcome.html")
+
+
 
 
 def mypics_index(request):
@@ -173,19 +202,28 @@ def mypics_index(request):
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         pics = user.picture_set.all()
+        load_data={}
+        load_data["pics"]=[]
         cnt=1
         for p in pics:
             p.size = round(p.size, 2)
             p.path = os.path.join('/upload_imgs/',p.fake_name + '.' + p.type)
             p.id=cnt
+            pic= {"size": p.size,"path":p.path,"id":p.id,"name":p.name,"fake_name":p.fake_name,"height":p.height,"width":p.width,"upload_time":p.upload_time}
+            load_data["pics"].append(pic)
             cnt+=1
-
+            if cnt==17:
+                break
         count = pics.count()
         capacity_now = round(user.now_capacity,2)
+        load_data["count"]=count
+        load_data["capacity_now"]=capacity_now
 
         return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
+
+
 
 @csrf_exempt
 def upload_upload_syn(request):

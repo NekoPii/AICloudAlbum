@@ -22,6 +22,7 @@
         <div id="loader"></div>
     </div>
 
+    <!--Upload-->
     <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
         <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
@@ -44,15 +45,16 @@
             </div>
         </div>
     </div>
+    <!--end of Upload-->
 
     <!-- Counter -->
     <div id="counter">
         <div class="cell">
-            <div class="counter-value number-count" data-count={{ count }}>1</div>
+            <div class="counter-value number-count" data-count={{ load_data.count }}>1</div>
             <div class="counter-info">Images<br>In Total</div>
         </div>
         <div class="cell">
-            <div class="counter-value number-count" data-count={{ capacity_now }}>1</div>
+            <div class="counter-value number-count" data-count={{ load_data.capacity_now }}>1</div>
             <div class="counter-info">MB<br>Used</div>
         </div>
         <div class="cell">
@@ -68,7 +70,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">Images</div>
-                    <h2>Images That You're Proud Of</h2>
+                    <h2 class="test">Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
             <div>
@@ -76,37 +78,43 @@
                         data-target="#launch-upload" style="display: inline-block;">
                     <i class="uil uil-image-upload"></i>&nbsp;UPLOAD
                 </button>
+
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
                         style="display:inline-block;float: right;margin: 0 1rem;">SELECT
                 </button>
-                <button id="download_few" class="btn-solid-reg" type="button" style="display: none;float: right;margin: 0 1rem;">Download&nbsp;<span
+
+                <button id="download_few" class="btn-solid-reg" type="button"
+                        style="display: none;float: right;margin: 0 1rem;">Download&nbsp;<span
                         id="select_cnt" style="font-weight: bold;">0</span> Selected
                 </button>
-                <button id="select_all" class="btn-solid-reg" type="button" value="zero" style="display: none;float: right;margin: 0 1rem;">SELECT
+
+                <button id="select_all" class="btn-solid-reg" type="button" value="zero"
+                        style="display: none;float: right;margin: 0 1rem;">SELECT
                     ALL
                 </button>
+
 
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid">
                         <form id="downloadFewForm">
-                            {% for p in pics %}
-                                <div class="element-item development">
+                            {% for p in load_data.pics %}
+                                <div id='img_{{ p.id }}' class="element-item development">
                                     <div>
-                                        <a title={{ p.name }} class="popup-with-move-anim" href='#{{ p.id }}'>
-                                            <div class="element-item-overlay"><span
+                                        <a title={{ p.name }} class="popup-with-move-anim" href='#box_{{ p.id }}'>
+                                            <div class="element-item-overlay"><span class="element_1"
                                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
                                             </div>
-                                            <div class="zoomImage11" style="background-image: url({{ p.path }})"></div>
+                                            <div class="zoomImage11 element_2" style="background-image: url({{ p.path }})"></div>
                                         </a>
                                         <a title={{ p.name }} class="choose_model_img">
-                                            <div class="element-item-overlay"><span
+                                            <div class="element-item-overlay "><span class="element_3"
                                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
                                             </div>
-                                            <div class="zoomImage11 choose_zoomImage11"
+                                            <div class="zoomImage11 choose_zoomImage11 element_4"
                                                  style="background-image: url({{ p.path }});"></div>
-                                            <input class="download_select" type="checkbox"
+                                            <input class="download_select element_5" type="checkbox"
                                                    style="display: none"
                                                    value={{ p.fake_name }} name="img_name">
                                         </a>
@@ -125,29 +133,43 @@
     </div> <!-- end of filter -->
     <!-- end of projects -->
 
+    <!-- pages-->
+    <div style="text-align: center">
+    <button id="back" class="btn-small" type="button" value="zero"
+            style="display: inline;margin: 0 auto;">
+        <<
+    </button>
+    <button id="next" class="btn-small" type="button" value="zero"
+            style="display: inline;margin: 0 auto;">
+        >>
+    </button>
+    </div>
+
+    <!--end of pages-->
+
 
     <!-- Lightbox -->
-    {% for p in pics %}
-        <div id='{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
+    {% for p in load_data.pics %}
+        <div id='box_{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
             <div class="row">
                 <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
                 <div class="col-lg-8">
-                    <img class="img-fluid" src={{ p.path }} alt={{ p.name }}>
+                    <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0">
-                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ p.name }}</h3>
+                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="element_7">{{ p.name }}</h3>
                     <hr class="line-heading">
                     <h4>Upload Time:</h4>
-                    <b> {{ p.upload_time }}</b>
+                    <b class="elelment_8"> {{ p.upload_time }}</b>
                     <h4>Size:</h4>
-                    <b> {{ p.size }}&nbsp;MB</b>
+                    <b class="element_9"> {{ p.size }}&nbsp;MB</b>
                     <h4>Width:</h4>
-                    <b> {{ p.height }}&nbsp;px</b>
+                    <b class="element_10"> {{ p.height }}&nbsp;px</b>
                     <h4>Height:</h4>
-                    <b>{{ p.width }}&nbsp;px</b>
+                    <b class="element_11">{{ p.width }}&nbsp;px</b>
                     <div class="btn-local1" style="margin-top: 2rem;">
                         <form class="downloadOneForm">
-                            <input class="download_input" value={{ p.fake_name }} type="hidden" name="img_name">
+                            <input class="download_input element_12" value={{ p.fake_name }} type="hidden" name="img_name">
                             <button class="download_one btn-solid-reg" type="button">DownLoad</button>
                         </form>
                         <a class="btn-outline-reg mfp-close as-button">BACK</a>

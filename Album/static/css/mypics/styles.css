@@ -22,7 +22,7 @@
     background-size: cover;
 }
 
-.choose_model_img{
+.choose_model_img {
     cursor: pointer;
 }
 
@@ -74,6 +74,25 @@
 .btn-outline-reg:hover {
     background-color: #787976;
     color: #fff;
+    text-decoration: none;
+}
+
+.btn-small {
+    display: inline-block;
+    padding: 1rem 1.2rem 1rem 1.2rem;
+    border: 0.125rem solid #64b3f4;
+    border-radius: 0.25rem;
+    background-color: #64b3f4;
+    color: #fff;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+
+}
+
+.btn-small:hover {
+    background-color: transparent;
+    color: #64b3f4;
     text-decoration: none;
 }
 

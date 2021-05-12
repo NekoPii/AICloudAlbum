@@ -1,12 +1,143 @@
+var current_page = 1;
 (function ($) {
     "use strict";
 
-    var cnt = 0;
+    var pics;
+    var pics_count;
+
+
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#download_few").css("display", "none")
-    $("#select_all").css("display", "none")
+    $("#download_few").css("display", "none");
+    $("#select_all").css("display", "none");
     $(".download_select").prop("checked", false);
+
+
+    setTimeout(function () {
+        $.getJSON("/ajax_pics", function (data) {
+            pics = data["pics"];
+            pics_count = data["count"];
+            if (pics_count <= 16) {
+                $("#next").hide();
+            }
+
+        })
+    }, 100)
+
+    $("#back")
+        .hide()
+        .click(function () {
+            if (current_page > 1) {
+                current_page--;
+                $("#next").show()
+                $("#back").show()
+                if (current_page === 1) {
+                    $("#next").show()
+                    $("#back").hide()
+                }
+                for (var i = 1; i <= 16; i++) {
+                    var pic_number = (current_page - 1) * 16 + i;
+                    var element1 = "#img_" + i + " .popup-with-move-anim";
+                    var element2 = "#img_" + i + " .element_1";
+                    var element3 = "#img_" + i + " .element_2";
+                    var element4 = "#img_" + i + " .choose_model_img";
+                    var element5 = "#img_" + i + " .element_3";
+                    var element6 = "#img_" + i + " .element_4";
+                    var element7 = "#img_" + i + " .element_5";
+                    var element8 = "#box_" + i + " .element_6";
+                    var element9 = "#box_" + i + " .element_7";
+                    var element10 = "#box_" + i + " .element_8";
+                    var element11 = "#box_" + i + " .element_9";
+                    var element12 = "#box_" + i + " .element_10";
+                    var element13 = "#box_" + i + " .element_11";
+                    var element14 = "#box_" + i + " .element_12";
+
+                    pic_number--;
+                    $(element1).attr("title", pics[pic_number]["name"]);
+                    $(element2).text(pics[pic_number]["name"]);
+                    $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
+                    $(element4).attr("title", pics[pic_number]["name"]);
+                    $(element5).text(pics[pic_number]["name"]);
+                    $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
+                    $(element7).val(pics[pic_number]["fake_name"]);
+                    $(element8).attr("src", pics[pic_number]["path"]);
+                    $(element8).attr("alt", pics[pic_number]["name"]);
+                    $(element9).text(pics[pic_number]["name"]);
+                    $(element10).text(pics[pic_number]["upload_time"]);
+                    $(element11).text(pics[pic_number]["size"]);
+                    $(element12).text(pics[pic_number]["height"]);
+                    $(element13).text(pics[pic_number]["width"]);
+                    $(element14).val(pics[pic_number]["fake_name"]);
+                    pic_number++;
+                    $("#img_" + i).show()
+                    $("#box_" + i).show()
+
+                }
+
+
+            }
+
+        })
+
+    $("#next")
+        .click(function () {
+            if ((pics_count - current_page * 16) > 0) {
+                $("#next").show()
+                $("#back").show()
+                if (pics_count - (1 + current_page) * 16 <= 0) {
+                    $("#next").hide()
+                    $("#back").show()
+                }
+                for (var i = 1; i <= 16; i++) {
+                    var pic_number = current_page * 16 + i;
+
+                    if (pic_number <= pics_count) {
+                        var element1 = "#img_" + i + " .popup-with-move-anim";
+                        var element2 = "#img_" + i + " .element_1";
+                        var element3 = "#img_" + i + " .element_2";
+                        var element4 = "#img_" + i + " .choose_model_img";
+                        var element5 = "#img_" + i + " .element_3";
+                        var element6 = "#img_" + i + " .element_4";
+                        var element7 = "#img_" + i + " .element_5";
+                        var element8 = "#box_" + i + " .element_6";
+                        var element9 = "#box_" + i + " .element_7";
+                        var element10 = "#box_" + i + " .element_8";
+                        var element11 = "#box_" + i + " .element_9";
+                        var element12 = "#box_" + i + " .element_10";
+                        var element13 = "#box_" + i + " .element_11";
+                        var element14 = "#box_" + i + " .element_12";
+                        pic_number--;
+                        $(element1).attr("title", pics[pic_number].name);
+                        $(element2).text(pics[pic_number]["name"]);
+                        $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
+                        $(element4).attr("title", pics[pic_number]["name"]);
+                        $(element5).text(pics[pic_number]["name"]);
+                        $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
+                        $(element7).val(pics[pic_number]["fake_name"]);
+                        $(element8).attr("src", pics[pic_number]["path"]);
+                        $(element8).attr("alt", pics[pic_number]["name"]);
+                        $(element9).text(pics[pic_number]["name"]);
+                        $(element10).text(pics[pic_number]["upload_time"]);
+                        $(element11).text(pics[pic_number]["size"] + " MB");
+                        $(element12).text(pics[pic_number]["height"] + " px");
+                        $(element13).text(pics[pic_number]["width"] + " px");
+                        $(element14).val(pics[pic_number]["fake_name"]);
+                        pic_number++;
+                        $("img_" + i).show()
+                        $("box_" + i).show()
+
+                    } else {
+                        $("#img_" + i).hide()
+                        $("#box_" + i).hide()
+                    }
+
+                }
+                current_page++;
+            }
+
+        })
+
+
     /* Counter - CountTo */
     var a = 0;
     $(window).scroll(function () {
@@ -101,6 +232,9 @@
 
 $("#change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
+        $(".upload-modal-btn-solid-lg").hide();
+        $("#next").hide();
+        $("#back").hide();
         $(this).val("view");
         $(this).text("VIEW");
         $("#download_few").css("display", "inline-block")
@@ -110,7 +244,21 @@ $("#change_model").click(function () {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
+        $("#select_cnt").text(cnt.toString());
     } else if ($(this).val() == "view") {// 退出选择
+        $(".upload-modal-btn-solid-lg").show();
+        if(current_page==1){
+                    $("#next").show();
+        }
+        else if((pics_count - current_page * 16) >0)
+        {
+            $("#back").show();
+        }
+        else{
+            $("#next").show();
+            $("#back").show();
+        }
+
         $(this).val("select");
         $(this).text("SELECT");
         $("#download_few").css("display", "none")
@@ -171,3 +319,4 @@ $("#select_all").click(function () {
         $(this).text("SELECT ALL");
     }
 });
+
