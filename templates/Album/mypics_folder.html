@@ -68,25 +68,25 @@
                     <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div>
+            <div style="height: 5rem;display: flex;">
                 <button type="button" class="upload_btn upload-modal-btn-solid-lg" data-toggle="modal"
-                        data-target="#launch-upload" style="display: inline-block;">
-                    <i class="uil uil-image-upload"></i>&nbsp;UPLOAD
+                        data-target="#launch-upload" style="display: flex;margin: auto 0;">
+                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
+
                 </button>
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                        style="display:inline-block;float: right;margin: 0 1rem;">SELECT
+                        style="display: flex;margin: auto 1rem;">SELECT
                 </button>
                 <button id="download_few" class="btn-solid-reg" type="button"
-                        style="display: none;float: right;margin: 0 1rem;">Download&nbsp;<span
-                        id="select_cnt" style="font-weight: bold;">0</span> Selected
+                        style="display: none;margin: auto 1rem;"><span>Download&nbsp;</span><span
+                        class="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
                 </button>
                 <button id="delete_few" class="btn-solid-reg" type="button"
-                        style="display: none;float: right;margin: 0 1rem;">Delete&nbsp;<span
-                        id="select_cnt" style="font-weight: bold;">0</span> Selected
+                        style="display: none;margin: auto 1rem;"><span>Delete&nbsp;</span><span
+                        class="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
                 </button>
                 <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                        style="display: none;float: right;margin: 0 1rem;">SELECT
-                    ALL
+                        style="display: none;margin: auto 1rem;">SELECT ALL
                 </button>
             </div>
             <div class="row">
@@ -98,13 +98,14 @@
                                     <div>
                                         <a title={{ p.name }} class="popup-with-move-anim" href='#{{ p.id }}'>
                                             <div class="element-item-overlay"><span class="element_1"
-                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
+                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
                                             </div>
-                                            <div class="zoomImage11 element_2" style="background-image: url({{ p.path }})"></div>
+                                            <div class="zoomImage11 element_2"
+                                                 style="background-image: url({{ p.path }})"></div>
                                         </a>
                                         <a title={{ p.name }} class="choose_model_img">
                                             <div class="element-item-overlay"><span element_3
-                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
                                             </div>
                                             <div class="zoomImage11 choose_zoomImage11 element_4"
                                                  style="background-image: url({{ p.path }});"></div>
@@ -127,16 +128,16 @@
     </div> <!-- end of filter -->
     <!-- end of projects -->
 
-        <!-- pages-->
+    <!-- pages-->
     <div style="text-align: center">
-    <button id="back" class="btn-small" type="button" value="zero"
-            style="display: inline;margin: 0 auto;">
-        <<
-    </button>
-    <button id="next" class="btn-small" type="button" value="zero"
-            style="display: inline;margin: 0 auto;">
-        >>
-    </button>
+        <button id="back" class="btn-small" type="button" value="zero"
+                style="display: inline;margin: 0 auto;">
+            <<
+        </button>
+        <button id="next" class="btn-small" type="button" value="zero"
+                style="display: inline;margin: 0 auto;">
+            >>
+        </button>
     </div>
 
     <!--end of pages-->
@@ -146,11 +147,12 @@
         <div id='{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
             <div class="row">
                 <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-                <div class="col-lg-8">
+                <div class="col-lg-8" style="margin: auto 0;">
                     <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0">
-                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" class="element_7">{{ p.name }}</h3>
+                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                        class="element_7">{{ p.name }}</h3>
                     <hr class="line-heading">
                     <h4>Upload Time:</h4>
                     <b class="element_8"> {{ p.upload_time }}</b>
@@ -162,11 +164,11 @@
                     <b class="element_11">{{ p.width }}&nbsp;px</b>
                     <div class="btn-local1" style="margin-top: 2rem;">
                         <form class="downloadOneForm">
-                            <input class="download_input element_12" value={{ p.fake_name }} type="hidden" name="img_name">
+                            <input class="download_input element_12" value={{ p.fake_name }} type="hidden"
+                                   name="img_name">
                             <button class="download_one btn-solid-reg" type="button">DownLoad</button>
                             <button class="delete_one btn-solid-reg" type="button">Delete</button>
                         </form>
-                        <a class="btn-outline-reg mfp-close as-button">BACK</a>
                     </div>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -190,7 +192,7 @@
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
     <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
     <script src="/static/js/upload/main.js"></script>
-    <script src="/static/js/mypics/main.js"></script>
+    <script src="/static/js/mypics_folder/main.js"></script>
     <script src="/static/js/download/main.js"></script>
     <script src="/static/js/delete_img/main.js"></script>
     <script src="/static/js/preload/main.js"></script>

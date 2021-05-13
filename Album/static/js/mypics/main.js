@@ -12,7 +12,7 @@ var current_page = 1;
         if ($(this).attr("name") == "ALL") {
             $(this).addClass("ALL_folder")
         }
-    })
+    });
 
     var pics;
     var pics_count;
@@ -201,22 +201,23 @@ var current_page = 1;
 
 $("#change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
-        $(".upload_btn").css("display", "none");
+        $(".add_btn").css("display", "none");
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
         $(this).text("VIEW");
-        $("#delete_few").css("display", "inline-block")
-        $("#select_all").css("display", "inline-block")
+        $("#delete_few").css("display", "flex")
+        $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
         $(".ALL_folder").css("display","block");
+        $(".ALL_folder").attr("disabled",true).css("pointer-events","none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
         $("#select_cnt").text(cnt.toString());
     } else if ($(this).val() == "view") {// 退出选择
-        $(".upload_btn").css("display", "inline-block");
+        $(".add_btn").css("display", "flex");
         if (current_page == 1) {
             $("#next").css("display", "inline-block");
         } else if ((pics_count - current_page * 16) > 0) {
@@ -232,6 +233,7 @@ $("#change_model").click(function () {
         $("#select_all").css("display", "none")
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
+        $(".ALL_folder").attr("disabled",false).css("pointer-events","");
         cnt = 0;
     }
 });

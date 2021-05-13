@@ -43,7 +43,7 @@ $(".delete_one").click(function () {
                                 } else if (delete_status == "true") {
                                     toastr.success("Delete Successfully ~");
                                     setTimeout(function () {
-                                        window.location.href = "";
+                                        window.location.reload();
                                     }, 500);
                                 }
                             },
@@ -91,7 +91,7 @@ $("#delete_few").click(function () {
                                 } else if (delete_status == "true") {
                                     toastr.success(delete_cnt.toString() + " Image(s) Delete Successfully ~");
                                     setTimeout(function () {
-                                        window.location.href = "";
+                                        window.location.reload();
                                     }, 500);
                                 } else if (delete_status == null) {
                                     toastr.info("No Images Selected !");

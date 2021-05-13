@@ -1,8 +1,8 @@
 var current_page = 1;
-var now_folder_fake_name=$("#now_folder_fake_name").val()
+
 (function ($) {
     "use strict";
-
+    var now_folder_fake_name = $("#now_folder_fake_name").val()
     var pics;
     var pics_count;
 
@@ -14,26 +14,26 @@ var now_folder_fake_name=$("#now_folder_fake_name").val()
     $(".download_select").prop("checked", false);
 
 
-    $.getJSON("/ajax_pics/"+now_folder_fake_name+"/", function (data) {
+    $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
         pics = data["pics"];
         pics_count = data["count"];
         if (pics_count <= 16) {
-            $("#next").css("display","none");
+            $("#next").css("display", "none");
         }
 
     });
 
 
     $("#back")
-        .css("display","none")
+        .css("display", "none")
         .click(function () {
             if (current_page > 1) {
                 current_page--;
-                $("#next").css("display","inline-block")
-                $("#back").css("display","inline-block")
+                $("#next").css("display", "inline-block")
+                $("#back").css("display", "inline-block")
                 if (current_page === 1) {
-                    $("#next").css("display","inline-block")
-                    $("#back").css("display","none")
+                    $("#next").css("display", "inline-block")
+                    $("#back").css("display", "none")
                 }
                 for (var i = 1; i <= 16; i++) {
                     var pic_number = (current_page - 1) * 16 + i;
@@ -69,8 +69,8 @@ var now_folder_fake_name=$("#now_folder_fake_name").val()
                     $(element13).text(pics[pic_number]["width"]);
                     $(element14).val(pics[pic_number]["fake_name"]);
                     pic_number++;
-                    $("#img_" + i).css("display","block")
-                    $("#box_" + i).css("display","block")
+                    $("#img_" + i).css("display", "block")
+                    $("#box_" + i).css("display", "block")
 
                 }
             }
@@ -79,11 +79,11 @@ var now_folder_fake_name=$("#now_folder_fake_name").val()
     $("#next")
         .click(function () {
             if ((pics_count - current_page * 16) > 0) {
-                $("#next").css("display","inline-block")
-                $("#back").css("display","inline-block")
+                $("#next").css("display", "inline-block")
+                $("#back").css("display", "inline-block")
                 if (pics_count - (1 + current_page) * 16 <= 0) {
-                    $("#next").css("display","none")
-                    $("#back").css("display","inline-block")
+                    $("#next").css("display", "none")
+                    $("#back").css("display", "inline-block")
                 }
                 for (var i = 1; i <= 16; i++) {
                     var pic_number = current_page * 16 + i;
@@ -120,12 +120,12 @@ var now_folder_fake_name=$("#now_folder_fake_name").val()
                         $(element13).text(pics[pic_number]["width"] + " px");
                         $(element14).val(pics[pic_number]["fake_name"]);
                         pic_number++;
-                        $("#img_" + i).css("display","block")
-                        $("#box_" + i).css("display","block")
+                        $("#img_" + i).css("display", "block")
+                        $("#box_" + i).css("display", "block")
 
                     } else {
-                        $("#img_" + i).css("display","none")
-                        $("#box_" + i).css("display","none")
+                        $("#img_" + i).css("display", "none")
+                        $("#box_" + i).css("display", "none")
                     }
 
                 }
@@ -229,29 +229,29 @@ var now_folder_fake_name=$("#now_folder_fake_name").val()
 
 $("#change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
-        $(".upload_btn").css("display","none");
-        $("#next").css("display","none");
-        $("#back").css("display","none");
+        $(".upload_btn").css("display", "none");
+        $("#next").css("display", "none");
+        $("#back").css("display", "none");
         $(this).val("view");
         $(this).text("VIEW");
-        $("#download_few").css("display", "inline-block")
-        $("#delete_few").css("display", "inline-block");
-        $("#select_all").css("display", "inline-block")
+        $("#download_few").css("display", "flex")
+        $("#delete_few").css("display", "flex");
+        $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
-        $("#select_cnt").text(cnt.toString());
+        $(".select_cnt").text(cnt.toString());
     } else if ($(this).val() == "view") {// 退出选择
-        $(".upload_btn").css("display","inline-block");
+        $(".upload_btn").css("display", "flex");
         if (current_page == 1) {
-            $("#next").css("display","inline-block");
+            $("#next").css("display", "inline-block");
         } else if ((pics_count - current_page * 16) > 0) {
-            $("#back").css("display","inline-block");
+            $("#back").css("display", "inline-block");
         } else {
-            $("#next").css("display","inline-block");
-            $("#back").css("display","inline-block");
+            $("#next").css("display", "inline-block");
+            $("#back").css("display", "inline-block");
         }
 
         $(this).val("select");
@@ -272,7 +272,7 @@ $(".choose_model_img").click(function () {
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem solid red")
         cnt -= 1;
-        $("#select_cnt").text(cnt.toString());
+        $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
             $("#select_all").text("SELECT ALL");
@@ -285,7 +285,7 @@ $(".choose_model_img").click(function () {
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #8DC26F");
         cnt += 1;
-        $("#select_cnt").text(cnt.toString());
+        $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
             $("#select_all").text("SELECT ALL");
@@ -302,7 +302,7 @@ $("#select_all").click(function () {
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #8DC26F");
         cnt = $(".choose_model_img").length;
-        $("#select_cnt").text(cnt.toString());
+        $(".select_cnt").text(cnt.toString());
         $(this).val("all");
         $(this).text("CANCEL");
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
@@ -310,7 +310,7 @@ $("#select_all").click(function () {
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem solid red");
         cnt = 0;
-        $("#select_cnt").text(cnt.toString());
+        $(".select_cnt").text(cnt.toString());
         $(this).val("zero");
         $(this).text("SELECT ALL");
     }

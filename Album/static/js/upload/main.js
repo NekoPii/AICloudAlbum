@@ -2,6 +2,8 @@ var asyn_cnt = 0;
 var syn_cnt = 0;
 
 $(document).ready(function () {
+    var folder_fake_name=$("#now_folder_fake_name").val()
+    console.log(folder_fake_name)
     toastr.options = {
         "closeButton": false,
         "newestOnTop": true,
@@ -35,7 +37,7 @@ $(document).ready(function () {
         theme: "fas",
         //browseClass:"btn btn-primary btn-block",
         //language: 'zh',     // 设置中文，需要引入locales/zh.js文件
-        uploadUrl: '/upload_upload_syn/',     // 上传路径 *****************************************
+        uploadUrl: '/upload_upload_asyn/'+folder_fake_name+"/",     // 上传路径 *****************************************
         maxFileSize: 0,     // 上传文件大小限制，触发 msgSizeTooLarge 提示
         previewFileType: "image",
         browseClass: "browser-btn-solid-lg",
@@ -62,7 +64,7 @@ $(document).ready(function () {
         showRemove: true,
         showCaption: true,  // 是否显示文字描述
         showClose: false,   // 隐藏右上角×
-        uploadAsync: false, // 是否异步上传 ********************************************
+        uploadAsync: true, // 是否异步上传 ********************************************
         //initialPreviewShowDelete: true, // 预览中的删除按钮
         autoReplace: true,  // 达到最大上传数时，自动替换之前的附件
         required: true,
@@ -100,14 +102,14 @@ $(document).ready(function () {
         // 加载预览后触发的事件，将所有文件名添加到全局变量 aryFiles 数组中
         aryFiles.push(file.name);
     }).on('fileuploaded', function (event, data, previewId, index, fileId) {//asyn
-        console.log("status:" + data.response.status)
+        //console.log("status:" + data.response.status)
         if (data.response.status === true) asyn_cnt += 1
     }).on('filebatchuploadcomplete', function (event, preview, config, tags, extraData) {//asyn 和 syn 上传完成都会走
         //console.log("e" + e + "\ndata:" + data.response.status + "\npreviewId:" + previewId + "\nindex:" + index);
-        console.log("count:" + GetCount());
-        console.log("event:" + event);
-        console.log("asyn_cnt" + asyn_cnt);
-        console.log("syn_cnt" + syn_cnt);
+        //console.log("count:" + GetCount());
+        //console.log("event:" + event);
+        //console.log("asyn_cnt" + asyn_cnt);
+        //console.log("syn_cnt" + syn_cnt);
         if (asyn_cnt === 0 && syn_cnt === 0) {//不是同步也不是异步上传
             $('#upload-input').fileinput("clear");
             return new Promise(function (resolve, reject) {
@@ -148,7 +150,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.href = "/";
+                                window.location.reload();
                                 asyn_cnt = 0;
                             }
                         }
@@ -176,7 +178,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.href = "/";
+                                window.location.reload();
                                 syn_cnt = 0;
                             }
                         }
@@ -186,12 +188,12 @@ $(document).ready(function () {
         }
     }).on("filebatchuploadsuccess ", function (e, data, previewId, index) {//syn
         // 同步上传全部上传完触发的事件，异步上传会每上传一个都调用
-        console.log("e" + e + "\ndata:" + data.response.status + "\npreviewId:" + previewId + "\nindex:" + index);
-        console.log("count:" + GetCount());
-        console.log("asyn_cnt" + asyn_cnt);
-        console.log("status:" + data.response.status)
-        console.log("asyn_cnt" + asyn_cnt);
-        console.log("syn_cnt" + syn_cnt)
+        //console.log("e" + e + "\ndata:" + data.response.status + "\npreviewId:" + previewId + "\nindex:" + index);
+        //console.log("count:" + GetCount());
+        //console.log("asyn_cnt" + asyn_cnt);
+        //console.log("status:" + data.response.status)
+        //console.log("asyn_cnt" + asyn_cnt);
+        //console.log("syn_cnt" + syn_cnt)
 
         syn_cnt = $('#upload-input').fileinput('getFilesCount')
         /*
@@ -234,7 +236,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.href = "/";
+                                window.location.reload();
                             }
                         }
                     }
@@ -289,6 +291,7 @@ $(document).ready(function () {
 });
 
 $("#modal_close").on("click", function () {
+    window.location.reload();
     $('#upload-input').fileinput("clear");
     asyn_cnt = 0;
     syn_cnt = 0;

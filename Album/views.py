@@ -265,7 +265,6 @@ def mypics_folder(request, folder_fake_name):
         user = models.User.objects.get(phone=phone)
         now_folder = models.Folder.objects.filter(fake_name=folder_fake_name)
         if now_folder:
-
             pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
             cnt = 1
             for p in pics:
@@ -322,9 +321,8 @@ def upload_upload_syn(request, folder_fake_name):
                     NoneTag = models.Tag.objects.get(tag="None")
 
                     new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
-                                             modify_time=datetime.datetime.now(), size=now_size,
-                                             height=h, width=w, is_tag=False, is_face=False, folder_id=nowFolder.pk,
-                                             tag_id=NoneTag.pk, user_id=user_phone)
+                                             size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                             folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=user_phone)
 
                     new_img.save()
                     new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
@@ -426,9 +424,8 @@ def upload_upload_asyn(request, folder_fake_name):
                 NoneTag = models.Tag.objects.get(tag="None")
 
                 new_img = models.Picture(name=img_name, type=img_type, upload_time=datetime.datetime.now(),
-                                         modify_time=datetime.datetime.now(), size=now_size,
-                                         height=h, width=w, is_tag=False, is_face=False, folder_id=nowFolder.pk,
-                                         tag_id=NoneTag.pk, user_id=user_phone)
+                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=user_phone)
 
                 new_img.save()
                 new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
@@ -595,11 +592,14 @@ def delete_img(request, folder_fake_name):
             try:
                 now_pic = models.Picture.objects.get(fake_name=fake_name)
                 if now_pic.id == now_choose_foldercover.pic_id:
-                    now_choose_foldercover.update(pic_id=zero_pic.id)
+                    now_choose_foldercover.pic_id=zero_pic.id
+                    now_choose_foldercover.save()
                     flag = True
                 now_choose_folder.cnt -= 1
                 now_choose_folder.total_size -= now_pic.size
+                now_choose_folder.save()
                 now_user.now_capacity -= now_pic.size
+                now_user.save()
                 path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                 now_pic.delete()
                 os.remove(path)
@@ -607,7 +607,7 @@ def delete_img(request, folder_fake_name):
                     now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
                         "id").annotate(maxid=Max("id"))
                     if (now_user_max_img_id):
-                        now_choose_foldercover.update(pic_id=now_user_max_img_id)
+                        now_choose_foldercover.update(pic_id=now_user_max_img_id[0]["maxid"])
                 res["delete_status"] = "true"
             except:
                 res["delete_status"] = "false"
@@ -642,11 +642,14 @@ def delete_select_img(request, folder_fake_name):
                     try:
                         now_pic = models.Picture.objects.get(fake_name=now)
                         if now_pic.id == now_choose_foldercover.pic_id:
-                            now_choose_foldercover.update(pic_id=zero_pic.id)
+                            now_choose_foldercover.pic_id = zero_pic.id
+                            now_choose_foldercover.save()
                             flag = True
                         now_choose_folder.cnt -= 1
                         now_choose_folder.total_size -= now_pic.size
+                        now_choose_folder.save()
                         now_user.now_capacity -= now_pic.size
+                        now_user.save()
                         path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                         now_pic.delete()
                         os.remove(path)
@@ -654,7 +657,7 @@ def delete_select_img(request, folder_fake_name):
                             now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
                                 "id").annotate(maxid=Max("id"))
                             if (now_user_max_img_id):
-                                now_choose_foldercover.update(pic_id=now_user_max_img_id)
+                                now_choose_foldercover.update(pic_id=now_user_max_img_id[0]["maxid"])
                         cnt += 1
                     except:
                         continue
@@ -695,6 +698,7 @@ def delete_folder(request):
                 models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
                 now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
                 now_user.now_capacity -= now_choose_folder.total_size
+                now_user.save()
                 for img in now_imgs:
                     path = os.path.join(store_dir, img.fake_name + "." + img.type)
                     img.delete()
@@ -733,6 +737,7 @@ def delete_select_folder(request):
                             continue
                         models.FolderCover.objects.get(folder_id=now_folder.id).delete()
                         now_user.now_capacity -= now_folder.total_size
+                        now_user.save()
                         now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
                         for img in now_imgs:
                             path = os.path.join(store_dir, img.fake_name + "." + img.type)

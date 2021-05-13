@@ -78,25 +78,23 @@
                     <h2 class="test">FOLDER That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div>
-                <button type="button" class="upload-modal-btn-solid-lg" data-toggle="modal"
-                        data-target="#launch-add" style="display: inline-block;">
-                    <i class="uil uil-folder-plus"></i>&nbsp;Add Folder
+            <div style="height: 5rem;display: flex;">
+                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                        data-target="#launch-add" style="display: flex;margin: auto 0;">
+                    <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
                 </button>
 
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                        style="display:inline-block;float: right;margin: 0 1rem;">SELECT
+                        style="display: flex;margin: auto 1rem;"><span>SELECT</span>
                 </button>
 
-
                 <button id="delete_few" class="btn-solid-reg" type="button"
-                        style="display: none;float: right;margin: 0 1rem;">Delete&nbsp;<span
-                        id="select_cnt" style="font-weight: bold;">0</span> Selected
+                        style="display: none;margin: auto 1rem;"><span>Delete&nbsp;</span><span
+                        id="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
                 </button>
 
                 <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                        style="display: none;float: right;margin: 0 1rem;">SELECT
-                    ALL
+                        style="display: none;margin: auto 1rem;"><span>SELECT ALL</span>
                 </button>
 
 
@@ -167,7 +165,6 @@
     <script src="/static/vendor/swiper/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
     <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
-    <script src="/static/js/upload/main.js"></script>
     <script src="/static/js/mypics/main.js"></script>
     <script src="/static/js/delete_folder/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
