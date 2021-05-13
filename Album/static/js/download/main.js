@@ -17,6 +17,7 @@ $(document).ready(function () {
 });
 
 $(".download_one").click(function () {
+    toastr.info("Downloading ...");
     var downloadOneForm = $(this).closest('.downloadOneForm');
     $.ajax({
         url: "/download/",
@@ -44,38 +45,43 @@ $(".download_one").click(function () {
 });
 
 $("#download_few").click(function () {
-    $.ajax({
-        url: "/download_select/",
-        type: "POST",
-        data: $("#downloadFewForm").serialize(),
-        success: function (response, status, request) {
-            var download_cnt = request.getResponseHeader("download_cnt"),
-                download_status = request.getResponseHeader("download_status"),
-                select_cnt = request.getResponseHeader("select_cnt");
-            if (download_status == "false") {
-                if (select_cnt == 0) {
-                    toastr.info("No Images Selected !")
-                } else {
-                    toastr.warning("Failed to Download " + select_cnt.toString() + " Image(s) !");
-                }
-            } else if (download_status == "true") {
-                var disp = request.getResponseHeader("Content-Disposition");
-                if (disp && disp.search("attachment") != -1) {
-                    if (download_cnt == select_cnt) {
-                        toastr.success(download_cnt.toString() + " Image(s) will download right now ~");
+    if ($(".select_cnt").text() == "00") {
+        toastr.info("No Images Selected !")
+    } else {
+        toastr.info("Downloading ...");
+        $.ajax({
+            url: "/download_select/",
+            type: "POST",
+            data: $("#downloadFewForm").serialize(),
+            success: function (response, status, request) {
+                var download_cnt = request.getResponseHeader("download_cnt"),
+                    download_status = request.getResponseHeader("download_status"),
+                    select_cnt = request.getResponseHeader("select_cnt");
+                if (download_status == "false") {
+                    if (select_cnt == 0) {
+                        toastr.info("No Images Selected !")
                     } else {
-                        toastr.info(download_cnt.toString() + " Image(s) will download right now<br>"
-                            + (select_cnt-download_cnt).toString() + " Image(s) download failed ~")
+                        toastr.warning("Failed to Download " + select_cnt.toString() + " Image(s) !");
                     }
-                    var form = $("#downloadFewForm");
-                    form.attr("method", "post");
-                    form.attr("action", "/download_select/");
-                    form.submit();
+                } else if (download_status == "true") {
+                    var disp = request.getResponseHeader("Content-Disposition");
+                    if (disp && disp.search("attachment") != -1) {
+                        if (download_cnt == select_cnt) {
+                            toastr.success(download_cnt.toString() + " Image(s) will download right now ~");
+                        } else {
+                            toastr.info(download_cnt.toString() + " Image(s) will download right now<br>"
+                                + (select_cnt - download_cnt).toString() + " Image(s) download failed ~")
+                        }
+                        var form = $("#downloadFewForm");
+                        form.attr("method", "post");
+                        form.attr("action", "/download_select/");
+                        form.submit();
+                    }
                 }
+            },
+            error: function () {
+                toastr.error("Error , Please Try again !")
             }
-        },
-        error: function () {
-            toastr.error("Error , Please Try again !")
-        }
-    });
+        });
+    }
 })

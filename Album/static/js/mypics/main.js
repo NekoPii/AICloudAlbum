@@ -225,8 +225,8 @@ $("#change_model").click(function () {
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
-        $(".select_text").css("display","none");
-        $(".view_text").css("display","");
+        $(".select_text").css("display", "none");
+        $(".view_text").css("display", "");
         $("#delete_few").css("display", "flex")
         $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
@@ -249,8 +249,8 @@ $("#change_model").click(function () {
         }
 
         $(this).val("select");
-        $(".select_text").css("display","");
-        $(".view_text").css("display","none");
+        $(".select_text").css("display", "");
+        $(".view_text").css("display", "none");
         $("#delete_few").css("display", "none")
         $("#select_all").css("display", "none")
         $(".choose_model_img").css("display", "none");
@@ -274,7 +274,8 @@ $(".choose_model_img").click(function () {
             $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
-            $("#select_all").text("CANCEL");
+            $(".select_all_text").css("display", "none");
+            $(".cancel_text").css("display", "");
         }
     } else {//未选中
         $(this).find(".folder_select").prop("checked", true);
@@ -288,7 +289,8 @@ $(".choose_model_img").click(function () {
             $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
-            $("#select_all").text("CANCEL");
+            $(".select_all_text").css("display", "none");
+            $(".cancel_text").css("display", "");
         }
     }
 });
@@ -301,7 +303,8 @@ $("#select_all").click(function () {
         cnt = $(".choose_model_img").length;
         $("#select_cnt").text(cnt.toString());
         $(this).val("all");
-        $(this).text("CANCEL");
+        $(".select_all_text").css("display", "none");
+        $(".cancel_text").css("display", "");
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
         $(".folder_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);

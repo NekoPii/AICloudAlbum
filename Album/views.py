@@ -25,7 +25,7 @@ from threading import Thread, Lock
 import time
 
 zeroid = 1
-compress_ratio = 0.5
+threshold = 1080
 
 # Create your views here.
 
@@ -362,7 +362,17 @@ def upload_upload_syn(request, folder_fake_name):
                     os.rename(img_path, now_img_path)
 
                     with Image.open(now_img_path) as img:
-                        img.thumbnail((w * compress_ratio, h * compress_ratio))
+                        h, w = img.size[0], img.size[1]
+                        if w >= h:
+                            if w <= threshold:
+                                img.thumbnail((w, h))
+                            else:
+                                img.thumbnail((threshold, h / w * threshold))
+                        else:
+                            if h <= threshold:
+                                img.thumbnail((w, h))
+                            else:
+                                img.thumbnail((w / h * threshold, threshold))
                         compress_img_path = os.path.join(store_compress_dir, now_img_name)
                         img.save(compress_img_path)
 
@@ -471,7 +481,17 @@ def upload_upload_asyn(request, folder_fake_name):
                 os.rename(img_path, now_img_path)
 
                 with Image.open(now_img_path) as img:
-                    img.thumbnail((w * compress_ratio, h * compress_ratio))
+                    h, w = img.size[0], img.size[1]
+                    if w >= h:
+                        if w <= threshold:
+                            img.thumbnail((w, h))
+                        else:
+                            img.thumbnail((threshold, h / w * threshold))
+                    else:
+                        if h <= threshold:
+                            img.thumbnail((w, h))
+                        else:
+                            img.thumbnail((w / h * threshold, threshold))
                     compress_img_path = os.path.join(store_compress_dir, now_img_name)
                     img.save(compress_img_path)
 
@@ -617,8 +637,10 @@ def delete_img(request, folder_fake_name):
                 now_user.now_capacity -= now_pic.size
                 now_user.save()
                 path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
                 now_pic.delete()
                 os.remove(path)
+                os.remove(compress_path)
                 if (flag):
                     try:
                         now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
@@ -673,8 +695,10 @@ def delete_select_img(request, folder_fake_name):
                         now_user.now_capacity -= now_pic.size
                         now_user.save()
                         path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                        compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
                         now_pic.delete()
                         os.remove(path)
+                        os.remove(compress_path)
                         cnt += 1
                     except:
                         continue
@@ -728,8 +752,10 @@ def delete_folder(request):
                 now_user.save()
                 for img in now_imgs:
                     path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                    compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
                     img.delete()
                     os.remove(path)
+                    os.remove(compress_path)
 
                 res["delete_status"] = "true"
             except:

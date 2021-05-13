@@ -37,7 +37,7 @@ $(document).ready(function () {
         theme: "fas",
         //browseClass:"btn btn-primary btn-block",
         //language: 'zh',     // 设置中文，需要引入locales/zh.js文件
-        uploadUrl: '/upload_upload_syn/'+folder_fake_name+"/",     // 上传路径 *****************************************
+        uploadUrl: '/upload_upload_asyn/'+folder_fake_name+"/",     // 上传路径 *****************************************
         maxFileSize: 0,     // 上传文件大小限制，触发 msgSizeTooLarge 提示
         previewFileType: "image",
         browseClass: "browser-btn-solid-lg",
@@ -64,7 +64,7 @@ $(document).ready(function () {
         showRemove: true,
         showCaption: true,  // 是否显示文字描述
         showClose: false,   // 隐藏右上角×
-        uploadAsync: false, // 是否异步上传 ********************************************
+        uploadAsync: true, // 是否异步上传 ********************************************
         //initialPreviewShowDelete: true, // 预览中的删除按钮
         autoReplace: true,  // 达到最大上传数时，自动替换之前的附件
         required: true,
