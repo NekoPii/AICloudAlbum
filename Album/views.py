@@ -25,6 +25,7 @@ from threading import Thread, Lock
 import time
 
 zeroid = 1
+compress_ratio = 0.5
 
 # Create your views here.
 
@@ -32,6 +33,10 @@ root_dir = os.path.dirname(os.path.dirname(__file__))
 store_dir = os.path.join(root_dir, "upload_imgs")
 if not os.path.exists(store_dir):
     os.mkdir(store_dir)
+
+store_compress_dir = os.path.join(store_dir, "compress_imgs")
+if not os.path.exists(store_compress_dir):
+    os.mkdir(store_compress_dir)
 
 
 # ==================================== 工具函数
@@ -181,7 +186,7 @@ def ajax_pics(request, folder_fake_name):
         cnt = 1
         for p in pics:
             p.size = round(p.size, 2)
-            p.path = os.path.join('/upload_imgs/', p.fake_name + '.' + p.type)
+            p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
                    "height": p.height, "width": p.width, "upload_time": p.upload_time}
@@ -211,7 +216,7 @@ def ajax_folders(request):
             cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
             p.href = "/mypics/" + p.fake_name + "/"
             p.size = round(p.total_size, 2)
-            p.path = os.path.join('/upload_imgs/', cover_img.fake_name + '.' + cover_img.type)
+            p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
             folder = {"size": p.total_size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
                       "href": p.href}
@@ -245,7 +250,7 @@ def mypics_index(request):
             cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
             p.href = "/mypics/" + p.fake_name + "/"
             p.size = round(p.total_size, 2)
-            p.path = os.path.join('/upload_imgs/', cover_img.fake_name + '.' + cover_img.type)
+            p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
             cnt += 1
             if cnt == 17:
@@ -269,7 +274,7 @@ def mypics_folder(request, folder_fake_name):
             cnt = 1
             for p in pics:
                 p.size = round(p.size, 2)
-                p.path = os.path.join('/upload_imgs/', p.fake_name + '.' + p.type)
+                p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
                 cnt += 1
 
@@ -356,8 +361,14 @@ def upload_upload_syn(request, folder_fake_name):
 
                     os.rename(img_path, now_img_path)
 
+                    with Image.open(now_img_path) as img:
+                        img.thumbnail((w * compress_ratio, h * compress_ratio))
+                        compress_img_path = os.path.join(store_compress_dir, now_img_name)
+                        img.save(compress_img_path)
+
                 except:  # 数据库加入失败，则不保留上传图片
                     os.remove(img_path)
+                    os.remove(now_img_path)
                     return HttpResponse(json.dumps({"status": False}))  # data.response.status=false 表示当前发生传输错误
 
                 '''
@@ -458,6 +469,11 @@ def upload_upload_asyn(request, folder_fake_name):
                 url = settings.MEDIA_URL + now_img_name
 
                 os.rename(img_path, now_img_path)
+
+                with Image.open(now_img_path) as img:
+                    img.thumbnail((w * compress_ratio, h * compress_ratio))
+                    compress_img_path = os.path.join(store_compress_dir, now_img_name)
+                    img.save(compress_img_path)
 
             except:  # 数据库加入失败，则不保留上传图片
                 os.remove(img_path)
@@ -665,7 +681,8 @@ def delete_select_img(request, folder_fake_name):
                 if (flag):
                     try:
                         now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
-                                                                            folder_id=now_choose_folder.id).values("id").aggregate(Max("id"))
+                                                                            folder_id=now_choose_folder.id).values(
+                            "id").aggregate(Max("id"))
                         if (now_user_max_img_id):
                             now_choose_foldercover.pic_id = now_user_max_img_id["id__max"]
                             now_choose_foldercover.save()
