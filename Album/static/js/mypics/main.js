@@ -2,6 +2,18 @@ var current_page = 1;
 (function ($) {
     "use strict";
 
+    $(".choose_model_img").each(function () {
+        if ($(this).attr("name") == "ALL") {
+            $(this).remove();
+        }
+    });
+
+    $(".popup-with-move-anim").each(function (){
+        if ($(this).attr("name") == "ALL") {
+            $(this).addClass("ALL_folder")
+        }
+    })
+
     var pics;
     var pics_count;
 
@@ -197,6 +209,7 @@ $("#change_model").click(function () {
         $("#delete_few").css("display", "inline-block")
         $("#select_all").css("display", "inline-block")
         $(".popup-with-move-anim").css("display", "none");
+        $(".ALL_folder").css("display","block");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
@@ -272,5 +285,43 @@ $("#select_all").click(function () {
         $(this).val("zero");
         $(this).text("SELECT ALL");
     }
+});
+
+$("#modal_ok").click(function () {
+    var input_name = $("#input_folder_name").val();
+    input_name = input_name.trim()
+    if (input_name && input_name != "") {
+        $.ajax({
+            url: "/add_folder/",
+            type: "POST",
+            data: $("#addFolderForm").serialize(),
+            dataType: "json",
+            success: function (data) {
+                var add_status = data["add_status"],
+                    is_same_name = data["is_same_name"];
+                if (add_status == "false" && is_same_name == "true"
+                ) {
+                    toastr.warning("Folder with the same name exists !")
+                    $("#input_folder_name").focus()
+                } else if (add_status == "false") {
+                    toastr.warning("Failed to Add \"" + input_name + "\" Folder");
+                } else if (add_status == "true") {
+                    toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
+                    setTimeout(function () {
+                        window.location.href = "";
+                    }, 500);
+                }
+            },
+            error: function () {
+                toastr.error("Error , Please Try again !")
+            }
+        });
+    } else {
+        toastr.error("Folder Name can't be empty !")
+    }
+});
+
+$("#modal_close").click(function () {
+    $("#input_folder_name").val("")
 });
 

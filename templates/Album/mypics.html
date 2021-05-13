@@ -24,17 +24,24 @@
 
     <div class="modal fade" id="launch-add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+        <div class="modal-dialog modal-lg" role="document" style="max-width: 50%;margin-top: 15rem;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
                 </div>
                 <div class="modal-body">
-                    <input class="input" type="text" >
+                    <form id="addFolderForm">
+                        <div class="form-group">
+                            <input value="" class="form-control-input" id="input_folder_name" tabindex="1" name="folder_name"
+                                   autocomplete="off" autofocus>
+                            <label class="label-control" for="input_folder_name"><i class="uil uil-folder-info"></i>&nbsp;Folder
+                                Name</label>
+                        </div>
+                    </form>
                     <div id="kartik-file-errors"></div>
                 </div>
                 <div class="modal-footer">
-                    <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button id="modal_ok" type="button" class="btn btn-success"
                             style="padding: 0.5rem 3rem;">OK
                     </button>
                     <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
@@ -101,14 +108,14 @@
                             {% for p in folders %}
                                 <div id='img_{{ p.id }}' class="element-item development">
                                     <div>
-                                        <a title={{ p.name }} class="popup-with-move-anim" href={{ p.href }}>
+                                        <a title={{ p.name }} class="popup-with-move-anim" href={{ p.href }} name={{ p.name }}>
                                             <div class="element-item-overlay"><span class="element_1"
                                                                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
                                             </div>
                                             <div class="zoomImage11 element_2"
                                                  style="background-image: url({{ p.path }})"></div>
                                         </a>
-                                        <a title={{ p.name }} class="choose_model_img">
+                                        <a title={{ p.name }} class="choose_model_img" name={{ p.name }}>
                                             <div class="element-item-overlay "><span class="element_3"
                                                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
                                             </div>

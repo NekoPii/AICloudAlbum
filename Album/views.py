@@ -24,6 +24,8 @@ from PIL import Image
 from threading import Thread, Lock
 import time
 
+zeroid = 1
+
 # Create your views here.
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
@@ -78,7 +80,6 @@ def login(request):
                     request.session["name"] = user.name
                     res["loginIn"] = "true"
                     res["message"] = "Login Successfully 🌸 ~"
-                    res["code"]=hash_code("1",salt="neko_img")
                     return HttpResponse(json.dumps(res))
                 else:
                     res["loginIn"] = "false"
@@ -132,9 +133,9 @@ def signup(request):
                 new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
                 new_ini_folder.save()
 
-                zero_img=models.Picture.objects.get(pk=1)
+                zero_img = models.Picture.objects.get(pk=zeroid)
 
-                new_ini_folder_cover=models.FolderCover(pic_id=zero_img.id,folder_id=new_ini_folder.id)
+                new_ini_folder_cover = models.FolderCover(pic_id=zero_img.id, folder_id=new_ini_folder.id)
                 new_ini_folder_cover.save()
 
                 request.session["is_login"] = True
@@ -169,11 +170,11 @@ def ajax_val(request):
         return JsonResponse(json_data)
 
 
-def ajax_pics(request,folder_fake_name):
+def ajax_pics(request, folder_fake_name):
     if request.is_ajax():
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        now_folder=models.Folder.objects.get(fake_name=folder_fake_name)
+        now_folder = models.Folder.objects.get(fake_name=folder_fake_name)
         pics = models.Picture.objects.filter(folder_id=now_folder.id)
         json_data = {}
         json_data["pics"] = []
@@ -182,40 +183,43 @@ def ajax_pics(request,folder_fake_name):
             p.size = round(p.size, 2)
             p.path = os.path.join('/upload_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
-            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,"height":p.height,"width":p.width,"upload_time":p.upload_time}
+            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time}
             json_data["pics"].append(pic)
             cnt += 1
         count = pics.count()
         json_data["count"] = count
-        json_data["status"]=1
+        json_data["status"] = 1
 
         return JsonResponse(json_data)
     else:
         # raise Http404
         json_data = {'status': 0}
         return JsonResponse(json_data)
+
 
 def ajax_folders(request):
     if request.is_ajax():
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        folders=models.Folder.objects.filter(user_id=user.phone)
+        folders = models.Folder.objects.filter(user_id=user.phone)
         json_data = {}
         json_data["folders"] = []
         cnt = 1
         for p in folders:
-            foldercover=models.FolderCover.objects.get(folder_id=p.id)
-            cover_img=models.Picture.objects.get(pk=foldercover.pic_id)
+            foldercover = models.FolderCover.objects.get(folder_id=p.id)
+            cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
             p.href = "/mypics/" + p.fake_name + "/"
             p.size = round(p.total_size, 2)
             p.path = os.path.join('/upload_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
-            folder = {"size": p.total_size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,"href":p.href}
+            folder = {"size": p.total_size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                      "href": p.href}
             json_data["folders"].append(folder)
             cnt += 1
         count = folders.count()
         json_data["count"] = count
-        json_data["status"]=1
+        json_data["status"] = 1
 
         return JsonResponse(json_data)
     else:
@@ -224,12 +228,9 @@ def ajax_folders(request):
         return JsonResponse(json_data)
 
 
-
 def welcome(request):
     pass
     return render(request, "Album/welcome.html")
-
-
 
 
 def mypics_index(request):
@@ -284,7 +285,6 @@ def mypics_folder(request, folder_fake_name):
             return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
-
 
 
 @csrf_exempt
@@ -589,7 +589,7 @@ def delete_img(request, folder_fake_name):
             now_user = models.User.objects.get(phone=phone)
             now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
             now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
-            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+            zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
             flag = False
             try:
@@ -608,9 +608,9 @@ def delete_img(request, folder_fake_name):
                         "id").annotate(maxid=Max("id"))
                     if (now_user_max_img_id):
                         now_choose_foldercover.update(pic_id=now_user_max_img_id)
-                res["delete_status"] = True
+                res["delete_status"] = "true"
             except:
-                res["delete_status"] = False
+                res["delete_status"] = "false"
 
             response = HttpResponse(json.dumps(res))
             return response
@@ -633,7 +633,7 @@ def delete_select_img(request, folder_fake_name):
             now_user = models.User.objects.get(phone=phone)
             now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
             now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
-            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+            zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
             if check_list:
                 cnt = 0
@@ -660,17 +660,17 @@ def delete_select_img(request, folder_fake_name):
                         continue
                 res["delete_cnt"] = cnt
                 if cnt > 0:
-                    res["delete_status"] = True
+                    res["delete_status"] = "true"
                     response = HttpResponse(json.dumps(res))
                     return response
                 else:
-                    res["delete_status"] = False
+                    res["delete_status"] = "false"
                     response = HttpResponse(json.dumps(res))
                     return response
             else:
                 response = HttpResponse(json.dumps(res))
                 return response
-        return mypics_folder(request,folder_fake_name)
+        return mypics_folder(request, folder_fake_name)
     return redirect("/login/")
 
 
@@ -700,9 +700,9 @@ def delete_folder(request):
                     img.delete()
                     os.remove(path)
 
-                res["delete_status"] = True
+                res["delete_status"] = "true"
             except:
-                res["delete_status"] = False
+                res["delete_status"] = "false"
 
             response = HttpResponse(json.dumps(res))
             return response
@@ -743,11 +743,11 @@ def delete_select_folder(request):
                         continue
                 res["delete_cnt"] = cnt
                 if cnt > 0:
-                    res["delete_status"] = True
+                    res["delete_status"] = "true"
                     response = HttpResponse(json.dumps(res))
                     return response
                 else:
-                    res["delete_status"] = False
+                    res["delete_status"] = "false"
                     response = HttpResponse(json.dumps(res))
                     return response
             else:
@@ -765,15 +765,16 @@ def add_folder(request):
             phone = request.session["phone"]
             folder_name = request.POST["folder_name"]
 
-            res = {"add_status": None}
+            res = {"add_status": None, "is_same_name": None}
 
             now_user = models.User.objects.get(phone=phone)
-            zero_pic = models.Picture.objects.get(id=1)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
+            zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
             is_same_foldername = models.Folder.objects.filter(name=folder_name)
 
             if is_same_foldername:
-                res["add_status"] = False
+                res["add_status"] = "false"
+                res["is_same_name"] = "true"
 
             else:
                 try:
@@ -790,9 +791,11 @@ def add_folder(request):
                     new_foldercover = models.FolderCover(folder_id=new_folder.id, pic_id=zero_pic.id)
                     new_foldercover.save()
 
-                    res["add_status"] = True
+                    res["add_status"] = "true"
+                    res["is_same_name"] = "false"
                 except:
-                    res["add_status"] = False
+                    res["add_status"] = "false"
+                    res["is_same_name"] = "false"
 
             response = HttpResponse(json.dumps(res))
             return response

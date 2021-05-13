@@ -140,7 +140,6 @@
                                         if (data.loginIn == "true") {
                                             toastr.success(data.message)
                                             setTimeout(function () {
-                                                alert(data.code)
                                                 location.href = "/";
                                             }, 500);
                                         }

@@ -23,5 +23,6 @@ urlpatterns = [
     path("delete_select_img/",views.delete_select_img,name="delete_select_img"),
     path("delete_folder/",views.delete_folder,name="delete_folder"),
     path("delete_select_folder/",views.delete_select_folder,name="delete_select_folder"),
+    path("add_folder/",views.add_folder,name="add_folder"),
 ]
 
