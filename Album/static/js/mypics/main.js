@@ -8,7 +8,7 @@ var current_page = 1;
         }
     });
 
-    $(".popup-with-move-anim").each(function (){
+    $(".popup-with-move-anim").each(function () {
         if ($(this).attr("name") == "ALL") {
             $(this).addClass("ALL_folder")
         }
@@ -22,7 +22,7 @@ var current_page = 1;
     $(".choose_model_img").css("display", "none");
     $("#delete_few").css("display", "none");
     $("#select_all").css("display", "none");
-    $(".download_select").prop("checked", false);
+    $(".folder_select").prop("checked", false);
 
 
     $.getJSON("/ajax_folders/", function (data) {
@@ -197,7 +197,27 @@ var current_page = 1;
         });
     });
 
+    if ($("#input_folder_name").val() != '') {
+        $("#input_folder_name").addClass('notEmpty');
+    } else {
+        $("#input_folder_name").removeClass('notEmpty');
+    }
+
+
+    $("input, textarea").keyup(function () {
+        if ($(this).val() != '') {
+            $(this).addClass('notEmpty');
+        } else {
+            $(this).removeClass('notEmpty');
+        }
+    });
+
+    $(".button, a, button").mouseup(function () {
+        $(this).blur();
+    });
+
 })(jQuery);
+
 
 $("#change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
@@ -205,14 +225,15 @@ $("#change_model").click(function () {
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
-        $(this).text("VIEW");
+        $(".select_text").css("display","none");
+        $(".view_text").css("display","");
         $("#delete_few").css("display", "flex")
         $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
-        $(".ALL_folder").css("display","block");
-        $(".ALL_folder").attr("disabled",true).css("pointer-events","none");
+        $(".ALL_folder").css("display", "block");
+        $(".ALL_folder").attr("disabled", true).css("pointer-events", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
-        $(".download_select").prop("checked", false);
+        $(".folder_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
         $("#select_cnt").text(cnt.toString());
@@ -228,40 +249,43 @@ $("#change_model").click(function () {
         }
 
         $(this).val("select");
-        $(this).text("SELECT");
+        $(".select_text").css("display","");
+        $(".view_text").css("display","none");
         $("#delete_few").css("display", "none")
         $("#select_all").css("display", "none")
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
-        $(".ALL_folder").attr("disabled",false).css("pointer-events","");
+        $(".ALL_folder").attr("disabled", false).css("pointer-events", "");
         cnt = 0;
     }
 });
 
 $(".choose_model_img").click(function () {
 
-    if ($(this).find(".download_select").prop("checked") == true) {//已选中
-        $(this).find(".download_select").prop("checked", false);
+    if ($(this).find(".folder_select").prop("checked") == true) {//已选中
+        $(this).find(".folder_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem solid red")
         cnt -= 1;
         $("#select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
-            $("#select_all").text("SELECT ALL");
+            $(".select_all_text").css("display", "");
+            $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
             $("#select_all").text("CANCEL");
         }
     } else {//未选中
-        $(this).find(".download_select").prop("checked", true);
+        $(this).find(".folder_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #8DC26F");
         cnt += 1;
         $("#select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
-            $("#select_all").text("SELECT ALL");
+            $(".select_all_text").css("display", "");
+            $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
             $("#select_all").text("CANCEL");
@@ -271,7 +295,7 @@ $(".choose_model_img").click(function () {
 
 $("#select_all").click(function () {
     if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
-        $(".download_select").prop("checked", true);
+        $(".folder_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #8DC26F");
         cnt = $(".choose_model_img").length;
@@ -279,13 +303,14 @@ $("#select_all").click(function () {
         $(this).val("all");
         $(this).text("CANCEL");
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
-        $(".download_select").prop("checked", false);
+        $(".folder_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem solid red");
         cnt = 0;
         $("#select_cnt").text(cnt.toString());
         $(this).val("zero");
-        $(this).text("SELECT ALL");
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
     }
 });
 

@@ -68,25 +68,33 @@
                     <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div style="height: 5rem;display: flex;">
-                <button type="button" class="upload_btn upload-modal-btn-solid-lg" data-toggle="modal"
-                        data-target="#launch-upload" style="display: flex;margin: auto 0;">
-                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
+            <div style="display: flex;flex-wrap: wrap;align-items: center;">
+                <a href="/mypics/" class="btn-solid-reg" style="display: flex;margin: 0.5rem 1rem;">
+                    <span><i class="uil uil-step-backward">&nbsp;Back</i></span>
+                </a>
 
-                </button>
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                        style="display: flex;margin: auto 1rem;">SELECT
-                </button>
-                <button id="download_few" class="btn-solid-reg" type="button"
-                        style="display: none;margin: auto 1rem;"><span>Download&nbsp;</span><span
-                        class="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
-                </button>
-                <button id="delete_few" class="btn-solid-reg" type="button"
-                        style="display: none;margin: auto 1rem;"><span>Delete&nbsp;</span><span
-                        class="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
+                        style="display: flex;margin: 0.5rem 1rem;">
+                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
+                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
                 </button>
                 <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                        style="display: none;margin: auto 1rem;">SELECT ALL
+                        style="display: none;margin: 0.5rem 1rem;">
+                    <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
+                    <span class="cancel_text" style="display: none;"><i
+                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
+                </button>
+                <button type="button" class="upload_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                        data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
+                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
+                </button>
+                <button id="download_few" class="btn-solid-reg" type="button"
+                        style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
+                        class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                </button>
+                <button id="delete_few" class="rm-btn-solid-reg" type="button"
+                        style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span
+                        class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
                 </button>
             </div>
             <div class="row">
@@ -162,12 +170,16 @@
                     <b class="element_10"> {{ p.height }}&nbsp;px</b>
                     <h4>Height:</h4>
                     <b class="element_11">{{ p.width }}&nbsp;px</b>
-                    <div class="btn-local1" style="margin-top: 2rem;">
+                    <div class="btn-local1" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
                             <input class="download_input element_12" value={{ p.fake_name }} type="hidden"
                                    name="img_name">
-                            <button class="download_one btn-solid-reg" type="button">DownLoad</button>
-                            <button class="delete_one btn-solid-reg" type="button">Delete</button>
+                            <button class="download_one btn-small" type="button"><i
+                                    class="uil uil-image-download"></i>&nbsp;DownLoad
+                            </button>
+                            <button class="delete_one rm-btn-small" type="button" style="margin-left:0.5rem;"><i
+                                    class="uil uil-image-times"></i>&nbsp;Delete
+                            </button>
                         </form>
                     </div>
                 </div> <!-- end of col -->

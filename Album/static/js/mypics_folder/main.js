@@ -233,7 +233,8 @@ $("#change_model").click(function () {
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
-        $(this).text("VIEW");
+        $(".select_text").css("display","none");
+        $(".view_text").css("display","");
         $("#download_few").css("display", "flex")
         $("#delete_few").css("display", "flex");
         $("#select_all").css("display", "flex")
@@ -255,7 +256,8 @@ $("#change_model").click(function () {
         }
 
         $(this).val("select");
-        $(this).text("SELECT");
+        $(".select_text").css("display","");
+        $(".view_text").css("display","none");
         $("#download_few").css("display", "none")
         $("#delete_few").css("display", "none");
         $("#select_all").css("display", "none")
@@ -275,10 +277,12 @@ $(".choose_model_img").click(function () {
         $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
-            $("#select_all").text("SELECT ALL");
+            $(".select_all_text").css("display", "");
+            $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
-            $("#select_all").text("CANCEL");
+            $(".select_all_text").css("display", "none");
+            $(".cancel_text").css("display", "");
         }
     } else {//未选中
         $(this).find(".download_select").prop("checked", true);
@@ -288,10 +292,12 @@ $(".choose_model_img").click(function () {
         $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
-            $("#select_all").text("SELECT ALL");
+            $(".select_all_text").css("display", "");
+            $(".cancel_text").css("display", "none");
         } else if (cnt == $(".choose_model_img").length) {
             $("#select_all").val("all");
-            $("#select_all").text("CANCEL");
+            $(".select_all_text").css("display", "none");
+            $(".cancel_text").css("display", "");
         }
     }
 });
@@ -304,7 +310,8 @@ $("#select_all").click(function () {
         cnt = $(".choose_model_img").length;
         $(".select_cnt").text(cnt.toString());
         $(this).val("all");
-        $(this).text("CANCEL");
+        $(".select_all_text").css("display", "none");
+        $(".cancel_text").css("display", "");
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
@@ -312,6 +319,7 @@ $("#select_all").click(function () {
         cnt = 0;
         $(".select_cnt").text(cnt.toString());
         $(this).val("zero");
-        $(this).text("SELECT ALL");
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
     }
 });

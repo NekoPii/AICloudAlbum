@@ -32,7 +32,8 @@
                 <div class="modal-body">
                     <form id="addFolderForm">
                         <div class="form-group">
-                            <input value="" class="form-control-input" id="input_folder_name" tabindex="1" name="folder_name"
+                            <input value="" class="form-control-input" id="input_folder_name" tabindex="1"
+                                   name="folder_name"
                                    autocomplete="off" autofocus>
                             <label class="label-control" for="input_folder_name"><i class="uil uil-folder-info"></i>&nbsp;Folder
                                 Name</label>
@@ -78,37 +79,45 @@
                     <h2 class="test">FOLDER That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div style="height: 5rem;display: flex;">
-                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
-                        data-target="#launch-add" style="display: flex;margin: auto 0;">
-                    <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
-                </button>
-
+            <div style="display: flex;flex-wrap: wrap;align-items: center;">
                 <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                        style="display: flex;margin: auto 1rem;"><span>SELECT</span>
-                </button>
-
-                <button id="delete_few" class="btn-solid-reg" type="button"
-                        style="display: none;margin: auto 1rem;"><span>Delete&nbsp;</span><span
-                        id="select_cnt" style="font-weight: bold;">0</span><span>&nbsp;Selected</span>
+                        style="display: flex;margin: 0.5rem 1rem;">
+                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
+                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
                 </button>
 
                 <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                        style="display: none;margin: auto 1rem;"><span>SELECT ALL</span>
+                        style="display: none;margin: 0.5rem 1rem;">
+                    <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
+                    <span class="cancel_text" style="display: none;"><i
+                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
                 </button>
 
+
+                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                        data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">
+                    <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
+                </button>
+
+                <button id="delete_few" class="rm-btn-solid-reg" type="button"
+                        style="display: none;margin: 0.5rem 1rem;">
+                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span id="select_cnt"
+                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                </button>
 
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid">
-                        <form id="downloadFewForm">
+                        <form id="folderFewForm">
                             {% for p in folders %}
                                 <div id='img_{{ p.id }}' class="element-item development">
                                     <div>
-                                        <a title={{ p.name }} class="popup-with-move-anim" href={{ p.href }} name={{ p.name }}>
-                                            <div class="element-item-overlay"><span class="element_1"
-                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
+                                        <a title={{ p.name }} class="popup-with-move-anim"
+                                           href={{ p.href }} name={{ p.name }}>
+                                            <div class="element-item-overlay">
+                                                <span class="element_1"
+                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
                                             </div>
                                             <div class="zoomImage11 element_2"
                                                  style="background-image: url({{ p.path }})"></div>
@@ -119,9 +128,9 @@
                                             </div>
                                             <div class="zoomImage11 choose_zoomImage11 element_4"
                                                  style="background-image: url({{ p.path }});"></div>
-                                            <input class="download_select element_5" type="checkbox"
+                                            <input class="folder_select element_5" type="checkbox"
                                                    style="display: none"
-                                                   value={{ p.fake_name }} name="img_name">
+                                                   value={{ p.fake_name }} name="folder_name">
                                         </a>
                                     </div>
                                 </div>

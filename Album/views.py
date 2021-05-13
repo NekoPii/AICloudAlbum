@@ -592,7 +592,7 @@ def delete_img(request, folder_fake_name):
             try:
                 now_pic = models.Picture.objects.get(fake_name=fake_name)
                 if now_pic.id == now_choose_foldercover.pic_id:
-                    now_choose_foldercover.pic_id=zero_pic.id
+                    now_choose_foldercover.pic_id = zero_pic.id
                     now_choose_foldercover.save()
                     flag = True
                 now_choose_folder.cnt -= 1
@@ -604,10 +604,16 @@ def delete_img(request, folder_fake_name):
                 now_pic.delete()
                 os.remove(path)
                 if (flag):
-                    now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
-                        "id").annotate(maxid=Max("id"))
-                    if (now_user_max_img_id):
-                        now_choose_foldercover.update(pic_id=now_user_max_img_id[0]["maxid"])
+                    try:
+                        now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
+                                                                            folder_id=now_choose_folder.id).values(
+                            "id").aggregate(Max("id"))
+                        if (now_user_max_img_id):
+                            now_choose_foldercover.pic_id = now_user_max_img_id["id__max"]
+                            now_choose_foldercover.save()
+                    except:
+                        pass
+
                 res["delete_status"] = "true"
             except:
                 res["delete_status"] = "false"
@@ -637,8 +643,8 @@ def delete_select_img(request, folder_fake_name):
 
             if check_list:
                 cnt = 0
+                flag = False
                 for now in check_list:
-                    flag = False
                     try:
                         now_pic = models.Picture.objects.get(fake_name=now)
                         if now_pic.id == now_choose_foldercover.pic_id:
@@ -653,14 +659,18 @@ def delete_select_img(request, folder_fake_name):
                         path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                         now_pic.delete()
                         os.remove(path)
-                        if (flag):
-                            now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone).values(
-                                "id").annotate(maxid=Max("id"))
-                            if (now_user_max_img_id):
-                                now_choose_foldercover.update(pic_id=now_user_max_img_id[0]["maxid"])
                         cnt += 1
                     except:
                         continue
+                if (flag):
+                    try:
+                        now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
+                                                                            folder_id=now_choose_folder.id).values("id").aggregate(Max("id"))
+                        if (now_user_max_img_id):
+                            now_choose_foldercover.pic_id = now_user_max_img_id["id__max"]
+                            now_choose_foldercover.save()
+                    except:
+                        pass
                 res["delete_cnt"] = cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
@@ -743,6 +753,7 @@ def delete_select_folder(request):
                             path = os.path.join(store_dir, img.fake_name + "." + img.type)
                             img.delete()
                             os.remove(path)
+                        now_folder.delete()
                         cnt += 1
                     except:
                         continue

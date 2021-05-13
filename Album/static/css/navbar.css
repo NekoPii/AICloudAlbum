@@ -97,7 +97,7 @@
 
     .navbar-custom.top-nav-collapse {
         padding: 0.375rem 1.5rem 0.375rem 2rem;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgb(255, 255, 255);
         box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
     }
 
@@ -186,7 +186,7 @@
 
     .navbar-custom.top-nav-collapse {
         padding: 0.375rem 1.5rem 0.375rem 2rem;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgb(255, 255, 255);
         box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
     }
 

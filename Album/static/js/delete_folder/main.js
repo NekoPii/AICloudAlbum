@@ -29,23 +29,23 @@ $("#delete_few").click(function () {
                     action: function () {
                         resolve();
                         $.ajax({
-                            url: "/delete_select_img/" + now_folder_fake_name + "/",
+                            url: "/delete_select_folder/",
                             type: "POST",
-                            data: $("#downloadFewForm").serialize(),
+                            data: $("#folderFewForm").serialize(),
                             dataType: "json",
                             success: function (data) {
                                 var delete_cnt = data["delete_cnt"],
                                     delete_status = data["delete_status"],
                                     select_cnt = data["select_cnt"];
                                 if (delete_status == "false") {
-                                    toastr.warning("Failed to Delete " + select_cnt.toString() + " Image(s) !");
+                                    toastr.warning("Failed to Delete " + select_cnt.toString() + " Folder(s) !");
                                 } else if (delete_status == "true") {
-                                    toastr.success(delete_cnt.toString() + " Image(s) Delete Successfully ~");
+                                    toastr.success(delete_cnt.toString() + " Folder(s) Delete Successfully ~");
                                     setTimeout(function () {
-                                        window.location.href = "";
+                                        window.location.reload();
                                     }, 500);
                                 } else if (delete_status == null) {
-                                    toastr.info("No Images Selected !");
+                                    toastr.info("No Folder Selected !");
                                 }
                             },
                             error: function () {
