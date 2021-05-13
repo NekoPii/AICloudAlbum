@@ -69,6 +69,7 @@ $(document).ready(function () {
         autoReplace: true,  // 达到最大上传数时，自动替换之前的附件
         required: true,
         validateInitialCount: true,
+        maxFileCount: 20,
         //enctype: 'multipart/form-data',
         //uploadExtraData: function () {  // uploadExtraData携带附加参数，上传时携带csrftoken
         //    return {csrfmiddlewaretoken: $.cookie('csrftoken'), doc_uuid: $('[name=doc_uuid]').val()}

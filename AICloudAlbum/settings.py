@@ -146,3 +146,5 @@ CAPTCHA_LENGTH = 4
 # 上传文件路径
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

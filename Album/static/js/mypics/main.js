@@ -14,6 +14,12 @@ var current_page = 1;
         }
     });
 
+    $(document).keydown(function (event){
+        if(event.keyCode == 13) {
+            $("#input_folder_name").focus();
+        }
+    });
+
     var pics;
     var pics_count;
 
@@ -317,6 +323,43 @@ $("#select_all").click(function () {
     }
 });
 
+$("#input_folder_name").on("keypress", function (event) {
+    if(event.keyCode == 13) {
+        $(this).focus();
+        var input_name = $(this).val();
+        input_name = input_name.trim()
+        if (input_name && input_name != "") {
+            $.ajax({
+                url: "/add_folder/",
+                type: "POST",
+                data: $("#addFolderForm").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    var add_status = data["add_status"],
+                        is_same_name = data["is_same_name"];
+                    if (add_status == "false" && is_same_name == "true"
+                    ) {
+                        toastr.warning("Folder with the same name exists !")
+                        $("#input_folder_name").focus()
+                    } else if (add_status == "false") {
+                        toastr.warning("Failed to Add \"" + input_name + "\" Folder");
+                    } else if (add_status == "true") {
+                        toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 500);
+                    }
+                },
+                error: function () {
+                    toastr.error("Error , Please Try again !")
+                }
+            });
+        } else {
+            toastr.error("Folder Name can't be empty !");
+        }
+    }
+});
+
 $("#modal_ok").click(function () {
     var input_name = $("#input_folder_name").val();
     input_name = input_name.trim()
@@ -338,7 +381,7 @@ $("#modal_ok").click(function () {
                 } else if (add_status == "true") {
                     toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
                     setTimeout(function () {
-                        window.location.href = "";
+                        window.location.reload();
                     }, 500);
                 }
             },

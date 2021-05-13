@@ -32,6 +32,7 @@
                 <div class="modal-body">
                     <form id="addFolderForm">
                         <div class="form-group">
+                            <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
                             <input value="" class="form-control-input" id="input_folder_name" tabindex="1"
                                    name="folder_name"
                                    autocomplete="off" autofocus>
@@ -42,10 +43,10 @@
                     <div id="kartik-file-errors"></div>
                 </div>
                 <div class="modal-footer">
-                    <button id="modal_ok" type="button" class="btn btn-success"
+                    <button id="modal_ok" type="button" class="btn btn-success" tabindex="2"
                             style="padding: 0.5rem 3rem;">OK
                     </button>
-                    <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="3"
                             style="padding: 0.5rem 3rem;">Close
                     </button>
                 </div>
@@ -92,7 +93,6 @@
                     <span class="cancel_text" style="display: none;"><i
                             class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
                 </button>
-
 
                 <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
                         data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">

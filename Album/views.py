@@ -794,8 +794,11 @@ def delete_select_folder(request):
                         now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
                         for img in now_imgs:
                             path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                            compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
                             img.delete()
                             os.remove(path)
+                            os.remove(compress_path)
+
                         now_folder.delete()
                         cnt += 1
                     except:
