@@ -87,5 +87,5 @@ $("#modal_modify_ok").click(function () {
 $("#modal_modify_close").click(function () {
     $("#input_folder_mod_name").val("")
     var ori_select = $("#folder_names option:first").val()
-    $("#folder_names").val(ori_select)
+    $(".selectpicker").selectpicker("val",ori_select)
 });
