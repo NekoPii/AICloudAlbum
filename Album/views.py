@@ -863,3 +863,40 @@ def add_folder(request):
             return response
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
+
+
+@csrf_exempt
+def modify_folder(request, now_folder_name):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+            modify_folder_name = request.POST["input_folder_name"]
+
+            res = {"mod_status": None, "is_same_name": None}
+
+            now_user = models.User.objects.get(phone=phone)
+            now_folder = models.Folder.objects.get(user_id=phone,name=now_folder_name)
+            is_same_foldername = models.Folder.objects.filter(name=modify_folder_name)
+
+            if is_same_foldername:
+                res["mod_status"] = "false"
+                res["is_same_name"] = "true"
+
+            else:
+                try:
+
+                    now_folder.name = modify_folder_name
+                    now_folder.modify_time=datetime.datetime.now()
+                    now_folder.save()
+
+                    res["mod_status"] = "true"
+                    res["is_same_name"] = "false"
+                except:
+                    res["mod_status"] = "false"
+                    res["is_same_name"] = "false"
+
+            response = HttpResponse(json.dumps(res))
+            return response
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")

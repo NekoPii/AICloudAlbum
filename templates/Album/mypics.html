@@ -7,6 +7,7 @@
 {% block css %}
     <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.css" rel="stylesheet">
     <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
     <link href="/static/css/mypics/swiper.css" rel="stylesheet">
@@ -14,7 +15,6 @@
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
     <link href="/static/css/upload/main.css" rel="stylesheet">
     <link href="/static/css/download/main.css" rel="stylesheet">
-
 {% endblock %}
 
 {% block main %}
@@ -25,7 +25,7 @@
     <div class="modal fade" id="launch-add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
         <div class="modal-dialog modal-lg" role="document" style="max-width: 50%;margin-top: 15rem;">
-            <div class="modal-content">
+            <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
                 </div>
@@ -40,13 +40,63 @@
                                 Name</label>
                         </div>
                     </form>
-                    <div id="kartik-file-errors"></div>
                 </div>
                 <div class="modal-footer">
                     <button id="modal_ok" type="button" class="btn btn-success" tabindex="2"
                             style="padding: 0.5rem 3rem;">OK
                     </button>
                     <button id="modal_close" type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="3"
+                            style="padding: 0.5rem 3rem;">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="launch-mod" tabindex="-1" role="dialog" aria-labelledby="modModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg" role="document" style="max-width: 40%;margin-top: 15rem;">
+            <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modModalLabel">Modify Folder Name</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="modifyFolderForm">
+                        <div class="form-group">
+                            <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
+                            <div class="form-group" style="margin:1rem 0 3rem 0;display: inline-flex;align-content: center;width: 100%;">
+                                <span style="color:#787976;font-weight: bold;display: inline-flex;flex-basis: 35%;align-items: center;justify-content: center;">&nbsp;&nbsp;&nbsp;Select Folder Name:</span>
+                                <select id="folder_names" class="selectpicker show-menu-arrow show-tick" tabindex="1"
+                                        data-live-search="true"
+                                        style="display: inline-flex;" data-width="100%"
+                                        data-size="5">
+                                    <option>&nbsp;...</option>
+                                    {% for f in folders %}
+                                        {% ifnotequal f.name "ALL" %}
+                                            <option data-tokens={{ f.name }}>{{ f.name }}</option>
+                                        {% endifnotequal %}
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <input value="" class="form-control-input" id="input_folder_mod_name" tabindex="2"
+                                       name="input_folder_name"
+                                       autocomplete="off" autofocus>
+                                <label class="label-control" for="input_folder_mod_name"><i
+                                        class="uil uil-folder-info"></i>&nbsp;New
+                                    Folder
+                                    Name</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal_modify_ok" type="button" class="btn btn-success" tabindex="3"
+                            style="padding: 0.5rem 3rem;">OK
+                    </button>
+                    <button id="modal_modify_close" type="button" class="btn btn-secondary" data-dismiss="modal"
+                            tabindex="4"
                             style="padding: 0.5rem 3rem;">Close
                     </button>
                 </div>
@@ -94,15 +144,20 @@
                             class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
                 </button>
 
+                <button id="delete_few" class="rm-btn-solid-reg" type="button"
+                        style="display: none;margin: 0.5rem 1rem;">
+                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span id="select_cnt"
+                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                </button>
+
                 <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
                         data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">
                     <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
                 </button>
 
-                <button id="delete_few" class="rm-btn-solid-reg" type="button"
-                        style="display: none;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span id="select_cnt"
-                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                        data-target="#launch-mod" style="display: flex;margin: 0.5rem 1rem;">
+                    <span><i class="uil uil-folder-info"></i>&nbsp;Modify Folder Name</span>
                 </button>
 
             </div>
@@ -169,6 +224,7 @@
     <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/sortable.min.js"></script>
     <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js"></script>
     <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js"></script>
+    <script src="/static/vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
     <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
     <script src="/static/vendor/swiper/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
@@ -176,5 +232,6 @@
     <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
     <script src="/static/js/mypics/main.js"></script>
     <script src="/static/js/delete_folder/main.js"></script>
+    <script src="/static/js/modify_folder/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 {% endblock %}

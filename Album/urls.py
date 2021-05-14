@@ -24,5 +24,6 @@ urlpatterns = [
     path("delete_folder/",views.delete_folder,name="delete_folder"),
     path("delete_select_folder/",views.delete_select_folder,name="delete_select_folder"),
     path("add_folder/",views.add_folder,name="add_folder"),
+    path("modify_folder/<str:now_folder_name>/",views.modify_folder,name="modify_folder"),
 ]
 
