@@ -14,12 +14,6 @@ var current_page = 1;
         }
     });
 
-    $(document).keydown(function (event){
-        if(event.keyCode == 13) {
-            $("#input_folder_name").focus();
-        }
-    });
-
     var pics;
     var pics_count;
 

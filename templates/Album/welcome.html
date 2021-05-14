@@ -16,6 +16,7 @@
         <div id="loader"></div>
     </div>
 
+        <div id="test" style="position:fixed;top:0px;z-index:0;"></div>
 
     <!-- Header -->
     <header id="header" class="header" id="beta">
@@ -38,6 +39,7 @@
                                    style="font-size: medium">LOGINOUT</a>
                             {% endifequal %}
                             <a class="btn-solid-lg page-scroll" href="/admin/" style="font-size: medium">ADMIN</a>
+
                         </div>
                     </div> <!-- end of col -->
                 </div> <!-- end of row -->
@@ -49,6 +51,7 @@
 
 {% block js %}
     <script src="/static/js/preload/main.js"></script>
+    <script src="/static/vendor/sketch.min.js"></script>
     <script src="/static/js/welcome/morphext.min.js"></script>
     <script src="/static/js/welcome/scripts.js"></script>
     <script src="/static/js/changebackground.js"></script>
