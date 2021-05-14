@@ -64,7 +64,8 @@
                     <form id="modifyFolderForm">
                         <div class="form-group">
                             <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
-                            <div class="form-group" style="margin:1rem 0 3rem 0;display: inline-flex;align-content: center;width: 100%;">
+                            <div class="form-group"
+                                 style="margin:1rem 0 3rem 0;display: inline-flex;align-content: center;width: 100%;">
                                 <span style="color:#787976;font-weight: bold;display: inline-flex;flex-basis: 35%;align-items: center;justify-content: center;">Select Folder Name:</span>
                                 <select id="folder_names" class="selectpicker show-menu-arrow show-tick" tabindex="1"
                                         data-live-search="true"
@@ -103,6 +104,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Counter -->
     <div id="counter">
@@ -150,12 +152,12 @@
                                                                                      style="font-weight: bold;">0</span>&nbsp;Selected</span>
                 </button>
 
-                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                <button type="button" class="add_btn btn-solid-reg" data-toggle="modal"
                         data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">
                     <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
                 </button>
 
-                <button type="button" class="add_btn upload-modal-btn-solid-lg" data-toggle="modal"
+                <button type="button" class="add_btn btn-solid-reg" data-toggle="modal"
                         data-target="#launch-mod" style="display: flex;margin: 0.5rem 1rem;">
                     <span><i class="uil uil-folder-info"></i>&nbsp;Modify Folder Name</span>
                 </button>
@@ -203,17 +205,16 @@
     <!-- end of projects -->
 
     <!-- pages-->
-    <div style="text-align: center">
-        <button id="back" class="btn-small" type="button"
+    <div class="container" style="text-align: center">
+        <button id="back" class="btn-solid-reg" type="button"
                 style="display:inline-block;">
             <<
         </button>
-        <button id="next" class="btn-small" type="button"
+        <button id="next" class="btn-solid-reg" type="button"
                 style="display: none;">
             >>
         </button>
     </div>
-
     <!--end of pages-->
 
 {% endblock %}

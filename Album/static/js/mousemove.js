@@ -1,9 +1,3 @@
-/* Template: Aria - Business HTML Landing Page Template
-   Author: Inovatik
-   Created: Jul 2019
-   Description: Custom JS file
-*/
-
 // ----------------------------------------
 
 // Particle
@@ -106,6 +100,7 @@ var COLOURS = ['#69D2E7', '#A7DBD8', '#E0E4CC', '#F38630', '#FA6900',
     '#FF4E50', '#F9D423'];
 
 
+
 var particles = [];
 
 var pool = [];
@@ -113,7 +108,7 @@ var pool = [];
 
 var demo = Sketch.create({
 
-    container: document.getElementById('test')
+    container: document.getElementById('mousemove')
 
 });
 
@@ -149,7 +144,7 @@ demo.spawn = function (x, y) {
 
     particle = pool.length ? pool.pop() : new Particle();
 
-    particle.init(x, y, random(5, 40));
+    particle.init(x, y, random(5, 20));
 
 
     particle.wander = random(0.5, 2.0);

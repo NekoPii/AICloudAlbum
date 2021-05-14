@@ -16,8 +16,6 @@
         <div id="loader"></div>
     </div>
 
-        <div id="test" style="position:fixed;top:0px;z-index:0;"></div>
-
     <!-- Header -->
     <header id="header" class="header" id="beta">
         <div class="header-content">
@@ -30,29 +28,26 @@
                                 classification
                                 powered by Neutral Network </p>
                             {% ifequal request.session.is_login None %}
-                                <a class="btn-solid-lg page-scroll" href="/login/" style="font-size: medium">LOGIN</a>
+                                <a class="btn-solid-lg page-scroll" href="/login/"
+                                   style="font-size: medium">LOGIN</a>
                             {% endifequal %}
 
                             {% ifequal request.session.is_login True %}
-                                <a class="btn-solid-lg page-scroll" href="/mypics/" style="font-size: medium">MYPICS</a>
+                                <a class="btn-solid-lg page-scroll" href="/mypics/"
+                                   style="font-size: medium">MYPICS</a>
                                 <a class="btn-solid-lg page-scroll" href="/loginout/"
                                    style="font-size: medium">LOGINOUT</a>
                             {% endifequal %}
                             <a class="btn-solid-lg page-scroll" href="/admin/" style="font-size: medium">ADMIN</a>
-
-                        </div>
-                    </div> <!-- end of col -->
-                </div> <!-- end of row -->
-            </div> <!-- end of container -->
-        </div> <!-- end of header-content -->
+                        </div> <!-- end of col -->
+                    </div> <!-- end of row -->
+                </div> <!-- end of container -->
+            </div> <!-- end of header-content -->
     </header> <!-- end of header -->
     <!-- end of header -->
 {% endblock %}
 
 {% block js %}
     <script src="/static/js/preload/main.js"></script>
-    <script src="/static/vendor/sketch.min.js"></script>
-    <script src="/static/js/welcome/morphext.min.js"></script>
-    <script src="/static/js/welcome/scripts.js"></script>
     <script src="/static/js/changebackground.js"></script>
 {% endblock %}

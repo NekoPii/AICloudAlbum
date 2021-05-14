@@ -1,5 +1,5 @@
-body{
-    background: rgb(250,250,250);
+body {
+    background: rgb(250, 250, 250);
 }
 
 .zoomImage11 {
@@ -122,7 +122,6 @@ body{
 }
 
 
-
 .choose_model_img {
     cursor: pointer;
 }
@@ -143,6 +142,7 @@ body{
 }
 
 .btn-solid-reg {
+    z-index: 1;
     display: inline-block;
     padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
     border: 0.125rem solid #64b3f4;
@@ -161,6 +161,7 @@ body{
 }
 
 .rm-btn-solid-reg {
+    z-index: 1;
     display: inline-block;
     padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
     border: 0.125rem solid #e53935;
@@ -179,6 +180,7 @@ body{
 }
 
 .btn-outline-reg {
+    z-index: 1;
     display: inline-block;
     padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
     border: 0.125rem solid #787976;
@@ -197,6 +199,7 @@ body{
 }
 
 .btn-small {
+    z-index: 1;
     display: inline-block;
     padding: 1rem 1.2rem 1rem 1.2rem;
     border: 0.125rem solid #64b3f4;
@@ -215,6 +218,7 @@ body{
 }
 
 .rm-btn-small {
+    z-index: 1;
     display: inline-block;
     padding: 1rem 1.2rem 1rem 1.2rem;
     border: 0.125rem solid #e53935;

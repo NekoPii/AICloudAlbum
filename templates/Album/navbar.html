@@ -51,6 +51,7 @@
 </div>
 <!--end sidebar-->
 
+<div id="mousemove" style="position:fixed;top:0;z-index:0;"></div>
 
 <div class="pusher">
     <!-- Navbar -->
@@ -67,8 +68,8 @@
             </a>
             <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
             <form action="/search/" method="post" id="searchForm" style="width: auto; ">
-                <div class="ui left icon input" >
-                    <input  class="searches" type="text" placeholder="搜索Album" >
+                <div class="ui left icon input">
+                    <input class="searches" type="text" placeholder="搜索Album">
                     <i class="search icon"></i>
                 </div>
             </form>
@@ -87,7 +88,7 @@
                         <a class="nav-link page-scroll" href="#intro">INTRO</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                        <a class="nav-link page-scroll" href="#contact">CONTACT</a>
                     <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
 
                 {% endifequal %}
@@ -105,6 +106,8 @@
 <script src="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.js"></script>
 <script src="/static/vendor/bootstrap-4.6.0/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
+<script src="/static/vendor/sketch.min.js"></script>
+<script src="/static/js/mousemove.js"></script>
 {% block js %}{% endblock %}
 <script src="/static/vendor/toastr/toastr.min.js"></script>
 <script src="/static/js/navbar.js"></script>
