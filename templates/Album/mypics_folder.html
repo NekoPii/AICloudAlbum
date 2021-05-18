@@ -46,7 +46,7 @@
     </div>
 
     <!-- Counter -->
-    <div id="counter" class="container">
+    <div id="counter" class="container" style="padding: 0;">
         <div class="cell">
             <div class="counter-value number-count" data-count={{ count }}>1</div>
             <div class="counter-info">Images<br>In Total</div>
@@ -61,48 +61,50 @@
 
     <!-- Projects -->
     <div id="projects" class="filter">
-        <div class="container">
+        <div class="container" style="padding: 0;">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="padding: 0;">
                     <div class="section-title">Images</div>
                     <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                <a href="/mypics/" class="btn-solid-reg" style="display: flex;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-step-backward">&nbsp;Back</i></span>
-                </a>
+            <div class="row">
+                <div style="display: flex;flex-wrap: wrap;align-items: center;">
+                    <a href="/mypics/" class="btn-solid-reg" style="display: flex;margin: 0.5rem 1rem;">
+                        <span><i class="uil uil-step-backward">&nbsp;Back</i></span>
+                    </a>
 
-                <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                        style="display: flex;margin: 0.5rem 1rem;">
-                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                </button>
-                <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                        style="display: none;margin: 0.5rem 1rem;">
-                    <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                    <span class="cancel_text" style="display: none;"><i
-                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                </button>
-                <button type="button" class="upload_btn btn-solid-reg" data-toggle="modal"
-                        data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
-                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
-                </button>
-                <button id="download_few" class="btn-solid-reg" type="button"
-                        style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
-                        class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                </button>
-                <button id="delete_few" class="rm-btn-solid-reg" type="button"
-                        style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span
-                        class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                </button>
+                    <button id="change_model" class="btn-solid-reg" type="button" value="select"
+                            style="display: flex;margin: 0.5rem 1rem;">
+                        <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
+                        <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
+                    </button>
+                    <button id="select_all" class="btn-solid-reg" type="button" value="zero"
+                            style="display: none;margin: 0.5rem 1rem;">
+                        <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
+                        <span class="cancel_text" style="display: none;"><i
+                                class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
+                    </button>
+                    <button type="button" class="upload_btn btn-solid-reg" data-toggle="modal"
+                            data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
+                        <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
+                    </button>
+                    <button id="download_few" class="btn-solid-reg" type="button"
+                            style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
+                            class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                    </button>
+                    <button id="delete_few" class="rm-btn-solid-reg" type="button"
+                            style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span
+                            class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
+                    </button>
+                </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="grid">
+                <div class="col-lg-12" style="padding: 0;">
+                    <div class="grid" style="text-align: center;">
                         <form id="downloadFewForm">
                             {% for p in pics %}
-                                <div class="element-item development">
+                                <div class="element-item development" style="text-align: center;">
                                     <div>
                                         <a title={{ p.name }} class="popup-with-move-anim" href='#{{ p.id }}'>
                                             <div class="element-item-overlay"><span class="element_1"
@@ -137,7 +139,7 @@
     <!-- end of projects -->
 
     <!-- pages-->
-    <div style="text-align: center">
+    <divc class="container" style="text-align: center">
         <button id="back" class="btn-small" type="button" value="zero"
                 style="display: inline;margin: 0 auto;">
             <<
@@ -146,7 +148,7 @@
                 style="display: inline;margin: 0 auto;">
             >>
         </button>
-    </div>
+    </divc>
 
     <!--end of pages-->
 
@@ -155,7 +157,7 @@
         <div id='{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
             <div class="row">
                 <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-                <div class="col-lg-8" style="margin: auto 0;">
+                <div class="col-lg-8" style="text-align:center;margin:auto 0;">
                     <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0">

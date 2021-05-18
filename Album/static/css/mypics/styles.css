@@ -611,7 +611,7 @@ body {
     /* end of testimonials */
     /* Projects */
     .filter .element-item {
-        width: 25%;
+        width: 20%;
     }
 
     .filter .element-item .element-item-overlay {
@@ -796,8 +796,9 @@ body {
     /* end of call me */
     /* Projects */
     .filter .element-item {
-        width: 17.3125rem; /* to eliminate grid overflow problem on hard refresh */
-        height: 16.875rem;
+        /*width: 17.3125rem;*/ /* to eliminate grid overflow problem on hard refresh */
+        width: 14.3125rem;
+        height: 14.3125rem;
     }
 
     .filter .element-item .element-item-overlay span {
