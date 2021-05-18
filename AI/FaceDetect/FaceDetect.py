@@ -1,7 +1,7 @@
 import os
 import face_recognition
 import numpy as np
-
+import cv2
 
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
@@ -78,8 +78,30 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
         for i in range(len(image_codes)):
             if compare_results[i]:
                 names[i] = face_code.split(".npy")[0]
-
     return names
+
+
+# 将没识别出人脸的图像加入进ExistingFace中
+# filename 图片文件名
+# known_face_locations 图片所有人脸的识别框位置
+# recognized_faces 对应识别框的识别结果
+def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_data_path):
+    img = cv2.imread(filepath)
+    img_name = ''.join(os.path.splitext(os.path.basename(filepath))[0:-1])
+    img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
+    for i in range(len(recognized_faces)):
+        if recognized_faces[i]=="Not matched":
+            block=known_face_locations[i]
+            top = block[0]
+            right = block[1]
+            bottom = block[2]
+            left = block[3]
+            face_img=img[top:bottom, left:right]
+            face_img_name = img_name+"-"+i.__str__()+img_name_postfix
+            face_img_filepath = face_data_path + "/" + face_img_name
+            cv2.imwrite(face_img_filepath, face_img)
+
+
 
 
 
