@@ -12,7 +12,8 @@ $(document).ready(function () {
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
+        "hideMethod": "fadeOut",
+        "onclick":null,
     };
 });
 

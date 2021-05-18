@@ -79,6 +79,10 @@
                         <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
                         <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
                     </button>
+                    <button id="getTag" class="btn-solid-reg" type="button"
+                            style="display: flex;margin: 0.5rem 1rem;">
+                        <span><i class="uil uil-apps"></i>&nbsp;GET ALL TAG</span>
+                    </button>
                     <button id="select_all" class="btn-solid-reg" type="button" value="zero"
                             style="display: none;margin: 0.5rem 1rem;">
                         <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
@@ -172,6 +176,8 @@
                     <b class="element_10"> {{ p.height }}&nbsp;px</b>
                     <h4>Height:</h4>
                     <b class="element_11">{{ p.width }}&nbsp;px</b>
+                    <h5>Tag:</h5>
+                    <b>{{ p.nowtag }}</b>
                     <div class="btn-local1" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
                             <input class="download_input element_12" value={{ p.fake_name }} type="hidden"
@@ -209,5 +215,6 @@
     <script src="/static/js/mypics_folder/main.js"></script>
     <script src="/static/js/download/main.js"></script>
     <script src="/static/js/delete_img/main.js"></script>
+    <script src="/static/js/getTag/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 {% endblock %}

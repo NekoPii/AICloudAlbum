@@ -6,15 +6,18 @@ import re
 import platform
 import tempfile
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from wsgiref.util import FileWrapper
 
 from captcha.models import CaptchaStore
+from django.db import connections
 from django.db.models import Max
 from django.http import Http404, HttpResponse, JsonResponse, FileResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 from django.utils.encoding import escape_uri_path
 from django.views.decorators.csrf import csrf_exempt
 
+from AI.ImgClass.MyImgClass import ImageClassification
 from AICloudAlbum import settings
 from AICloudAlbum.settings import MEDIA_ROOT
 from . import models
@@ -269,6 +272,7 @@ def mypics_folder(request, folder_fake_name):
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         now_folder = models.Folder.objects.filter(fake_name=folder_fake_name)
+        all_tag = models.Tag.objects.all()
         if now_folder:
             pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
             cnt = 1
@@ -276,6 +280,7 @@ def mypics_folder(request, folder_fake_name):
                 p.size = round(p.size, 2)
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
+                p.nowtag = all_tag.get(id=p.tag_id).tag
                 cnt += 1
 
             count = pics.count()
@@ -876,7 +881,7 @@ def modify_folder(request, now_folder_name):
             res = {"mod_status": None, "is_same_name": None}
 
             now_user = models.User.objects.get(phone=phone)
-            now_folder = models.Folder.objects.get(user_id=phone,name=now_folder_name)
+            now_folder = models.Folder.objects.get(user_id=phone, name=now_folder_name)
             is_same_foldername = models.Folder.objects.filter(name=modify_folder_name)
 
             if is_same_foldername:
@@ -887,7 +892,7 @@ def modify_folder(request, now_folder_name):
                 try:
 
                     now_folder.name = modify_folder_name
-                    now_folder.modify_time=datetime.datetime.now()
+                    now_folder.modify_time = datetime.datetime.now()
                     now_folder.save()
 
                     res["mod_status"] = "true"
@@ -899,4 +904,65 @@ def modify_folder(request, now_folder_name):
             response = HttpResponse(json.dumps(res))
             return response
         return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+def runImgClass(p, all_tag, now_path):
+    res = ImageClassification(now_path)
+    print(res)
+    p.tag_id = all_tag.get(tag=res[0]).id
+    p.is_tag = 1
+    p.save()
+    return
+
+
+@csrf_exempt
+def getTag(request, folder_fake_name):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+
+            NoneTag = models.Tag.objects.get(tag="None")
+
+            now_user = models.User.objects.get(phone=phone)
+
+            now_folder = models.Folder.objects.get(fake_name=folder_fake_name)
+
+            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id, tag_id=NoneTag.id)
+
+            all_tag = models.Tag.objects.all()
+
+            res = {"select_cnt": len(now_pics), "getTag_cnt": None, "getTag_status": None}
+
+            cnt = 0
+
+            try:
+
+                pool = ThreadPoolExecutor(5)
+
+                for p in now_pics:
+                    now_path = os.path.join(store_dir, p.fake_name + "." + p.type)
+                    if not os.path.exists(now_path):
+                        raise Exception("Path not exist")
+                    pool.submit(runImgClass, p, all_tag, now_path)
+                    cnt += 1
+
+                pool.shutdown(wait=True)
+
+                res["getTag_status"] = "true"
+
+            except:
+                res["getTag_status"] = "false"
+
+            res["getTag_cnt"] = cnt
+
+            for conn in connections.all():
+                conn.close_if_unusable_or_obsolete()
+
+            response = HttpResponse(json.dumps(res))
+
+            return response
+
+        return render(request, "Album/mypics_folder.html", locals())
     return redirect("/login/")

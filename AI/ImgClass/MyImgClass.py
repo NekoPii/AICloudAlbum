@@ -5,7 +5,9 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
 import matplotlib.pyplot as plt
 import json
+import os
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # 返回值 result = [class ,detailed_class, possibility]
 def ImageClassification(filename):
@@ -18,6 +20,8 @@ def ImageClassification(filename):
     # 3. 将图像形成批次，Numpy的expand_dims
 
     # 以PIL格式加载图像
+    if not os.path.exists(filename):
+        raise Exception("Path not exist")
     origin_img = load_img(path=filename, target_size=(224, 224))
     # 展示图像信息
     if debug_mode:
@@ -70,7 +74,8 @@ def ImageClassification(filename):
 
 
 def getImageClass(class_code):
-    load_f = open("image_class.json", 'r')
+    now_path=os.path.dirname(__file__)
+    load_f = open(os.path.join(now_path,"image_class.json"), 'r')
     load_dict = json.load(load_f)
     load_f.close()
     for diction in load_dict:
