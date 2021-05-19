@@ -2,6 +2,7 @@ import os
 import face_recognition
 import numpy as np
 import cv2
+from VisualizeDetect import VisualizeBlocks
 
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
@@ -106,6 +107,22 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_dat
             np.save(face_code_path + "/" + face_img_name + ".npy", face_img_code)
 
 
+# 这个函数集成了检测人脸的函数，直接调用即可
+# 如isCodePrepared为真，则直接使用事先准备好的面部编码数据
+# 返回[face_locations, recognized_faces]分别为面部识别框和识别出的图片名
+def FaceRecogPrepared(filepath, isCodePrepared=False):
+    face_data_path = os.getcwd()+"/"+'ExistingFace'
+    face_code_path = os.getcwd()+"/"+'ExistingFaceCode'
+    if not isCodePrepared:
+        MakeCodeForFaceData(face_data_path, face_code_path)
+    result = FaceDetection(filepath)
+    names = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
+    AddToExistingFace(filepath, result, names, face_data_path,face_code_path)
+    #展示结果
+    print(result)
+    print(names)
+    VisualizeBlocks(filepath, result)
+    return [result, names]
 
 
 

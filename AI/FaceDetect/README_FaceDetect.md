@@ -7,6 +7,15 @@ pip --default-timeout=1000 install --index-url https://mirrors.aliyun.com/pypi/s
 
 # 使用方法
 
+如test.py所示:
+FaceRecogPrepared(filepath, isCodePrepared=False)
+这个函数集成了检测人脸的函数，直接调用即可
+如果存放面部数据集的文件夹路径有变，需要进入修改
+如isCodePrepared为真，则直接使用事先准备好的面部编码数据
+返回[face_locations, recognized_faces]分别为面部识别框和识别出的图片名
+
+## 以下是FaceRecogPrepared中调用的函数介绍
+
 定位人脸
 FaceDetection(filename)
 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
