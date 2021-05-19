@@ -797,8 +797,8 @@ body {
     /* Projects */
     .filter .element-item {
         /*width: 17.3125rem;*/ /* to eliminate grid overflow problem on hard refresh */
-        width: 14.3125rem;
-        height: 14.3125rem;
+        width: 13.3125rem;
+        height: 13.3125rem;
     }
 
     .filter .element-item .element-item-overlay span {

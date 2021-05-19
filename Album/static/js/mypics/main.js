@@ -10,7 +10,8 @@ var current_page = 1;
 
     $(".popup-with-move-anim").each(function () {
         if ($(this).attr("name") == "ALL") {
-            $(this).addClass("ALL_folder")
+            $(this).addClass("ALL_folder");
+            $(this).parent().addClass("ALL_folder");
         }
     });
 
@@ -230,9 +231,8 @@ $("#change_model").click(function () {
         $("#delete_few").css("display", "flex")
         $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
-        $(".ALL_folder").css("display", "block");
-        $(".ALL_folder").attr("disabled", true).css("pointer-events", "none");
-        $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
+        $(".ALL_folder").attr("disabled", true).css("pointer-events", "none").css("display", "");
+        $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $(".folder_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
@@ -255,7 +255,7 @@ $("#change_model").click(function () {
         $("#select_all").css("display", "none")
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
-        $(".ALL_folder").attr("disabled", false).css("pointer-events", "");
+        $(".ALL_folder").attr("disabled", false).css("pointer-events", "").css("opacity", 1);
         cnt = 0;
     }
 });
@@ -265,7 +265,7 @@ $(".choose_model_img").click(function () {
     if ($(this).find(".folder_select").prop("checked") == true) {//已选中
         $(this).find(".folder_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
-        $(this).css("border", "0.25rem solid red")
+        $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
         $("#select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
@@ -280,7 +280,7 @@ $(".choose_model_img").click(function () {
     } else {//未选中
         $(this).find(".folder_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
-        $(this).css("border", "0.25rem solid #8DC26F");
+        $(this).css("border", "0.25rem solid #00C9FF");
         cnt += 1;
         $("#select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
@@ -299,7 +299,7 @@ $("#select_all").click(function () {
     if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
         $(".folder_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
-        $(".choose_model_img").css("border", "0.25rem solid #8DC26F");
+        $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $(".choose_model_img").length;
         $("#select_cnt").text(cnt.toString());
         $(this).val("all");
@@ -308,7 +308,7 @@ $("#select_all").click(function () {
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
         $(".folder_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
-        $(".choose_model_img").css("border", "0.25rem solid red");
+        $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
         $("#select_cnt").text(cnt.toString());
         $(this).val("zero");
@@ -318,7 +318,7 @@ $("#select_all").click(function () {
 });
 
 $("#input_folder_name").on("keypress", function (event) {
-    if(event.keyCode == 13) {
+    if (event.keyCode == 13) {
         $(this).focus();
         var input_name = $(this).val();
         input_name = input_name.trim()

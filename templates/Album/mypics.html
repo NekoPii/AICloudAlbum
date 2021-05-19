@@ -166,32 +166,32 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12" style="padding: 0;">
-                    <div class="grid">
+                <div class="col-lg-12">
+                    <div class="grid" style="text-align: center;background-color: rgb(250,250,250);">
                         <form id="folderFewForm">
                             {% for p in folders %}
-                                <div id='img_{{ p.id }}' class="element-item development">
-                                    <div>
-                                        <a title={{ p.name }} class="popup-with-move-anim"
-                                           href={{ p.href }} name={{ p.name }}>
-                                            <div class="element-item-overlay">
+                                <div id='img_{{ p.id }}' class="element-item development"
+                                     style="text-align: center;background-color: rgb(250,250,250)">
+                                    <a title="{{ p.name }}" class="popup-with-move-anim"
+                                       href={{ p.href }} name="{{ p.name }}">
+                                        <div class="element-item-overlay">
                                                 <span class="element_1"
-                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }} </span>
-                                            </div>
-                                            <div class="zoomImage11 element_2"
-                                                 style="background-image: url({{ p.path }})"></div>
-                                        </a>
-                                        <a title={{ p.name }} class="choose_model_img" name={{ p.name }}>
-                                            <div class="element-item-overlay "><span class="element_3"
-                                                                                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
-                                            </div>
-                                            <div class="zoomImage11 choose_zoomImage11 element_4"
-                                                 style="background-image: url({{ p.path }});"></div>
-                                            <input class="folder_select element_5" type="checkbox"
-                                                   style="display: none"
-                                                   value={{ p.fake_name }} name="folder_name">
-                                        </a>
-                                    </div>
+                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
+                                        </div>
+                                        <div class="zoomImage11 element_2"
+                                             style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
+                                    </a>
+                                    <a class="choose_model_img" style="border-radius: 0.5rem;"
+                                       title="{{ p.name }}" name="{{ p.name }}">
+                                        <div class="element-item-overlay"><span class="element_3"
+                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                        </div>
+                                        <div class="zoomImage11 choose_zoomImage11 element_4"
+                                             style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
+                                        <input class="folder_select element_5" type="checkbox"
+                                               style="display: none"
+                                               value={{ p.fake_name }} name="folder_name">
+                                    </a>
                                 </div>
                             {% endfor %}
 

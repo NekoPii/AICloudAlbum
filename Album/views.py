@@ -750,21 +750,23 @@ def delete_folder(request):
             if now_choose_folder.name == "ALL":  # “ALL文件夹”无法删除
                 return HttpResponse()
 
-            try:
-                models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
-                now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
-                now_user.now_capacity -= now_choose_folder.total_size
-                now_user.save()
-                for img in now_imgs:
-                    path = os.path.join(store_dir, img.fake_name + "." + img.type)
-                    compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
-                    img.delete()
+
+            models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
+            now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
+            now_user.now_capacity -= now_choose_folder.total_size
+            now_user.save()
+            for img in now_imgs:
+                path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
+                img.delete()
+                try:
                     os.remove(path)
                     os.remove(compress_path)
 
-                res["delete_status"] = "true"
-            except:
-                res["delete_status"] = "false"
+                except:
+                    pass
+
+            res["delete_status"] = "true"
 
             response = HttpResponse(json.dumps(res))
             return response
@@ -789,7 +791,6 @@ def delete_select_folder(request):
             if check_list:
                 cnt = 0
                 for now in check_list:
-                    try:
                         now_folder = models.Folder.objects.get(fake_name=now)
                         if now_folder.name == "ALL":
                             continue
@@ -801,13 +802,16 @@ def delete_select_folder(request):
                             path = os.path.join(store_dir, img.fake_name + "." + img.type)
                             compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
                             img.delete()
-                            os.remove(path)
-                            os.remove(compress_path)
+                            try:
+                                os.remove(path)
+                                os.remove(compress_path)
+
+                            except:
+                                pass
 
                         now_folder.delete()
                         cnt += 1
-                    except:
-                        continue
+
                 res["delete_cnt"] = cnt
                 if cnt > 0:
                     res["delete_status"] = "true"

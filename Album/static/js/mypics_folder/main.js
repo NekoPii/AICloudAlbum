@@ -239,7 +239,7 @@ $("#change_model").click(function () {
         $("#delete_few").css("display", "flex");
         $("#select_all").css("display", "flex")
         $(".popup-with-move-anim").css("display", "none");
-        $(".choose_model_img").css("display", "block").css("border", "0.25rem solid red");
+        $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
@@ -272,7 +272,7 @@ $(".choose_model_img").click(function () {
     if ($(this).find(".download_select").prop("checked") == true) {//已选中
         $(this).find(".download_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
-        $(this).css("border", "0.25rem solid red")
+        $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
         $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
@@ -287,7 +287,7 @@ $(".choose_model_img").click(function () {
     } else {//未选中
         $(this).find(".download_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
-        $(this).css("border", "0.25rem solid #8DC26F");
+        $(this).css("border", "0.25rem solid #00C9FF");
         cnt += 1;
         $(".select_cnt").text(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
@@ -306,7 +306,7 @@ $("#select_all").click(function () {
     if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
         $(".download_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
-        $(".choose_model_img").css("border", "0.25rem solid #8DC26F");
+        $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $(".choose_model_img").length;
         $(".select_cnt").text(cnt.toString());
         $(this).val("all");
@@ -315,7 +315,7 @@ $("#select_all").click(function () {
     } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
-        $(".choose_model_img").css("border", "0.25rem solid red");
+        $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
         $(".select_cnt").text(cnt.toString());
         $(this).val("zero");
