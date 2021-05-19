@@ -85,21 +85,25 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
 # filename 图片文件名
 # known_face_locations 图片所有人脸的识别框位置
 # recognized_faces 对应识别框的识别结果
-def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_data_path):
+def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_data_path, face_code_path):
     img = cv2.imread(filepath)
     img_name = ''.join(os.path.splitext(os.path.basename(filepath))[0:-1])
     img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
     for i in range(len(recognized_faces)):
-        if recognized_faces[i]=="Not matched":
+        if recognized_faces[i] == "Not matched":
             block=known_face_locations[i]
             top = block[0]
             right = block[1]
             bottom = block[2]
             left = block[3]
-            face_img=img[top:bottom, left:right]
+            face_img = img[top:bottom, left:right]
             face_img_name = img_name+"-"+i.__str__()+img_name_postfix
             face_img_filepath = face_data_path + "/" + face_img_name
             cv2.imwrite(face_img_filepath, face_img)
+            # 自动为新加入图片制作编码数据
+            face_img_code = face_recognition.face_encodings(face_img)[0]
+            # 存储到文件中
+            np.save(face_code_path + "/" + face_img_name + ".npy", face_img_code)
 
 
 
