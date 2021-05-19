@@ -11,8 +11,9 @@ pip --default-timeout=1000 install --index-url https://mirrors.aliyun.com/pypi/s
 FaceRecogPrepared(filepath, isCodePrepared=False)
 这个函数集成了检测人脸的函数，直接调用即可
 如果存放面部数据集的文件夹路径有变，需要进入修改
-如isCodePrepared为真，则直接使用事先准备好的面部编码数据
-返回[face_locations, recognized_faces]分别为面部识别框和识别出的图片名
+如isCodePrepared为真，则直接使用事先准备好的面部编码数据,否则将根据面部数据集中的照片生成
+返回[isFace, face_locations, recognized_faces]
+分别为是否检测出人脸、面部识别框位置和识别出的图片名
 
 ## 以下是FaceRecogPrepared中调用的函数介绍
 

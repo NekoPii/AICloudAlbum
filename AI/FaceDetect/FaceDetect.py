@@ -2,7 +2,7 @@ import os
 import face_recognition
 import numpy as np
 import cv2
-from VisualizeDetect import VisualizeBlocks
+
 
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
@@ -92,7 +92,7 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_dat
     img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
     for i in range(len(recognized_faces)):
         if recognized_faces[i] == "Not matched":
-            block=known_face_locations[i]
+            block = known_face_locations[i]
             top = block[0]
             right = block[1]
             bottom = block[2]
@@ -108,21 +108,22 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_dat
 
 
 # 这个函数集成了检测人脸的函数，直接调用即可
-# 如isCodePrepared为真，则直接使用事先准备好的面部编码数据
-# 返回[face_locations, recognized_faces]分别为面部识别框和识别出的图片名
+# 如isCodePrepared为真，则直接使用事先准备好的面部编码数据,否则将根据面部数据集中的照片生成
+# 返回[isFace, face_locations, recognized_faces]
+# 分别为是否检测出人脸、面部识别框位置和识别出的图片名
 def FaceRecogPrepared(filepath, isCodePrepared=False):
     face_data_path = os.getcwd()+"/"+'ExistingFace'
     face_code_path = os.getcwd()+"/"+'ExistingFaceCode'
-    if not isCodePrepared:
-        MakeCodeForFaceData(face_data_path, face_code_path)
     result = FaceDetection(filepath)
-    names = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
-    AddToExistingFace(filepath, result, names, face_data_path,face_code_path)
-    #展示结果
-    print(result)
-    print(names)
-    VisualizeBlocks(filepath, result)
-    return [result, names]
+    if len(result) == 0:
+        return [False, [], []]
+    else:
+        if not isCodePrepared:
+            MakeCodeForFaceData(face_data_path, face_code_path)
+        names = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
+        AddToExistingFace(filepath, result, names, face_data_path, face_code_path)
+        return [True, result, names]
+
 
 
 

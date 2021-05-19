@@ -1,8 +1,11 @@
 from FaceDetect import FaceRecogPrepared
-# import os
+from VisualizeDetect import VisualizeBlocks
 
 
 filepath = "images/person3.jpg"
-FaceRecogPrepared(filepath,True)
-
+isFace,face_locations,recognized_faces=FaceRecogPrepared(filepath,True)
+# 展示结果
+print(face_locations)
+print(recognized_faces)
+VisualizeBlocks(filepath,face_locations)
 
