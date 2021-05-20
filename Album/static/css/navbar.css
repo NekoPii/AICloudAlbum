@@ -4,7 +4,7 @@
 .navbar-custom {
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.82);
     box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
     font: 600 0.875rem/0.875rem "Open Sans", sans-serif;
     transition: all 0.2s;
@@ -60,6 +60,10 @@
     margin-left: 10rem;
 }
 
+.search_form {
+    width: 20rem;
+}
+
 @media (min-width: 500px) {
 
     /* General Styles */
@@ -71,11 +75,7 @@
 
     /* end of general styles */
     /* Navigation */
-    .navbar-custom {
-        padding: 2.125rem 1.5rem 2.125rem 2rem;
-        box-shadow: none;
-        background: transparent;
-    }
+
 
     .navbar-custom .navbar-brand.logo-text {
         color: #fff;
@@ -86,33 +86,7 @@
         margin-bottom: 0;
     }
 
-    .navbar-custom .nav-item .nav-link {
-        padding: 0.25rem 0.75rem 0.25rem 0.75rem;
-    }
 
-    .navbar-custom .nav-item .nav-link:hover,
-    .navbar-custom .nav-item .nav-link.active {
-        color: #64b3f4;
-    }
-
-    .navbar-custom.top-nav-collapse {
-        padding: 0.375rem 1.5rem 0.375rem 2rem;
-        background: rgb(255, 255, 255);
-        box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
-    }
-
-    .navbar-custom.top-nav-collapse .navbar-brand.logo-text {
-        color: #fff;
-    }
-
-    .navbar-custom.top-nav-collapse .nav-item .nav-link {
-        color: rgb(187, 187, 187);
-    }
-
-    .navbar-custom.top-nav-collapse .nav-item .nav-link:hover,
-    .navbar-custom.top-nav-collapse .nav-item .nav-link.active {
-        color: #64b3f4;
-    }
 
     .navbar-custom .dropdown-menu {
         padding-top: 1rem;
@@ -135,18 +109,13 @@
         width: 84%;
     }
 
+    .search_form {
+        width: 14rem;
+    }
 
 
     /* end of navigation */
 
-}
-
-#left_bar .item {
-    color: rgb(187, 187, 187);
-}
-
-#left_bar .item:hover {
-    background-color: rgb(245, 245, 245);
 }
 
 @media (min-width: 768px) {
@@ -160,11 +129,7 @@
 
     /* end of general styles */
     /* Navigation */
-    .navbar-custom {
-        padding: 2.125rem 1.5rem 2.125rem 2rem;
-        box-shadow: none;
-        background: transparent;
-    }
+
 
     .navbar-custom .navbar-brand.logo-text {
         color: #fff;
@@ -175,33 +140,8 @@
         margin-bottom: 0;
     }
 
-    .navbar-custom .nav-item .nav-link {
-        padding: 0.25rem 0.75rem 0.25rem 0.75rem;
-    }
 
-    .navbar-custom .nav-item .nav-link:hover,
-    .navbar-custom .nav-item .nav-link.active {
-        color: #64b3f4;
-    }
 
-    .navbar-custom.top-nav-collapse {
-        padding: 0.375rem 1.5rem 0.375rem 2rem;
-        background: rgb(255, 255, 255);
-        box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
-    }
-
-    .navbar-custom.top-nav-collapse .navbar-brand.logo-text {
-        color: #fff;
-    }
-
-    .navbar-custom.top-nav-collapse .nav-item .nav-link {
-        color: rgb(187, 187, 187);
-    }
-
-    .navbar-custom.top-nav-collapse .nav-item .nav-link:hover,
-    .navbar-custom.top-nav-collapse .nav-item .nav-link.active {
-        color: #64b3f4;
-    }
 
     .navbar-custom .dropdown-menu {
         padding-top: 1rem;
@@ -222,12 +162,6 @@
 
     .navbar-custom .dropdown-items-divide-hr {
         width: 84%;
-    }
-
-    .navbar-custom .searches {
-        font-size: 13px;
-        width: 400px;
-        margin-left: 10rem;
     }
 
 

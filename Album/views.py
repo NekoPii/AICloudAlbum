@@ -750,7 +750,6 @@ def delete_folder(request):
             if now_choose_folder.name == "ALL":  # “ALL文件夹”无法删除
                 return HttpResponse()
 
-
             models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
             now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
             now_user.now_capacity -= now_choose_folder.total_size
@@ -791,26 +790,26 @@ def delete_select_folder(request):
             if check_list:
                 cnt = 0
                 for now in check_list:
-                        now_folder = models.Folder.objects.get(fake_name=now)
-                        if now_folder.name == "ALL":
-                            continue
-                        models.FolderCover.objects.get(folder_id=now_folder.id).delete()
-                        now_user.now_capacity -= now_folder.total_size
-                        now_user.save()
-                        now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
-                        for img in now_imgs:
-                            path = os.path.join(store_dir, img.fake_name + "." + img.type)
-                            compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
-                            img.delete()
-                            try:
-                                os.remove(path)
-                                os.remove(compress_path)
+                    now_folder = models.Folder.objects.get(fake_name=now)
+                    if now_folder.name == "ALL":
+                        continue
+                    models.FolderCover.objects.get(folder_id=now_folder.id).delete()
+                    now_user.now_capacity -= now_folder.total_size
+                    now_user.save()
+                    now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
+                    for img in now_imgs:
+                        path = os.path.join(store_dir, img.fake_name + "." + img.type)
+                        compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
+                        img.delete()
+                        try:
+                            os.remove(path)
+                            os.remove(compress_path)
 
-                            except:
-                                pass
+                        except:
+                            pass
 
-                        now_folder.delete()
-                        cnt += 1
+                    now_folder.delete()
+                    cnt += 1
 
                 res["delete_cnt"] = cnt
                 if cnt > 0:
@@ -969,4 +968,39 @@ def getTag(request, folder_fake_name):
             return response
 
         return render(request, "Album/mypics_folder.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def search_tag(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+
+            phone = request.session["phone"]
+            search_tag = request.POST["search_tag"]
+            res = {"search_status": None}
+
+            now_user = models.User.objects.get(phone=phone)
+
+            search_tag_exist = models.Tag.objects.filter(tag=search_tag)
+
+            if search_tag_exist:
+                search_tag_user=models.UserTag.objects.filter(tag=search_tag_exist.id,user=now_user)
+                if search_tag_user:
+                    tag_id=search_tag_user.tag
+                    cnt=search_tag_user.cnt
+                    pics_tag=models.Picture.objects.filter(tag=tag_id,user=now_user)
+
+                    '''Here add Search Tag Page Content  '''
+
+                    res["search_status"] = "true"
+                else:
+                    res["search_status"] = "false"
+            else:
+                res["search_status"] = "false"
+            response = HttpResponse(json.dumps(res))
+            return response
+
+        return render(request, "Album/welcome.html", locals())
+
     return redirect("/login/")

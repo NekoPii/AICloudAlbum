@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     {% block title %}{% endblock %}
-
-
     <link href="/static/vendor/bootstrap-4.6.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css" rel="stylesheet">
     {% block css %}{% endblock %}
@@ -17,89 +15,64 @@
 <body id="alpha">
 
 <!--sidebar-->
-<div class="ui sidebar left inverted vertical menu " style="background-color:white;width: 15rem ">
-    <div style="height: 5rem">
-        <i class="large sidebar icon sidebar-button-side"
-           style="color: rgb(187,187,187);margin-top: 1.5rem;margin-left:2rem"></i>
-        <img src="/static/image/AIAlbum.svg" alt="alternative" style="width: 6rem;margin-top: 1rem">
-    </div>
-    <div id="left_bar">
-        <a href="/mypics/" class="item i1">
-            <div><i class="large image icon"></i>
-                My Pics
-            </div>
-        </a>
-        <a class="item i2">
-            <div>
-                <i class="large tags icon"></i>
-                AI Tags
-            </div>
-        </a>
-        <a class="item i3">
-            <div>
-                <i class="large tags icon"></i>
-                Face Tags
-            </div>
-        </a>
-        <a class="item i4">
-            <div>
-                <i class="uil uil-video"></i>
-                Wonderful Moment
-            </div>
-        </a>
-    </div>
-</div>
+
 <!--end sidebar-->
 
 <div id="mousemove" style="position:fixed;top:0;z-index:0;"></div>
 
-<div class="pusher">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top " style="height: 50px">
-        <!-- Text Logo - Use this if you don't have a graphic logo -->
-        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
-        <!-- Image Logo -->
-        {% ifequal request.session.is_login None %}
-            <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
-        {% endifequal %}
-        {% ifequal request.session.is_login True %}
-            <a class="item sidebar-button-nav">
-                <i class=" large sidebar icon" style="color:rgb(187,187,187)"></i>
-            </a>
-            <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
-            <form action="/search/" method="post" id="searchForm" style="width: auto; ">
-                <div class="ui left icon input">
-                    <input class="searches" type="text" placeholder="搜索Album">
-                    <i class="search icon"></i>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top " style="height: 60px">
+    <!-- Text Logo - Use this if you don't have a graphic logo -->
+    <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
+    <!-- Image Logo -->
+    {% ifequal request.session.is_login None %}
+        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
+    {% endifequal %}
+    {% ifequal request.session.is_login True %}
+        <a class="item sidebar-button-nav">
+            <i class=" large sidebar icon" style="color:rgb(187,187,187)"></i>
+        </a>
+        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
+
+        <div class="modal-body" style="padding: 0">
+            <form id="search_tag" class="search_form">
+                <div class="form-group" style="margin-bottom: 0">
+                    <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
+                    <input value="" class="form-control-input" id="input_search_tag"
+                           name="search_tag"
+                           autocomplete="off"
+                           style="padding-top: 16px;padding-bottom: 8px">
+                    <label class="label-control" for="input_search_tag"><i class="fas fa-search"></i>&nbsp;Search
+                        Tag</label>
                 </div>
             </form>
-        {% endifequal %}
-
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-
-                {% ifequal request.session.is_login True %}
-
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="#intro">INTRO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="#contact">CONTACT</a>
-                    <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
-
-                {% endifequal %}
-
-                </li>
-            </ul>
         </div>
-    </nav> <!-- end of navbar -->
-    <!-- end of navbar -->
-    {% block main %}{% endblock %}
-</div>
+    {% endifequal %}
+
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+
+            {% ifequal request.session.is_login True %}
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#intro">INTRO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
+
+            {% endifequal %}
+
+            </li>
+        </ul>
+    </div>
+</nav> <!-- end of navbar -->
+<!-- end of navbar -->
+{% block main %}{% endblock %}
 
 
 <script src="/static/vendor/jquery/jquery.min.js"></script>

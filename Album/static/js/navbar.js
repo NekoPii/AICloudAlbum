@@ -29,68 +29,50 @@
         });
     });
 
-    $('#search_1').bind('keyup', function (event) {
-
-        if (event.keyCode == "13") {
-            //回车执行查询
-            console.log('click');
-        }
-    });
-
-    $("#left_bar .item").on("click",function (){
-        let lis= $("#left_bar .item");
-        for(let i=0;i<lis.length;++i){
-            lis[i].remove("active");
-        }
-        //lis.setAttribute("class","active");
-    });
-
     // closes the responsive menu on menu item click
     $(".navbar-nav li a").on("click", function (event) {
         if (!$(this).parent().hasClass('dropdown'))
             $(".navbar-collapse").collapse('hide');
     });
 
-    $('.item.sidebar-button-nav').on("click", function (event) {
 
-        $('.ui.sidebar').sidebar({
-                context: 'body',
-                dimPage: false,
-                scrollLock: true,
-                transition: 'overlay',
-                onVisible: function () {
-                    $('#alpha').addClass('pushable');
-                },
-                onShow: function () {
-                    var mo = function (e) {
-                        passive: false;
-                    };
-                    document.body.style.overflow = 'hidden';
-                    document.addEventListener("touchmove", mo, false);
-                    //$('#alpha').removeClass('pushable');
-                },
-                onHide: function () {
-                    $('#alpha').addClass('pushable');
-                },
-                onHidden: function () {
-                    var mo = function (e) {
-                        passive: false
-                    };
-                    document.body.style.overflow = '';//出现滚动条
-                    document.removeEventListener("touchmove", mo, false);
-                    $('#alpha').removeClass('pushable');
-                }
-            }
-        )
-            .sidebar('toggle');
-
-        // $('#alpha').removeClass('pushable');
-    });
-    $('.sidebar-button-side').on("click", function (event) {
-        $('.ui.sidebar').sidebar('hide');
-
+    //Search Tag Input
+    $(document).on('scroll', function () {
+        $("#input_search_tag").blur();
     })
 
+    $("#input_search_tag").bind("keypress", function (event) {
+        if (event.keyCode === 13) {
+            var search_tag = $(this).val();
+            search_tag = search_tag.trim();
+            if (search_tag !== "" && search_tag) {
+                $.ajax({
+                    url: "/search_tag/",
+                    type: "POST",
+                    data: $("#search_tag").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        var search_status = data["search_status"];
+                        if (search_status === "false")
+                         {
+                            toastr.warning("Tag doesn't exist !")
+                            $("#input_search_tag").focus()
+                        } else if (search_status === "true") {
+                            toastr.success("\"" + search_tag + "\" Images Find Successfully ~");
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Error , Please Try again !")
+                    }
+                });
+            } else {
+                $(this).blur();
+                toastr.error("Search Tag can't be empty !");
+                return;
+            }
+            toastr.success("Success !");
+        }
+    });
 
 
 })(jQuery);

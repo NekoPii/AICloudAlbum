@@ -26,5 +26,6 @@ urlpatterns = [
     path("add_folder/",views.add_folder,name="add_folder"),
     path("modify_folder/<str:now_folder_name>/",views.modify_folder,name="modify_folder"),
     path("get_tag/<str:folder_fake_name>/",views.getTag,name="getTag"),
+    path("search_tag/",views.search_tag,name="searchTag"),  # 导航栏按照标签搜索图片
 ]
 
