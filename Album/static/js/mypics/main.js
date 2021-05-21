@@ -26,7 +26,6 @@ var pics_count;
 
 
     $.getJSON("/ajax_folders/", function (data) {
-        toastr.warning("json success!");
         pics = data["folders"];
         pics_count = data["count"];
         if (pics_count <= 25) {
@@ -136,7 +135,7 @@ var pics_count;
 
     /* Counter - CountTo */
     var a = 0;
-    $(window).scroll(function () {
+    $(function () {
         if ($('#counter').length) { // checking if CountTo section exists in the page, if not it will not run the script and avoid errors
             var oTop = $('#counter').offset().top - window.innerHeight;
             if (a == 0 && $(window).scrollTop() > oTop) {

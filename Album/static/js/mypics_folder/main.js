@@ -159,7 +159,7 @@ var pics_count;
 
     /* Counter - CountTo */
     var a = 0;
-    $(window).scroll(function () {
+    $(function () {
         if ($('#counter').length) { // checking if CountTo section exists in the page, if not it will not run the script and avoid errors
             var oTop = $('#counter').offset().top - window.innerHeight;
             if (a == 0 && $(window).scrollTop() > oTop) {

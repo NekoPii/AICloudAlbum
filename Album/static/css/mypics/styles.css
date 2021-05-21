@@ -2,6 +2,13 @@ body {
     background: rgb(250, 250, 250);
 }
 
+#top {
+    display: inline;
+    margin-bottom: 0;
+    padding-left: 17.7px;
+    padding-right: 17.7px
+}
+
 .scroll-to-top {
     position: fixed;
     right: 15px;
@@ -604,14 +611,6 @@ body {
     width: 2.75rem;
     height: 2.75rem;
 }
-
-
-
-
-
-
-
-
 
 
 /*****************************/
