@@ -302,6 +302,12 @@ def mypics_pics(request, folder_fake_name):
         return redirect("/login/")
 
 
+def tags(request):
+    if request.session.get("is_login"):
+        return render(request,"Album/tags.html",locals())
+    else:
+        return redirect("/login/")
+
 @csrf_exempt
 def upload_upload_syn(request, folder_fake_name):
     if request.session.get("is_login"):

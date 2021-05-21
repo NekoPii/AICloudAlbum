@@ -1,0 +1,54 @@
+{% extends "Album/navbar.html" %}
+
+{% block title %}
+    <title>My Pics / {{ now_folder_name }}</title>
+{% endblock %}
+
+{% block css %}
+    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/mypics/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/tags/animate/animate.css"/>
+    <link rel="stylesheet" href="/static/css/tags/animate/set.css"/>
+    <link rel="stylesheet" href="/static/css/tags/style.css"/>
+{% endblock %}
+
+{% block main %}
+    <!-- works -->
+    <div id="works" class=" clearfix grid" >
+        <figure class="effect-oscar  wowload fadeIn">
+            <img src="/static/image/1.jpg" alt="img01"/>
+            <figcaption>
+                <h2>Nature</h2>
+                <p>Lily likes to play with crayons and pencils<br>
+                    <a href="/static/image/1.jpg" title="1" data-gallery>View more</a></p>
+            </figcaption>
+        </figure>
+        <figure class="effect-oscar  wowload fadeInUp">
+            <img src="/static/image/2.jpg" alt="img01"/>
+            <figcaption>
+                <h2>Events</h2>
+                <p>Lily likes to play with crayons and pencils<br>
+                    <a href="/static/image/2.jpg" title="1" data-gallery>View more</a></p>
+            </figcaption>
+        </figure>
+        <figure class="effect-oscar  wowload fadeInUp">
+            <img src="/static/image/3.jpg" alt="img01"/>
+            <figcaption>
+                <h2>music</h2>
+                <p>Lily likes to play with crayons and pencils<br>
+                    <a href="/static/image/3.jpg" title="1" data-gallery>View more</a></p>
+            </figcaption>
+        </figure>
+    </div>
+    <!-- works -->
+{% endblock %}
+
+{% block js %}
+    <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
+    <script src="/static/vendor/wow/wow.min.js"></script>
+    <script src="/static/js/getTag/main.js"></script>
+    <script src="/static/js/preload/main.js"></script>
+    <script src="/static/js/tags/script.js"></script>
+
+{% endblock %}

@@ -172,20 +172,20 @@
                 <div class="col-lg-8" style="text-align:center;margin:auto 0;">
                     <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                 </div> <!-- end of col -->
-                <div class="col-lg-4 btn-local0">
-                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
-                        class="element_7">{{ p.name }}</h3>
+                <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147)">
+                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
+                        class="element_7" title={{p.name}}>{{ p.name }}</h3>
                     <hr class="line-heading">
-                    <h4>Upload Time:</h4>
-                    <b class="element_8"> {{ p.upload_time }}</b>
-                    <h4>Size:</h4>
-                    <b class="element_9"> {{ p.size }}&nbsp;MB</b>
-                    <h4>Width:</h4>
-                    <b class="element_10"> {{ p.height }}&nbsp;px</b>
-                    <h4>Height:</h4>
-                    <b class="element_11">{{ p.width }}&nbsp;px</b>
-                    <h5>Tag:</h5>
-                    <b class="element_12">{{ p.nowtag }}</b>
+                    <h6 style="margin-bottom: 0">UPLOAD TIME:</h6>
+                    <b class="element_8">  {{ p.upload_time }}</b>
+                    <h6 style="margin-top: 1rem;margin-bottom: 0">SIZE:</h6>
+                    <b class="element_9">  {{ p.size }}&nbsp;MB</b>
+                    <h6 style="margin-top: 1rem;margin-bottom: 0">WIDTH:</h6>
+                    <b class="element_10">  {{ p.height }}&nbsp;px</b>
+                    <h6 style="margin-top: 1rem;margin-bottom: 0">HEIGHT:</h6>
+                    <b class="element_11">  {{ p.width }}&nbsp;px</b>
+                    <h6 style="margin-top: 1rem;margin-bottom: 0">TAG:</h6>
+                    <b class="element_12">  {{ p.nowtag }}</b>
                     <div class="btn-local1" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
                             <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
