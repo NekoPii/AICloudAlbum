@@ -184,6 +184,7 @@ def ajax_pics(request, folder_fake_name):
         user = models.User.objects.get(phone=phone)
         now_folder = models.Folder.objects.get(fake_name=folder_fake_name)
         pics = models.Picture.objects.filter(folder_id=now_folder.id)
+        all_tag = models.Tag.objects.all()
         json_data = {}
         json_data["pics"] = []
         cnt = 1
@@ -192,7 +193,7 @@ def ajax_pics(request, folder_fake_name):
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
-                   "height": p.height, "width": p.width, "upload_time": p.upload_time}
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time,"tag":all_tag.get(id=p.tag_id).tag}
             json_data["pics"].append(pic)
             cnt += 1
         count = pics.count()
@@ -241,12 +242,13 @@ def welcome(request):
     return render(request, "Album/welcome.html")
 
 
-def mypics_index(request):
+def mypics_folder(request):
     if request.session.get("is_login"):
         name = request.session['name']
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         folders = models.Folder.objects.filter(user_id=user.phone)
+        Folders=[]
         cnt = 1
         for p in folders:
             foldercover = models.FolderCover.objects.get(folder_id=p.id)
@@ -255,8 +257,9 @@ def mypics_index(request):
             p.size = round(p.total_size, 2)
             p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
+            Folders.append(p)
             cnt += 1
-            if cnt == 17:
+            if cnt == 26:
                 break
         count = folders.count()
         capacity_now = round(user.now_capacity, 2)
@@ -266,7 +269,7 @@ def mypics_index(request):
         return redirect("/login/")
 
 
-def mypics_folder(request, folder_fake_name):
+def mypics_pics(request, folder_fake_name):
     if request.session.get("is_login"):
         name = request.session['name']
         phone = request.session['phone']
@@ -275,14 +278,17 @@ def mypics_folder(request, folder_fake_name):
         all_tag = models.Tag.objects.all()
         if now_folder:
             pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
+            Pics=[]
             cnt = 1
             for p in pics:
                 p.size = round(p.size, 2)
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
                 p.nowtag = all_tag.get(id=p.tag_id).tag
+                Pics.append(p)
                 cnt += 1
-
+                if cnt==26:
+                    break
             count = pics.count()
             capacity_now = round(now_folder[0].total_size, 2)
 
@@ -729,7 +735,7 @@ def delete_select_img(request, folder_fake_name):
             else:
                 response = HttpResponse(json.dumps(res))
                 return response
-        return mypics_folder(request, folder_fake_name)
+        return mypics_pics(request, folder_fake_name)
     return redirect("/login/")
 
 

@@ -1,10 +1,10 @@
 var current_page = 1;
-
+var pics;
+var pics_count;
 (function ($) {
     "use strict";
     var now_folder_fake_name = $("#now_folder_fake_name").val()
-    var pics;
-    var pics_count;
+
 
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
@@ -17,11 +17,25 @@ var current_page = 1;
     $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
         pics = data["pics"];
         pics_count = data["count"];
-        if (pics_count <= 16) {
+        if (pics_count <= 25) {
             $("#next").css("display", "none");
         }
 
+
     });
+
+    $(window).bind('scroll', function () {
+        if ($(window).scrollTop() <= 300) {
+            $("#top").hide();
+        } else {
+            $("#top").show();
+        }
+    });
+
+    $("#top").hide()
+        .on("click", function () {
+        $('html, body').animate({scrollTop: 0}, 300);
+    })
 
 
     $("#back")
@@ -35,8 +49,8 @@ var current_page = 1;
                     $("#next").css("display", "inline-block")
                     $("#back").css("display", "none")
                 }
-                for (var i = 1; i <= 16; i++) {
-                    var pic_number = (current_page - 1) * 16 + i;
+                for (var i = 1; i <= 25; i++) {
+                    var pic_number = (current_page - 1) * 25 + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
                     var element3 = "#img_" + i + " .element_2";
@@ -51,6 +65,7 @@ var current_page = 1;
                     var element12 = "#box_" + i + " .element_10";
                     var element13 = "#box_" + i + " .element_11";
                     var element14 = "#box_" + i + " .element_12";
+                    var element15 = "#box_" + i + " .element_13";
 
                     pic_number--;
                     $(element1).attr("title", pics[pic_number]["name"]);
@@ -67,7 +82,8 @@ var current_page = 1;
                     $(element11).text(pics[pic_number]["size"]);
                     $(element12).text(pics[pic_number]["height"]);
                     $(element13).text(pics[pic_number]["width"]);
-                    $(element14).val(pics[pic_number]["fake_name"]);
+                    $(element14).val(pics[pic_number]["tag"]);
+                    $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
                     $("#img_" + i).css("display", "block")
                     $("#box_" + i).css("display", "block")
@@ -78,15 +94,15 @@ var current_page = 1;
 
     $("#next")
         .click(function () {
-            if ((pics_count - current_page * 16) > 0) {
+            if ((pics_count - current_page * 25) > 0) {
                 $("#next").css("display", "inline-block")
                 $("#back").css("display", "inline-block")
-                if (pics_count - (1 + current_page) * 16 <= 0) {
+                if (pics_count - (1 + current_page) * 25 <= 0) {
                     $("#next").css("display", "none")
                     $("#back").css("display", "inline-block")
                 }
-                for (var i = 1; i <= 16; i++) {
-                    var pic_number = current_page * 16 + i;
+                for (var i = 1; i <= 25; i++) {
+                    var pic_number = current_page * 25 + i;
 
                     if (pic_number <= pics_count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
@@ -103,6 +119,7 @@ var current_page = 1;
                         var element12 = "#box_" + i + " .element_10";
                         var element13 = "#box_" + i + " .element_11";
                         var element14 = "#box_" + i + " .element_12";
+                        var element15 = "#box_" + i + " .element_13";
                         pic_number--;
                         $(element1).attr("title", pics[pic_number].name);
                         $(element2).text(pics[pic_number]["name"]);
@@ -118,18 +135,23 @@ var current_page = 1;
                         $(element11).text(pics[pic_number]["size"] + " MB");
                         $(element12).text(pics[pic_number]["height"] + " px");
                         $(element13).text(pics[pic_number]["width"] + " px");
-                        $(element14).val(pics[pic_number]["fake_name"]);
+                        $(element14).val(pics[pic_number]["tag"]);
+                        $(element15).val(pics[pic_number]["fake_name"]);
                         pic_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
 
                     } else {
+
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
                     }
 
                 }
                 current_page++;
+
+                resizeBy(100, 0)
+                // resizeBy(-100,0)
             }
 
         })
@@ -165,30 +187,6 @@ var current_page = 1;
             }
         }
     });
-    /* Card Slider - Swiper */
-    var cardSlider = new Swiper('.card-slider', {
-        autoplay: {
-            delay: 4000,
-            disableOnInteraction: false
-        },
-        loop: true,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        },
-        slidesPerView: 3,
-        spaceBetween: 20,
-        breakpoints: {
-            // when window is <= 992px
-            992: {
-                slidesPerView: 2
-            },
-            // when window is <= 768px
-            768: {
-                slidesPerView: 1
-            }
-        }
-    });
 
     /* Lightbox - Magnific Popup */
     $('.popup-with-move-anim').magnificPopup({
@@ -203,38 +201,17 @@ var current_page = 1;
         mainClass: 'my-mfp-slide-bottom'
     });
 
-    /* Filter - Isotope */
-    var $grid = $('.grid').isotope({
-        // options
-        itemSelector: '.element-item',
-        layoutMode: 'fitRows'
-    });
-
-    // filter items on button click
-    $('.filters-button-group').on('click', 'a', function () {
-        var filterValue = $(this).attr('data-filter');
-        $grid.isotope({filter: filterValue});
-    });
-
-    // change is-checked class on buttons
-    $('.button-group').each(function (i, buttonGroup) {
-        var $buttonGroup = $(buttonGroup);
-        $buttonGroup.on('click', 'a', function () {
-            $buttonGroup.find('.is-checked').removeClass('is-checked');
-            $(this).addClass('is-checked');
-        });
-    });
 
 })(jQuery);
 
 $("#change_model").click(function () {
-    if ($(this).val() == "select") {//进行选择
+    if ($(this).val() === "select") {//进行选择
         $(".upload_btn").css("display", "none");
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
-        $(".select_text").css("display","none");
-        $(".view_text").css("display","");
+        $(".select_text").css("display", "none");
+        $(".view_text").css("display", "");
         $("#download_few").css("display", "flex")
         $("#delete_few").css("display", "flex");
         $("#select_all").css("display", "flex")
@@ -244,11 +221,11 @@ $("#change_model").click(function () {
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
         $(".select_cnt").text(cnt.toString());
-    } else if ($(this).val() == "view") {// 退出选择
+    } else if ($(this).val() === "view") {// 退出选择
         $(".upload_btn").css("display", "flex");
-        if (current_page == 1) {
+        if (current_page === 1) {
             $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 16) > 0) {
+        } else if ((pics_count - current_page * 25) < 0) {
             $("#back").css("display", "inline-block");
         } else {
             $("#next").css("display", "inline-block");
@@ -256,8 +233,8 @@ $("#change_model").click(function () {
         }
 
         $(this).val("select");
-        $(".select_text").css("display","");
-        $(".view_text").css("display","none");
+        $(".select_text").css("display", "");
+        $(".view_text").css("display", "none");
         $("#download_few").css("display", "none")
         $("#delete_few").css("display", "none");
         $("#select_all").css("display", "none")

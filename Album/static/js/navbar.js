@@ -53,24 +53,25 @@
                     dataType: "json",
                     success: function (data) {
                         var search_status = data["search_status"];
-                        if (search_status === "false")
-                         {
-                            toastr.warning("Tag doesn't exist !")
-                            $("#input_search_tag").focus()
+                        if (search_status === "false") {
+                            $("#input_search_tag").val(null);
+                            toastr.warning("Tag doesn't exist !");
+                            $("#input_search_tag").focus();
                         } else if (search_status === "true") {
                             toastr.success("\"" + search_tag + "\" Images Find Successfully ~");
                         }
                     },
                     error: function () {
-                        toastr.error("Error , Please Try again !")
+                        toastr.error("Error , Please Try again !");
                     }
                 });
+
             } else {
                 $(this).blur();
+                $(this).val(null);
                 toastr.error("Search Tag can't be empty !");
-                return;
+
             }
-            toastr.success("Success !");
         }
     });
 

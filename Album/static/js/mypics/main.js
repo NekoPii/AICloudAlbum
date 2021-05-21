@@ -1,4 +1,6 @@
 var current_page = 1;
+var pics;
+var pics_count;
 (function ($) {
     "use strict";
 
@@ -15,9 +17,6 @@ var current_page = 1;
         }
     });
 
-    var pics;
-    var pics_count;
-
 
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
@@ -27,12 +26,26 @@ var current_page = 1;
 
 
     $.getJSON("/ajax_folders/", function (data) {
+        toastr.warning("json success!");
         pics = data["folders"];
         pics_count = data["count"];
-        if (pics_count <= 16) {
+        if (pics_count <= 25) {
             $("#next").css("display", "none");
         }
     });
+
+    $(window).bind('scroll', function () {
+        if ($(window).scrollTop() <= 300) {
+            $("#top").hide();
+        } else {
+            $("#top").show();
+        }
+    });
+
+    $("#top").hide()
+        .on("click", function () {
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
 
 
     $("#back")
@@ -46,8 +59,8 @@ var current_page = 1;
                     $("#next").css("display", "inline-block")
                     $("#back").css("display", "none")
                 }
-                for (var i = 1; i <= 16; i++) {
-                    var pic_number = (current_page - 1) * 16 + i;
+                for (var i = 1; i <= 25; i++) {
+                    var pic_number = (current_page - 1) * 25 + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
                     var element3 = "#img_" + i + " .element_2";
@@ -58,7 +71,7 @@ var current_page = 1;
 
                     pic_number--;
                     $(element1).attr("title", pics[pic_number]["name"]);
-                    $(element1).href(pics[pic_number]["href"]);
+                    $(element1).attr("href", pics[pic_number]["href"]);
                     $(element2).text(pics[pic_number]["name"]);
                     $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                     $(element4).attr("title", pics[pic_number]["name"]);
@@ -78,15 +91,15 @@ var current_page = 1;
 
     $("#next")
         .click(function () {
-            if ((pics_count - current_page * 16) > 0) {
+            if ((pics_count - current_page * 25) > 0) {
                 $("#next").css("display", "inline-block")
                 $("#back").css("display", "inline-block")
-                if (pics_count - (1 + current_page) * 16 <= 0) {
+                if (pics_count - (1 + current_page) * 25 <= 0) {
                     $("#next").css("display", "none")
                     $("#back").css("display", "inline-block")
                 }
-                for (var i = 1; i <= 16; i++) {
-                    var pic_number = current_page * 16 + i;
+                for (var i = 1; i <= 25; i++) {
+                    var pic_number = current_page * 25 + i;
 
                     if (pic_number <= pics_count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
@@ -99,7 +112,7 @@ var current_page = 1;
 
                         pic_number--;
                         $(element1).attr("title", pics[pic_number].name);
-                        $(element1).href(pics[pic_number]["href"]);
+                        $(element1).attr("href", pics[pic_number]["href"]);
                         $(element2).text(pics[pic_number]["name"]);
                         $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
                         $(element4).attr("title", pics[pic_number]["name"]);
@@ -151,52 +164,7 @@ var current_page = 1;
             }
         }
     });
-    /* Card Slider - Swiper */
-    var cardSlider = new Swiper('.card-slider', {
-        autoplay: {
-            delay: 4000,
-            disableOnInteraction: false
-        },
-        loop: true,
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev'
-        },
-        slidesPerView: 3,
-        spaceBetween: 20,
-        breakpoints: {
-            // when window is <= 992px
-            992: {
-                slidesPerView: 2
-            },
-            // when window is <= 768px
-            768: {
-                slidesPerView: 1
-            }
-        }
-    });
 
-    /* Filter - Isotope */
-    var $grid = $('.grid').isotope({
-        // options
-        itemSelector: '.element-item',
-        layoutMode: 'fitRows'
-    });
-
-    // filter items on button click
-    $('.filters-button-group').on('click', 'a', function () {
-        var filterValue = $(this).attr('data-filter');
-        $grid.isotope({filter: filterValue});
-    });
-
-    // change is-checked class on buttons
-    $('.button-group').each(function (i, buttonGroup) {
-        var $buttonGroup = $(buttonGroup);
-        $buttonGroup.on('click', 'a', function () {
-            $buttonGroup.find('.is-checked').removeClass('is-checked');
-            $(this).addClass('is-checked');
-        });
-    });
 
     if ($("#input_folder_name").val() != '') {
         $("#input_folder_name").addClass('notEmpty');
@@ -239,9 +207,9 @@ $("#change_model").click(function () {
         $("#select_cnt").text(cnt.toString());
     } else if ($(this).val() == "view") {// 退出选择
         $(".add_btn").css("display", "flex");
-        if (current_page == 1) {
+        if (current_page === 1) {
             $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 16) > 0) {
+        } else if ((pics_count - current_page * 25) < 0) {
             $("#back").css("display", "inline-block");
         } else {
             $("#next").css("display", "inline-block");

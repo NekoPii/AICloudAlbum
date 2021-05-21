@@ -10,7 +10,6 @@
     <link href="/static/vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
-    <link href="/static/css/mypics/swiper.css" rel="stylesheet">
     <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
     <link href="/static/css/upload/main.css" rel="stylesheet">
@@ -112,7 +111,7 @@
             <div class="counter-value number-count" data-count={{ count }}>1</div>
             <div class="counter-info">Folder(s)<br>In Total</div>
         </div>
-        <div class="cell">
+        <div class="cell" style="width: 180px">
             <div class="counter-value number-count" data-count={{ capacity_now }}>1</div>
             <div class="counter-info">MB<br>Used</div>
         </div>
@@ -124,7 +123,7 @@
     <!-- end of counter -->
 
     <!-- Projects -->
-    <div id="projects" class="filter">
+    <div id="projects" class="filter" style="padding-top: 1rem;padding-bottom: 1rem">
         <div class="container" style="padding: 0;">
             <div class="row">
                 <div class="col-lg-12">
@@ -169,8 +168,9 @@
                 <div class="col-lg-12">
                     <div class="grid" style="text-align: center;background-color: rgb(250,250,250);">
                         <form id="folderFewForm">
-                            {% for p in folders %}
-                                <div id='img_{{ p.id }}' class="element-item development"
+                            {% for p in Folders %}
+                                <div class="element-item development"
+                                     id="img_{{ p.id }}"
                                      style="text-align: center;background-color: rgb(250,250,250)">
                                     <a title="{{ p.name }}" class="popup-with-move-anim"
                                        href={{ p.href }} name="{{ p.name }}">
@@ -207,14 +207,20 @@
     <!-- end of projects -->
 
     <!-- pages-->
-    <div class="container" style="text-align: center">
-        <button id="back" class="btn-solid-reg" type="button"
-                style="display:inline-block;">
-            <<
+    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 10rem">
+        <button id="top" class="btn-small" type="button" value="zero"
+                style="display: inline;margin-bottom: 0;padding-left: 17.7px;padding-right: 17.7px">
+            <i class="fas fa-arrow-up"></i>
         </button>
-        <button id="next" class="btn-solid-reg" type="button"
-                style="display: none;">
-            >>
+    </div>
+    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
+        <button id="back" class="btn-small" type="button" value="zero"
+                style="display: inline;margin-bottom: 0.5rem">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <button id="next" class="btn-small" type="button" value="zero"
+                style="display: inline;margin: 0 auto;">
+            <i class="fas fa-angle-down"></i>
         </button>
     </div>
     <!--end of pages-->
@@ -230,9 +236,7 @@
     <script src="/static/vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
     <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
-    <script src="/static/vendor/swiper/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
-    <script src="/static/vendor/isotype/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
     <script src="/static/js/mypics/main.js"></script>
     <script src="/static/js/delete_folder/main.js"></script>
     <script src="/static/js/modify_folder/main.js"></script>
