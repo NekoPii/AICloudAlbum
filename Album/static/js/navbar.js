@@ -4,9 +4,10 @@
    Description: Custom JS file
 */
 
-
 (function ($) {
     "use strict";
+
+    /* Sidebar */
 
     /* Navbar Scripts */
     // jQuery to collapse the navbar on scroll
@@ -77,3 +78,5 @@
 
 
 })(jQuery);
+
+

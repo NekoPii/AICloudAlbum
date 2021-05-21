@@ -10,17 +10,48 @@
     <link href="/static/css/scrollbar.css" rel="stylesheet">
     <link href="/static/css/unicons.css" rel="stylesheet">
     <link href="/static/css/navbar.css" rel="stylesheet">
+    <link href="/static/css/sidebar/stylish-portfolio.min.css" rel="stylesheet">
+
 
 </head>
 <body id="alpha">
 
 <!--sidebar-->
+<nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand" style="padding-top: 10px">
+            <a class="js-scroll-trigger" href="#">
+                <i class="fa fa-bars" style="color:rgb(187,187,187) ;width: 12.25px;height: 14px"></i>
+            </a>
+            <img src="/static/image/AIAlbum.svg" alt="alternative"
+                 style="width: 5.5rem;margin-top: 0;margin-left: 0.5rem">
+        </li>
 
+        <li class="sidebar-nav-item">
+            <a href="#" style="color: rgb(187, 187, 187) ;margin-left: 1rem">
+                <i class="fas fa-folder-open" style="color:rgb(187,187,187);margin-right: 2px"></i>
+                <b>Folders</b>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="#" style="color: rgb(187, 187, 187);margin-left: 1rem">
+                <i class="fas fa-tags" style="color:rgb(187,187,187);margin-right: 2px"></i>
+                <b>Tags</b>
+            </a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="#" style="color: rgb(187, 187, 187);margin-left: 1rem">
+                <i class="fas fa-smile-wink" style="color:rgb(187,187,187);margin-right: 2px"></i>
+                <b>Faces</b>
+            </a>
+        </li>
+    </ul>
+</nav>
 <!--end sidebar-->
 
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top " style="height: 60px">
+<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top " style="height: 60px ;z-index: 2">
     <!-- Text Logo - Use this if you don't have a graphic logo -->
     <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
     <!-- Image Logo -->
@@ -28,8 +59,9 @@
         <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
     {% endifequal %}
     {% ifequal request.session.is_login True %}
-        <a class="item sidebar-button-nav">
-            <i class=" large sidebar icon" style="color:rgb(187,187,187)"></i>
+
+        <a class="menu-toggle rounded" href="#">
+            <i class="fa fa-bars" style="color:rgb(187,187,187)"></i>
         </a>
         <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
 
@@ -42,7 +74,7 @@
                            autocomplete="off"
                            style="padding-top: 16px;padding-bottom: 8px">
                     <label class="label-control" for="input_search_tag"><i class="fas fa-search"></i>&nbsp;Search
-                        Tag</label>
+                    </label>
                 </div>
             </form>
         </div>
@@ -82,6 +114,8 @@
 {% block js %}{% endblock %}
 <script src="/static/vendor/toastr/toastr.min.js"></script>
 <script src="/static/js/navbar.js"></script>
+
+<script src="/static/js/sidebar/stylish-portfolio.min.js"></script>
 
 </body>
 </html>
