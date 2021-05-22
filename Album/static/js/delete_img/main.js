@@ -66,7 +66,7 @@ $(".delete_one").click(function () {
     });
 });
 
-$("#delete_few").click(function () {
+$("#imgs_delete_few").click(function () {
     if($(".select_cnt").text()=="00"){
         toastr.info("No Images Selected !");
     }
@@ -86,7 +86,7 @@ $("#delete_few").click(function () {
                             $.ajax({
                                 url: "/delete_select_img/" + now_folder_fake_name + "/",
                                 type: "POST",
-                                data: $("#downloadFewForm").serialize(),
+                                data: $("#imageFewForm").serialize(),
                                 dataType: "json",
                                 success: function (data) {
                                     var delete_cnt = data["delete_cnt"],

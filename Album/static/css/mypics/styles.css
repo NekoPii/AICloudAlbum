@@ -2,6 +2,18 @@ body {
     background: rgb(250, 250, 250);
 }
 
+#mytab a {
+    color: #64b3f4;
+    font-weight: bold;
+}
+
+#mytab a:active,
+#mytab a:focus,
+#mytab a:hover {
+    color: #1b88de;
+    background: white;
+}
+
 #top {
     display: inline;
     margin-bottom: 0;
@@ -176,7 +188,7 @@ body {
 .btn-solid-reg {
     z-index: 1;
     display: inline-block;
-    padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
+    padding: 0.6875rem 1.875rem;
     border: 0.125rem solid #64b3f4;
     border-radius: 0.25rem;
     background-color: #64b3f4;
@@ -195,7 +207,7 @@ body {
 .rm-btn-solid-reg {
     z-index: 1;
     display: inline-block;
-    padding: 1.1875rem 1.875rem 1.1875rem 1.875rem;
+    padding: 0.6875rem 1.875rem;
     border: 0.125rem solid #e53935;
     border-radius: 0.25rem;
     background-color: #e53935;
@@ -831,6 +843,12 @@ body {
         /*width: 17.3125rem;*/ /* to eliminate grid overflow problem on hard refresh */
         width: 13.3125rem;
         height: 13.3125rem;
+    }
+
+    .filter .folder .element-item {
+        /*width: 17.3125rem;*/ /* to eliminate grid overflow problem on hard refresh */
+        width: 17.3125rem;
+        height: 17.3125rem;
     }
 
     .filter .element-item .element-item-overlay span {

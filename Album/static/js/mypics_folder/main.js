@@ -246,17 +246,17 @@ $("#change_model").click(function () {
 
 $(".choose_model_img").click(function () {
 
-    if ($(this).find(".download_select").prop("checked") == true) {//已选中
+    if ($(this).find(".download_select").prop("checked") === true) {//已选中
         $(this).find(".download_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
         $(".select_cnt").text(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
+        if (cnt < $(this).length) {
             $("#select_all").val("zero");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt == $(".choose_model_img").length) {
+        } else if (cnt == $(this).length) {
             $("#select_all").val("all");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");

@@ -25,7 +25,8 @@ $("#input_folder_mod_name").on("keypress", function (event) {
                             toastr.success("\"" + now_select + "\" Folder Modify Successfully ~");
                             setTimeout(function () {
                                 window.location.reload();
-                            }, 500);
+                                //$("#folder-tab-tabs-above").click();
+                            }, 400);
                         }
                     },
                     error: function () {
@@ -48,7 +49,7 @@ $("#modal_modify_ok").click(function () {
     var ori_select = $("#folder_names option:first").val()
     input_name = input_name.trim()
 
-    if(now_select!=ori_select) {
+    if (now_select != ori_select) {
         if (input_name && input_name != "") {
             $.ajax({
                 url: "/modify_folder/" + now_select + "/",
@@ -68,7 +69,8 @@ $("#modal_modify_ok").click(function () {
                         toastr.success("\"" + now_select + "\" Folder Modify Successfully ~");
                         setTimeout(function () {
                             window.location.reload();
-                        }, 500);
+                            //$("#folder-tab-tabs-above").click();
+                        }, 400);
                     }
                 },
                 error: function () {
@@ -79,7 +81,7 @@ $("#modal_modify_ok").click(function () {
             toastr.error("Folder Name can't be empty !");
             $("#input_folder_mod_name").focus();
         }
-    }else{
+    } else {
         toastr.info("Please Select Folder to Modify ~");
     }
 });
@@ -87,5 +89,5 @@ $("#modal_modify_ok").click(function () {
 $("#modal_modify_close").click(function () {
     $("#input_folder_mod_name").val("")
     var ori_select = $("#folder_names option:first").val()
-    $(".selectpicker").selectpicker("val",ori_select)
+    $(".selectpicker").selectpicker("val", ori_select)
 });

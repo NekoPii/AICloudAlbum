@@ -45,7 +45,7 @@ $(".download_one").click(function () {
     });
 });
 
-$("#download_few").click(function () {
+$("#imgs_download_few").click(function () {
     if ($(".select_cnt").text() == "00") {
         toastr.info("No Images Selected !")
     } else {
@@ -53,7 +53,7 @@ $("#download_few").click(function () {
         $.ajax({
             url: "/download_select/",
             type: "POST",
-            data: $("#downloadFewForm").serialize(),
+            data: $("#imageFewForm").serialize(),
             success: function (response, status, request) {
                 var download_cnt = request.getResponseHeader("download_cnt"),
                     download_status = request.getResponseHeader("download_status"),
@@ -73,7 +73,7 @@ $("#download_few").click(function () {
                             toastr.info(download_cnt.toString() + " Image(s) will download right now<br>"
                                 + (select_cnt - download_cnt).toString() + " Image(s) download failed ~")
                         }
-                        var form = $("#downloadFewForm");
+                        var form = $("#imageFewForm");
                         form.attr("method", "post");
                         form.attr("action", "/download_select/");
                         form.submit();

@@ -2,7 +2,7 @@ var asyn_cnt = 0;
 var syn_cnt = 0;
 
 $(document).ready(function () {
-    var folder_fake_name=$("#now_folder_fake_name").val()
+    var folder_fake_name = $("#now_folder_fake_name").val()
     console.log(folder_fake_name)
     toastr.options = {
         "closeButton": false,
@@ -37,7 +37,7 @@ $(document).ready(function () {
         theme: "fas",
         //browseClass:"btn btn-primary btn-block",
         //language: 'zh',     // 设置中文，需要引入locales/zh.js文件
-        uploadUrl: '/upload_upload_asyn/'+folder_fake_name+"/",     // 上传路径 *****************************************
+        uploadUrl: '/upload_upload_asyn/' + folder_fake_name + "/",     // 上传路径 *****************************************
         maxFileSize: 0,     // 上传文件大小限制，触发 msgSizeTooLarge 提示
         previewFileType: "image",
         browseClass: "browser-btn-solid-lg",
@@ -291,8 +291,7 @@ $(document).ready(function () {
     });
 });
 
-$("#modal_close").on("click", function () {
-    window.location.reload();
+$("#upload_modal_close").on("click", function () {
     $('#upload-input').fileinput("clear");
     asyn_cnt = 0;
     syn_cnt = 0;

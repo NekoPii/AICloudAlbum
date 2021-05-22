@@ -16,7 +16,7 @@ $(document).ready(function () {
     };
 });
 
-$("#delete_few").click(function () {
+$("#folders_delete_few").click(function () {
     if ($("#select_cnt").text() == "0") {
         toastr.info("No Folder Selected !");
     } else {

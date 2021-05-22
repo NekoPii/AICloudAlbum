@@ -247,9 +247,13 @@ def mypics_folder(request):
     if request.session.get("is_login"):
         name = request.session['name']
         phone = request.session['phone']
+        all_tag = models.Tag.objects.all()
         user = models.User.objects.get(phone=phone)
-        folders = models.Folder.objects.filter(user_id=user.phone)
+        folders = models.Folder.objects.filter(user_id=user.phone).exclude(name="ALL")
+        ALL_folder = models.Folder.objects.get(user_id=user.phone, name="ALL")
+        ALL_folderimgs = models.Picture.objects.filter(user_id=user.phone)
         Folders = []
+        ALL_imgs = []
         cnt = 1
         for p in folders:
             foldercover = models.FolderCover.objects.get(folder_id=p.id)
@@ -263,8 +267,21 @@ def mypics_folder(request):
             cnt += 1
             if cnt == 26:
                 break
+
+        cnt = 1
+        for img in ALL_folderimgs:
+            img.size = round(img.size, 2)
+            img.path = os.path.join('/upload_imgs/compress_imgs/', img.fake_name + '.' + img.type)
+            img.id = cnt
+            img.nowtag = all_tag.get(id=img.tag_id).tag
+            ALL_imgs.append(img)
+            cnt += 1
+            if cnt == 26:
+                break
+
         count = folders.count()
         capacity_now = round(user.now_capacity, 2)
+        ALL_folderfakename=ALL_folder.fake_name
 
         return render(request, "Album/mypics.html", locals())
     else:

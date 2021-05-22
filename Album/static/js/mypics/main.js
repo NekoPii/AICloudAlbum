@@ -4,6 +4,7 @@ var pics_count;
 (function ($) {
     "use strict";
 
+    /*
     $(".choose_model_img").each(function () {
         if ($(this).attr("name") == "ALL") {
             $(this).remove();
@@ -16,13 +17,18 @@ var pics_count;
             $(this).parent().addClass("ALL_folder");
         }
     });
+     */
 
 
-    $("#change_model").val("select");
+    $("#folders_change_model").val("select");
+    $("#imgs_change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#delete_few").css("display", "none");
-    $("#select_all").css("display", "none");
+    $("#folders_delete_few").css("display", "none");
+    $("#folders_select_all").css("display", "none");
+    $("#imgs_delete_few").css("display", "none");
+    $("#imgs_select_all").css("display", "none");
     $(".folder_select").prop("checked", false);
+    $(".img_select").prop("checked", false);
 
 
     $.getJSON("/ajax_folders/", function (data) {
@@ -184,28 +190,46 @@ var pics_count;
         $(this).blur();
     });
 
+    $('#imageFewForm .popup-with-move-anim').magnificPopup({
+        type: 'inline',
+        fixedContentPos: false, /* keep it false to avoid html tag shift with margin-right: 17px */
+        fixedBgPos: true,
+        overflowY: 'auto',
+        closeBtnInside: true,
+        preloader: false,
+        midClick: true,
+        removalDelay: 300,
+        mainClass: 'my-mfp-slide-bottom'
+    });
+
 })(jQuery);
 
+$('.nav-item [data-toggle="tab"]').on('click', function (event) {
 
-$("#change_model").click(function () {
-    if ($(this).val() == "select") {//进行选择
-        $(".add_btn").css("display", "none");
+    console.log($(this).data("value"));
+});
+
+$("#imgs_change_model").click(function () {
+    if ($(this).val() === "select") {//进行选择
+        cnt = 0;
+        $(".upload_btn").css("display", "none");
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
-        $(".select_text").css("display", "none");
-        $(".view_text").css("display", "");
-        $("#delete_few").css("display", "flex")
-        $("#select_all").css("display", "flex")
-        $(".popup-with-move-anim").css("display", "none");
-        $(".ALL_folder").attr("disabled", true).css("pointer-events", "none").css("display", "");
-        $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
-        $(".folder_select").prop("checked", false);
-        $(".choose_zoomImage11").css("opacity", 0.5);
-        cnt = 0;
-        $("#select_cnt").text(cnt.toString());
-    } else if ($(this).val() == "view") {// 退出选择
-        $(".add_btn").css("display", "flex");
+        $("#imgs_change_model .select_text").css("display", "none");
+        $("#imgs_change_model .view_text").css("display", "");
+        $("#imgs_download_few").css("display", "flex")
+        $("#imgs_delete_few").css("display", "flex")
+        $("#imgs_select_all").css("display", "flex").val("zero")
+        $("#imgs_select_all .select_all_text").css("display", "");
+        $("#imgs_select_all .cancel_text").css("display", "none");
+        $("#imageFewForm .popup-with-move-anim").css("display", "none");
+        $("#imageFewForm .choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
+        $("#imageFewForm .img_select").prop("checked", false);
+        $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
+        $(".imgs_select_cnt").text(cnt.toString());
+    } else if ($(this).val() === "view") {// 退出选择
+        $(".upload_btn").css("display", "flex");
         if (current_page === 1) {
             $("#next").css("display", "inline-block");
         } else if ((pics_count - current_page * 25) < 0) {
@@ -215,72 +239,183 @@ $("#change_model").click(function () {
             $("#back").css("display", "inline-block");
         }
 
-        $(this).val("select");
-        $(".select_text").css("display", "");
-        $(".view_text").css("display", "none");
-        $("#delete_few").css("display", "none")
-        $("#select_all").css("display", "none")
-        $(".choose_model_img").css("display", "none");
-        $(".popup-with-move-anim").css("display", "block");
-        $(".ALL_folder").attr("disabled", false).css("pointer-events", "").css("opacity", 1);
         cnt = 0;
+        $(this).val("select");
+        $("#imgs_change_model .select_text").css("display", "");
+        $("#imgs_change_model .view_text").css("display", "none");
+        $("#imgs_download_few").css("display", "none")
+        $("#imgs_delete_few").css("display", "none")
+        $("#imgs_select_all").css("display", "none").val("zero")
+        $("#imgs_select_all .select_all_text").css("display", "");
+        $("#imgs_select_all .cancel_text").css("display", "none");
+        $("#imageFewForm .img_select").prop("checked", false);
+        $("#imageFewForm .choose_model_img").css("display", "none");
+        $("#imageFewForm .popup-with-move-anim").css("display", "block");
     }
 });
 
-$(".choose_model_img").click(function () {
+$("#imageFewForm .choose_model_img").click(function () {
 
-    if ($(this).find(".folder_select").prop("checked") == true) {//已选中
+    if ($(this).find(".img_select").prop("checked") === true) {//已选中
+        $(this).find(".img_select").prop("checked", false);
+        $(this).find(".choose_zoomImage11").css("opacity", 0.5);
+        $(this).css("border", "0.25rem dashed #d7d2cc")
+        cnt -= 1;
+        $(".imgs_select_cnt").text(cnt.toString());
+        console.log("cnt:" + cnt)
+        console.log("len:" + $("#imageFewForm .choose_model_img").length)
+        if (cnt < $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("zero");
+            $("#imgs_select_all .select_all_text").css("display", "");
+            $("#imgs_select_all .cancel_text").css("display", "none");
+        } else if (cnt === $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("all");
+            $("#imgs_select_all .select_all_text").css("display", "none");
+            $("#imgs_select_all .cancel_text").css("display", "");
+        }
+    } else {//未选中
+        $(this).find(".img_select").prop("checked", true);
+        $(this).find(".choose_zoomImage11").css("opacity", 1);
+        $(this).css("border", "0.25rem solid #00C9FF");
+        cnt += 1;
+        $(".imgs_select_cnt").text(cnt.toString());
+        console.log("cnt:" + cnt)
+        console.log("len:" + $("#imageFewForm .choose_model_img").length)
+        if (cnt < $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("zero");
+            $("#imgs_select_all .select_all_text").css("display", "");
+            $("#imgs_select_all .cancel_text").css("display", "none");
+        } else if (cnt === $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("all");
+            $("#imgs_select_all .select_all_text").css("display", "none");
+            $("#imgs_select_all .cancel_text").css("display", "");
+        }
+    }
+});
+
+$("#imgs_select_all").click(function () {
+    console.log("select_all:cnt" + cnt);
+    console.log("select_all:len" + $("#imageFewForm .choose_model_img").length);
+    if ($(this).val() === "zero" && cnt < $("#imageFewForm .choose_model_img").length) {
+        $("#imageFewForm .img_select").prop("checked", true);
+        $("#imageFewForm .choose_zoomImage11").css("opacity", 1);
+        $("#imageFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
+        cnt = $("#imageFewForm .choose_model_img").length;
+        $(".imgs_select_cnt").text(cnt.toString());
+        $(this).val("all");
+        $("#imgs_select_all .select_all_text").css("display", "none");
+        $("#imgs_select_all .cancel_text").css("display", "");
+    } else if ($(this).val() === "all" && cnt === $("#imageFewForm .choose_model_img").length) {
+        $("#imageFewForm .img_select").prop("checked", false);
+        $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
+        $("#imageFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
+        cnt = 0;
+        $(".imgs_select_cnt").text(cnt.toString());
+        $(this).val("zero");
+        $("#imgs_select_all .select_all_text").css("display", "");
+        $("#imgs_select_all .cancel_text").css("display", "none");
+    }
+});
+
+
+$("#folders_change_model").click(function () {
+    if ($(this).val() == "select") {//进行选择
+        cnt = 0;
+        $(".folder_add").css("display", "none");
+        $("#next").css("display", "none");
+        $("#back").css("display", "none");
+        $(this).val("view");
+        $("#folders_change_model .select_text").css("display", "none");
+        $("#folders_change_model .view_text").css("display", "");
+        $("#folders_delete_few").css("display", "flex")
+        $("#folders_select_all").css("display", "flex").val("zero")
+        $("#folders_select_all .select_all_text").css("display", "");
+        $("#folders_select_all .cancel_text").css("display", "none");
+        $("#folderFewForm .popup-with-move-anim").css("display", "none");
+        $("#folderFewForm .choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
+        $("#folderFewForm .folder_select").prop("checked", false);
+        $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
+        $("#folders_select_cnt").text(cnt.toString());
+    } else if ($(this).val() == "view") {// 退出选择
+        $(".folder_add").css("display", "flex");
+        if (current_page === 1) {
+            $("#next").css("display", "inline-block");
+        } else if ((pics_count - current_page * 25) < 0) {
+            $("#back").css("display", "inline-block");
+        } else {
+            $("#next").css("display", "inline-block");
+            $("#back").css("display", "inline-block");
+        }
+
+        cnt = 0;
+        $(this).val("select");
+        $("#folders_change_model .select_text").css("display", "");
+        $("#folders_change_model .view_text").css("display", "none");
+        $("#folders_delete_few").css("display", "none")
+        $("#folders_select_all").css("display", "none").val("zero")
+        $("#folders_select_all .select_all_text").css("display", "");
+        $("#folders_select_all .cancel_text").css("display", "none");
+        $("#folderFewForm .choose_model_img").css("display", "none");
+        $("#folderFewForm .folder_select").prop("checked", false);
+        $("#folderFewForm .popup-with-move-anim").css("display", "block");
+
+    }
+});
+
+$("#folderFewForm .choose_model_img").click(function () {
+
+    if ($(this).find(".folder_select").prop("checked") === true) {//已选中
         $(this).find(".folder_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
-        $("#select_cnt").text(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
-            $("#select_all").val("zero");
-            $(".select_all_text").css("display", "");
-            $(".cancel_text").css("display", "none");
-        } else if (cnt == $(".choose_model_img").length) {
-            $("#select_all").val("all");
-            $(".select_all_text").css("display", "none");
-            $(".cancel_text").css("display", "");
+        $("#folders_select_cnt").text(cnt.toString());
+        if (cnt < $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("zero");
+            $("#folders_select_all .select_all_text").css("display", "");
+            $("#folders_select_all .cancel_text").css("display", "none");
+        } else if (cnt === $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("all");
+            $("#folders_select_all .select_all_text").css("display", "none");
+            $("#folders_select_all .cancel_text").css("display", "");
         }
     } else {//未选中
         $(this).find(".folder_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
         cnt += 1;
-        $("#select_cnt").text(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
-            $("#select_all").val("zero");
-            $(".select_all_text").css("display", "");
-            $(".cancel_text").css("display", "none");
-        } else if (cnt == $(".choose_model_img").length) {
-            $("#select_all").val("all");
-            $(".select_all_text").css("display", "none");
-            $(".cancel_text").css("display", "");
+        $("#folders_select_cnt").text(cnt.toString());
+        if (cnt < $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("zero");
+            $("#folders_select_all .select_all_text").css("display", "");
+            $("#folders_select_all .cancel_text").css("display", "none");
+        } else if (cnt === $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("all");
+            $("#folders_select_all .select_all_text").css("display", "none");
+            $("#folders_select_all .cancel_text").css("display", "");
         }
     }
 });
 
-$("#select_all").click(function () {
-    if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
-        $(".folder_select").prop("checked", true);
-        $(".choose_zoomImage11").css("opacity", 1);
-        $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
-        cnt = $(".choose_model_img").length;
-        $("#select_cnt").text(cnt.toString());
+$("#folders_select_all").click(function () {
+    if ($(this).val() === "zero" && cnt < $("#folderFewForm .choose_model_img").length) {
+        $("#folderFewForm .folder_select").prop("checked", true);
+        $("#folderFewForm .choose_zoomImage11").css("opacity", 1);
+        $("#folderFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
+        cnt = $("#folderFewForm .choose_model_img").length;
+        $("#folders_select_cnt").text(cnt.toString());
         $(this).val("all");
-        $(".select_all_text").css("display", "none");
-        $(".cancel_text").css("display", "");
-    } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
-        $(".folder_select").prop("checked", false);
-        $(".choose_zoomImage11").css("opacity", 0.5);
-        $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
+        $("#folders_select_all .select_all_text").css("display", "none");
+        $("#folders_select_all .cancel_text").css("display", "");
+    } else if ($(this).val() === "all" && cnt === $("#folderFewForm .choose_model_img").length) {
+        $("#folderFewForm .folder_select").prop("checked", false);
+        $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
+        $("#folderFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
-        $("#select_cnt").text(cnt.toString());
+        $("#folders_select_cnt").text(cnt.toString());
         $(this).val("zero");
-        $(".select_all_text").css("display", "");
-        $(".cancel_text").css("display", "none");
+        $("#folders_select_all .select_all_text").css("display", "");
+        $("#folders_select_all .cancel_text").css("display", "none");
     }
 });
 
@@ -308,7 +443,8 @@ $("#input_folder_name").on("keypress", function (event) {
                         toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
                         setTimeout(function () {
                             window.location.reload();
-                        }, 500);
+                            //$("#folder-tab-tabs-above").click();
+                        }, 400);
                     }
                 },
                 error: function () {
@@ -321,7 +457,7 @@ $("#input_folder_name").on("keypress", function (event) {
     }
 });
 
-$("#modal_ok").click(function () {
+$("#add_modal_ok").click(function () {
     var input_name = $("#input_folder_name").val();
     input_name = input_name.trim()
     if (input_name && input_name != "") {
@@ -343,7 +479,8 @@ $("#modal_ok").click(function () {
                     toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
                     setTimeout(function () {
                         window.location.reload();
-                    }, 500);
+                        //$("#folder-tab-tabs-above").click();
+                    }, 400);
                 }
             },
             error: function () {
@@ -355,7 +492,7 @@ $("#modal_ok").click(function () {
     }
 });
 
-$("#modal_close").click(function () {
+$("#add_modal_close").click(function () {
     $("#input_folder_name").val("")
 });
 

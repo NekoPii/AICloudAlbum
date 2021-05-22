@@ -93,11 +93,11 @@
                             data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
                         <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
                     </button>
-                    <button id="download_few" class="btn-solid-reg" type="button"
+                    <button id="imgs_download_few" class="btn-solid-reg" type="button"
                             style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
                             class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
                     </button>
-                    <button id="delete_few" class="rm-btn-solid-reg" type="button"
+                    <button id="imgs_delete_few" class="rm-btn-solid-reg" type="button"
                             style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span
                             class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
                     </button>
@@ -107,7 +107,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid" style="text-align: center;background-color: rgb(250,250,250)">
-                        <form id="downloadFewForm">
+                        <form id="imageFewForm">
                             {% for p in Pics %}
                                 <div class="element-item development"
                                      id="img_{{ p.id }}"
@@ -174,7 +174,7 @@
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147)">
                     <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
-                        class="element_7" title={{p.name}}>{{ p.name }}</h3>
+                        class="element_7" title="{{p.name}}">{{ p.name }}</h3>
                     <hr class="line-heading">
                     <h6 style="margin-bottom: 0">UPLOAD TIME:</h6>
                     <b class="element_8">  {{ p.upload_time }}</b>
