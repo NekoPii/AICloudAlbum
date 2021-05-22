@@ -182,7 +182,7 @@ def ajax_pics(request, folder_fake_name):
     if request.is_ajax():
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        now_folder = models.Folder.objects.get(fake_name=folder_fake_name)
+        now_folder = models.Folder.objects.get(user_id=user.phone, fake_name=folder_fake_name)
         pics = models.Picture.objects.filter(folder_id=now_folder.id)
         all_tag = models.Tag.objects.all()
         json_data = {}
@@ -193,7 +193,8 @@ def ajax_pics(request, folder_fake_name):
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
-                   "height": p.height, "width": p.width, "upload_time": p.upload_time,"tag":all_tag.get(id=p.tag_id).tag}
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time,
+                   "tag": all_tag.get(id=p.tag_id).tag}
             json_data["pics"].append(pic)
             cnt += 1
         count = pics.count()
@@ -248,11 +249,12 @@ def mypics_folder(request):
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         folders = models.Folder.objects.filter(user_id=user.phone)
-        Folders=[]
+        Folders = []
         cnt = 1
         for p in folders:
             foldercover = models.FolderCover.objects.get(folder_id=p.id)
             cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
+
             p.href = "/mypics/" + p.fake_name + "/"
             p.size = round(p.total_size, 2)
             p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
@@ -274,11 +276,14 @@ def mypics_pics(request, folder_fake_name):
         name = request.session['name']
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        now_folder = models.Folder.objects.filter(fake_name=folder_fake_name)
+        now_folder = models.Folder.objects.filter(user_id=user.phone, fake_name=folder_fake_name)
         all_tag = models.Tag.objects.all()
         if now_folder:
-            pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
-            Pics=[]
+            if now_folder[0].name == "ALL":
+                pics = models.Picture.objects.filter(user_id=phone)
+            else:
+                pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
+            Pics = []
             cnt = 1
             for p in pics:
                 p.size = round(p.size, 2)
@@ -287,7 +292,7 @@ def mypics_pics(request, folder_fake_name):
                 p.nowtag = all_tag.get(id=p.tag_id).tag
                 Pics.append(p)
                 cnt += 1
-                if cnt==26:
+                if cnt == 26:
                     break
             count = pics.count()
             capacity_now = round(now_folder[0].total_size, 2)
@@ -304,9 +309,10 @@ def mypics_pics(request, folder_fake_name):
 
 def tags(request):
     if request.session.get("is_login"):
-        return render(request,"Album/tags.html",locals())
+        return render(request, "Album/tags.html", locals())
     else:
         return redirect("/login/")
+
 
 @csrf_exempt
 def upload_upload_syn(request, folder_fake_name):
@@ -318,6 +324,10 @@ def upload_upload_syn(request, folder_fake_name):
         initialPreviewConfig = []
 
         if all_imgs:
+            now_user = models.User.objects.get(phone=user_phone)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_folder_cover = models.FolderCover.objects.get(folder_id=ALL_folder.pk)
+
             for now_img in all_imgs:
                 img_path = os.path.join(store_dir, now_img.name)
 
@@ -338,7 +348,7 @@ def upload_upload_syn(request, folder_fake_name):
 
                 try:
 
-                    nowFolder = models.Folder.objects.get(user_id=user_phone, fake_name=folder_fake_name)
+                    nowFolder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
                     NoneTag = models.Tag.objects.get(tag="None")
 
@@ -358,16 +368,24 @@ def upload_upload_syn(request, folder_fake_name):
                         now_folder_cover.pic_id = new_img.pk
                         now_folder_cover.save()
 
-                    now_user = models.User.objects.get(phone=user_phone)
-                    now_user.now_capacity += new_img.size
-                    now_user.save()
-
-                    # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
-
                     nowFolder.cnt += 1
                     nowFolder.total_size += new_img.size
                     nowFolder.modify_time = datetime.datetime.now()
                     nowFolder.save(force_update=True)
+
+                    if nowFolder.id != ALL_folder.id:
+                        ALL_folder_cover.pic_id = new_img.pk
+                        ALL_folder_cover.save()
+
+                        ALL_folder.cnt += 1
+                        ALL_folder.total_size += new_img.size
+                        ALL_folder.modify_time = datetime.datetime.now()
+                        ALL_folder
+
+                    now_user.now_capacity = ALL_folder.total_size
+                    now_user.save()
+
+                    # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
                     # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -438,7 +456,10 @@ def upload_upload_asyn(request, folder_fake_name):
         all_imgs = request.FILES.get("upload_img", None)
 
         if all_imgs:
+            now_user = models.User.objects.get(phone=user_phone)
             img_path = os.path.join(store_dir, all_imgs.name)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_folder_cover = models.FolderCover.objects.get(folder_id=ALL_folder.pk)
 
             f = open(img_path, "wb")
             for chunk in all_imgs.chunks():  # 分块写入
@@ -457,7 +478,7 @@ def upload_upload_asyn(request, folder_fake_name):
 
             try:
 
-                nowFolder = models.Folder.objects.get(user_id=user_phone, fake_name=folder_fake_name)
+                nowFolder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
                 NoneTag = models.Tag.objects.get(tag="None")
 
@@ -477,16 +498,24 @@ def upload_upload_asyn(request, folder_fake_name):
                     now_folder_cover.pic_id = new_img.pk
                     now_folder_cover.save()
 
-                now_user = models.User.objects.get(phone=user_phone)
-                now_user.now_capacity += new_img.size
-                now_user.save()
-
-                # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
-
                 nowFolder.cnt += 1
                 nowFolder.total_size += new_img.size
                 nowFolder.modify_time = datetime.datetime.now()
                 nowFolder.save(force_update=True)
+
+                if nowFolder.id != ALL_folder.id:
+                    ALL_folder_cover.pic_id = new_img.pk
+                    ALL_folder_cover.save()
+
+                    ALL_folder.cnt += 1
+                    ALL_folder.total_size += new_img.size
+                    ALL_folder.modify_time = datetime.datetime.now()
+                    ALL_folder.save()
+
+                now_user.now_capacity = ALL_folder.total_size
+                now_user.save()
+
+                # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
                 # print("2:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -637,37 +666,92 @@ def delete_img(request, folder_fake_name):
             res = {"delete_status": None}
 
             now_user = models.User.objects.get(phone=phone)
-            now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
-            now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
+            now_pic = models.Picture.objects.get(fake_name=fake_name)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_foldercover = models.FolderCover.objects.get(folder_id=ALL_folder.id)
+            pic_folder = models.Folder.objects.get(user_id=now_user.phone, pk=now_pic.folder_id)
+            pic_foldercover = models.FolderCover.objects.get(folder_id=pic_folder.pk)
             zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
-            flag = False
             try:
-                now_pic = models.Picture.objects.get(fake_name=fake_name)
-                if now_pic.id == now_choose_foldercover.pic_id:
-                    now_choose_foldercover.pic_id = zero_pic.id
-                    now_choose_foldercover.save()
-                    flag = True
-                now_choose_folder.cnt -= 1
-                now_choose_folder.total_size -= now_pic.size
-                now_choose_folder.save()
-                now_user.now_capacity -= now_pic.size
-                now_user.save()
-                path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
-                compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
-                now_pic.delete()
-                os.remove(path)
-                os.remove(compress_path)
-                if (flag):
-                    try:
-                        now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
-                                                                            folder_id=now_choose_folder.id).values(
-                            "id").aggregate(Max("id"))
-                        if (now_user_max_img_id):
-                            now_choose_foldercover.pic_id = now_user_max_img_id["id__max"]
-                            now_choose_foldercover.save()
-                    except:
-                        pass
+                if pic_folder.pk == ALL_folder.pk:  # 只属于ALL_Folder里面的图片
+                    flag = False
+                    if now_pic.id == pic_foldercover.pic_id:
+                        pic_foldercover.pic_id = zero_pic.id
+                        pic_foldercover.save()
+                        flag = True
+
+                    pic_folder.cnt -= 1
+                    pic_folder.total_size -= now_pic.size
+                    pic_folder.save()
+
+                    now_user.now_capacity = pic_folder.total_size
+                    now_user.save()
+
+                    path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                    compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+                    now_pic.delete()
+                    os.remove(path)
+                    os.remove(compress_path)
+                    if (flag):
+                        try:
+                            now_user_max_allimg_id = models.Picture.objects.filter(user_id=now_user.phone).values(
+                                "id").aggregate(Max("id"))
+                            if (now_user_max_allimg_id):
+                                pic_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                                pic_foldercover.save()
+                        except:
+                            pass
+                else:  # 其他文件夹里的图片
+                    flag_all = False
+                    flag_other = False
+
+                    if now_pic.id == pic_foldercover.pic_id:
+                        pic_foldercover.pic_id = zero_pic.id
+                        pic_foldercover.save()
+                        flag_other = True
+                    if now_pic.id == ALL_foldercover.pic_id:
+                        ALL_foldercover.pic_id = zero_pic.id
+                        ALL_foldercover.save()
+                        flag_all = True
+
+                    pic_folder.cnt -= 1
+                    pic_folder.total_size -= now_pic.size
+                    pic_folder.save()
+
+                    ALL_folder.cnt -= 1
+                    ALL_folder.total_size -= now_pic.size
+                    ALL_folder.save()
+
+                    now_user.now_capacity = ALL_folder.total_size
+                    now_user.save()
+
+                    path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                    compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+                    now_pic.delete()
+                    os.remove(path)
+                    os.remove(compress_path)
+
+                    if (flag_all):
+                        try:
+                            now_user_max_allimg_id = models.Picture.objects.filter(user_id=now_user.phone).values(
+                                "id").aggregate(Max("id"))
+                            if (now_user_max_allimg_id):
+                                ALL_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                                ALL_foldercover.save()
+                        except:
+                            pass
+
+                    if (flag_other):
+                        try:
+                            now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
+                                                                                folder_id=pic_folder.id).values(
+                                "id").aggregate(Max("id"))
+                            if (now_user_max_img_id):
+                                pic_foldercover.pic_id = now_user_max_img_id["id__max"]
+                                pic_foldercover.save()
+                        except:
+                            pass
 
                 res["delete_status"] = "true"
             except:
@@ -675,7 +759,7 @@ def delete_img(request, folder_fake_name):
 
             response = HttpResponse(json.dumps(res))
             return response
-        return render(request, "Album/mypics.html", locals())
+        return mypics_pics(request, folder_fake_name)
     return redirect("/login/")
 
 
@@ -692,43 +776,103 @@ def delete_select_img(request, folder_fake_name):
             res = {"select_cnt": total_cnt, "delete_cnt": None, "delete_status": None}
 
             now_user = models.User.objects.get(phone=phone)
-            now_choose_folder = models.Folder.objects.get(fake_name=folder_fake_name)
-            now_choose_foldercover = models.FolderCover.objects.get(folder_id=now_choose_folder.id)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_foldercover = models.FolderCover.objects.get(folder_id=ALL_folder.id)
             zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
             if check_list:
                 cnt = 0
-                flag = False
                 for now in check_list:
                     try:
                         now_pic = models.Picture.objects.get(fake_name=now)
-                        if now_pic.id == now_choose_foldercover.pic_id:
-                            now_choose_foldercover.pic_id = zero_pic.id
-                            now_choose_foldercover.save()
-                            flag = True
-                        now_choose_folder.cnt -= 1
-                        now_choose_folder.total_size -= now_pic.size
-                        now_choose_folder.save()
-                        now_user.now_capacity -= now_pic.size
-                        now_user.save()
-                        path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
-                        compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
-                        now_pic.delete()
-                        os.remove(path)
-                        os.remove(compress_path)
+                        pic_folder = models.Folder.objects.get(pk=now_pic.folder_id)
+                        pic_foldercover = models.FolderCover.objects.get(folder_id=pic_folder.pk)
+
+                        if pic_folder.pk == ALL_folder.pk:  # 只属于ALL_Folder里面的图片
+                            flag = False
+                            if now_pic.id == pic_foldercover.pic_id:
+                                pic_foldercover.pic_id = zero_pic.id
+                                pic_foldercover.save()
+                                flag = True
+
+                            pic_folder.cnt -= 1
+                            pic_folder.total_size -= now_pic.size
+                            pic_folder.save()
+
+                            now_user.now_capacity = pic_folder.total_size
+                            now_user.save()
+
+                            path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                            compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+                            now_pic.delete()
+                            os.remove(path)
+                            os.remove(compress_path)
+                            if (flag):
+                                try:
+                                    now_user_max_allimg_id = models.Picture.objects.filter(
+                                        user_id=now_user.phone).values(
+                                        "id").aggregate(Max("id"))
+                                    if (now_user_max_allimg_id):
+                                        pic_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                                        pic_foldercover.save()
+                                except:
+                                    pass
+                        else:  # 其他文件夹里的图片
+                            flag_all = False
+                            flag_other = False
+
+                            if now_pic.id == pic_foldercover.pic_id:  # now_choose_foldercover!=ALL_foldercover
+                                pic_foldercover.pic_id = zero_pic.id
+                                pic_foldercover.save()
+                                flag_other = True
+                            if now_pic.id == ALL_foldercover.pic_id:
+                                ALL_foldercover.pic_id = zero_pic.id
+                                ALL_foldercover.save()
+                                flag_all = True
+
+                            pic_folder.cnt -= 1
+                            pic_folder.total_size -= now_pic.size
+                            pic_folder.save()
+
+                            ALL_folder.cnt -= 1
+                            ALL_folder.total_size -= now_pic.size
+                            ALL_folder.save()
+
+                            now_user.now_capacity = ALL_folder.total_size
+                            now_user.save()
+
+                            path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                            compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+                            now_pic.delete()
+                            os.remove(path)
+                            os.remove(compress_path)
+
+                            if (flag_all):
+                                try:
+                                    now_user_max_allimg_id = models.Picture.objects.filter(
+                                        user_id=now_user.phone).values(
+                                        "id").aggregate(Max("id"))
+                                    if (now_user_max_allimg_id):
+                                        ALL_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                                        ALL_foldercover.save()
+                                except:
+                                    pass
+
+                            if (flag_other):
+                                try:
+                                    now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
+                                                                                        folder_id=pic_folder.id).values(
+                                        "id").aggregate(Max("id"))
+                                    if (now_user_max_img_id):
+                                        pic_foldercover.pic_id = now_user_max_img_id["id__max"]
+                                        pic_foldercover.save()
+                                except:
+                                    pass
+
                         cnt += 1
                     except:
-                        continue
-                if (flag):
-                    try:
-                        now_user_max_img_id = models.Picture.objects.filter(user_id=now_user.phone,
-                                                                            folder_id=now_choose_folder.id).values(
-                            "id").aggregate(Max("id"))
-                        if (now_user_max_img_id):
-                            now_choose_foldercover.pic_id = now_user_max_img_id["id__max"]
-                            now_choose_foldercover.save()
-                    except:
                         pass
+
                 res["delete_cnt"] = cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
@@ -757,15 +901,25 @@ def delete_folder(request):
             res = {"delete_status": None}
 
             now_user = models.User.objects.get(phone=phone)
-            now_choose_folder = models.Folder.objects.get(fake_name=fake_name)
+            now_choose_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=fake_name)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_foldercover = models.FolderCover.objects.get(folder_id=ALL_folder.id)
+            zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
-            if now_choose_folder.name == "ALL":  # “ALL文件夹”无法删除
+            if now_choose_folder.id == ALL_folder.id:  # “ALL文件夹”无法删除
                 return HttpResponse()
 
             models.FolderCover.objects.get(folder_id=now_choose_folder.id).delete()
             now_imgs = models.Picture.objects.filter(folder_id=now_choose_folder.id)
-            now_user.now_capacity -= now_choose_folder.total_size
+
+            ALL_folder.total_size -= now_choose_folder.total_size
+            ALL_folder.cnt -= now_choose_folder.cnt
+            ALL_folder.modify_time = datetime.datetime.now()
+            ALL_folder.save()
+
+            now_user.now_capacity = ALL_folder.total_size
             now_user.save()
+
             for img in now_imgs:
                 path = os.path.join(store_dir, img.fake_name + "." + img.type)
                 compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
@@ -776,6 +930,16 @@ def delete_folder(request):
 
                 except:
                     pass
+
+            now_user_max_allimg_id = models.Picture.objects.filter(
+                user_id=now_user.phone).values(
+                "id").aggregate(Max("id"))
+            if (now_user_max_allimg_id["id__max"]):
+                ALL_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                ALL_foldercover.save()
+            else:
+                ALL_foldercover.pic_id = zero_pic.id
+                ALL_foldercover.save()
 
             res["delete_status"] = "true"
 
@@ -798,16 +962,26 @@ def delete_select_folder(request):
             res = {"select_cnt": total_cnt, "delete_cnt": None, "delete_status": None}
 
             now_user = models.User.objects.get(phone=phone)
+            ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
+            ALL_foldercover = models.FolderCover.objects.get(folder_id=ALL_folder.id)
+            zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
             if check_list:
                 cnt = 0
                 for now in check_list:
-                    now_folder = models.Folder.objects.get(fake_name=now)
+                    now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=now)
                     if now_folder.name == "ALL":
                         continue
                     models.FolderCover.objects.get(folder_id=now_folder.id).delete()
-                    now_user.now_capacity -= now_folder.total_size
+
+                    ALL_folder.total_size -= now_folder.total_size
+                    ALL_folder.cnt -= now_folder.cnt
+                    ALL_folder.modify_time = datetime.datetime.now()
+                    ALL_folder.save()
+
+                    now_user.now_capacity = ALL_folder.total_size
                     now_user.save()
+
                     now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
                     for img in now_imgs:
                         path = os.path.join(store_dir, img.fake_name + "." + img.type)
@@ -822,6 +996,16 @@ def delete_select_folder(request):
 
                     now_folder.delete()
                     cnt += 1
+
+                now_user_max_allimg_id = models.Picture.objects.filter(
+                    user_id=now_user.phone).values(
+                    "id").aggregate(Max("id"))
+                if (now_user_max_allimg_id["id__max"]):
+                    ALL_foldercover.pic_id = now_user_max_allimg_id["id__max"]
+                    ALL_foldercover.save()
+                else:
+                    ALL_foldercover.pic_id = zero_pic.id
+                    ALL_foldercover.save()
 
                 res["delete_cnt"] = cnt
                 if cnt > 0:
@@ -852,7 +1036,7 @@ def add_folder(request):
             now_user = models.User.objects.get(phone=phone)
             zero_pic = models.Picture.objects.get(id=zeroid)  # 管理员账号上传第一张图片，作为封面为空的时候的封面图片
 
-            is_same_foldername = models.Folder.objects.filter(name=folder_name)
+            is_same_foldername = models.Folder.objects.filter(user_id=now_user.phone, name=folder_name)
 
             if is_same_foldername:
                 res["add_status"] = "false"
@@ -897,7 +1081,7 @@ def modify_folder(request, now_folder_name):
 
             now_user = models.User.objects.get(phone=phone)
             now_folder = models.Folder.objects.get(user_id=phone, name=now_folder_name)
-            is_same_foldername = models.Folder.objects.filter(name=modify_folder_name)
+            is_same_foldername = models.Folder.objects.filter(user_id=now_user.phone, name=modify_folder_name)
 
             if is_same_foldername:
                 res["mod_status"] = "false"
@@ -942,7 +1126,7 @@ def getTag(request, folder_fake_name):
 
             now_user = models.User.objects.get(phone=phone)
 
-            now_folder = models.Folder.objects.get(fake_name=folder_fake_name)
+            now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
             now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id, tag_id=NoneTag.id)
 
@@ -997,11 +1181,11 @@ def search_tag(request):
             search_tag_exist = models.Tag.objects.filter(tag=search_tag)
 
             if search_tag_exist:
-                search_tag_user=models.UserTag.objects.filter(tag=search_tag_exist.id,user=now_user)
+                search_tag_user = models.UserTag.objects.filter(tag=search_tag_exist.id, user=now_user)
                 if search_tag_user:
-                    tag_id=search_tag_user.tag
-                    cnt=search_tag_user.cnt
-                    pics_tag=models.Picture.objects.filter(tag=tag_id,user=now_user)
+                    tag_id = search_tag_user.tag
+                    cnt = search_tag_user.cnt
+                    pics_tag = models.Picture.objects.filter(tag=tag_id, user=now_user)
 
                     '''Here add Search Tag Page Content  '''
 

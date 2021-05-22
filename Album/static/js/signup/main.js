@@ -97,7 +97,7 @@
                                     }
                                 },
                                 error: function (data) {
-                                    toastr.error("Error occurred , please try again later ~")
+                                    toastr.error("Error occurred,please try again later")
                                     $("#signup_phone").val("");
                                     $("#signup_name").val("");
                                     $("#signup_pwd").val("");
@@ -117,7 +117,7 @@
                     $("#signup_name").focus();
                 }
             } else if (phone) {
-                toastr.error("Phone number format is incorrect !")
+                toastr.error("Phone number format is incorrect")
                 $("#signup_phone").focus();
             } else {
                 toastr.error("Phone number can't be empty !")
