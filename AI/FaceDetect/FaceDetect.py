@@ -58,7 +58,9 @@ def MakeCodeForFaceData(face_data_path, face_code_path):
 # 人脸识别
 # 将要识别的人脸编码数据集放在face_code_path下
 # known_face_locations为上一步检测出的识别框，可以不填
-# 返回一个数组[name1,....]分别为上一步识别出的识别框对应的人脸图片名
+# 返回一个数组[names,image_codes]
+# names=[name1,....]分别为上一步识别出的识别框对应的人脸图片名
+# image_codes为图片的编码
 def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_locations=None):
     # 制作所有可用编码的列表
     face_codes = os.listdir(face_code_path)
@@ -79,14 +81,15 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
         for i in range(len(image_codes)):
             if compare_results[i]:
                 names[i] = face_code.split(".npy")[0]
-    return names
+    return [names, image_codes]
 
 
 # 将没识别出人脸的图像加入进ExistingFace中
 # filename 图片文件名
 # known_face_locations 图片所有人脸的识别框位置
 # recognized_faces 对应识别框的识别结果
-def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_data_path, face_code_path):
+# face_codes 每个识别框对应的编码
+def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_codes, face_data_path, face_code_path):
     img = cv2.imread(filepath)
     img_name = ''.join(os.path.splitext(os.path.basename(filepath))[0:-1])
     img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
@@ -97,13 +100,14 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_dat
             right = block[1]
             bottom = block[2]
             left = block[3]
+            # 截取
             face_img = img[top:bottom, left:right]
+            # 命名保证不重复
             face_img_name = img_name+"-"+i.__str__()+img_name_postfix
             face_img_filepath = face_data_path + "/" + face_img_name
             cv2.imwrite(face_img_filepath, face_img)
-            # 自动为新加入图片制作编码数据
-            face_img_code = face_recognition.face_encodings(face_img)[0]
-            # 存储到文件中
+            # 自动为新加入图片的编码数据存储到文件中
+            face_img_code = face_codes[i]
             np.save(face_code_path + "/" + face_img_name + ".npy", face_img_code)
 
 
@@ -111,7 +115,7 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_dat
 # 如isCodePrepared为真，则直接使用事先准备好的面部编码数据,否则将根据面部数据集中的照片生成
 # 返回[isFace, face_locations, recognized_faces]
 # 分别为是否检测出人脸、面部识别框位置和识别出的图片名
-def FaceRecogPrepared(filepath, isCodePrepared=False):
+def FaceRecogPrepared(filepath, isCodePrepared = True):
     face_data_path = os.getcwd()+"/"+'ExistingFace'
     face_code_path = os.getcwd()+"/"+'ExistingFaceCode'
     result = FaceDetection(filepath)
@@ -120,8 +124,8 @@ def FaceRecogPrepared(filepath, isCodePrepared=False):
     else:
         if not isCodePrepared:
             MakeCodeForFaceData(face_data_path, face_code_path)
-        names = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
-        AddToExistingFace(filepath, result, names, face_data_path, face_code_path)
+        names, img_codes = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
+        AddToExistingFace(filepath, result, names, img_codes, face_data_path, face_code_path)
         return [True, result, names]
 
 
