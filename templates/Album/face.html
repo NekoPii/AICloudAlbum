@@ -1,20 +1,13 @@
 {% extends "Album/navbar.html" %}
 
 {% block title %}
-    <title>My Pics</title>
+    <title>Faces</title>
 {% endblock %}
 
 {% block css %}
-    <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-tabs-x/css/bootstrap-tabs-x.min.css" rel="stylesheet">
-    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
-    <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
     <link href="/static/css/upload/main.css" rel="stylesheet">
-    <link href="/static/css/download/main.css" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
@@ -22,119 +15,11 @@
         <div id="loader"></div>
     </div>
 
-    <div class="modal fade" id="launch-add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 50%;margin-top: 15rem;">
-            <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
-                </div>
-                <div class="modal-body">
-                    <form id="addFolderForm">
-                        <div class="form-group">
-                            <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
-                            <input value="" class="form-control-input" id="input_folder_name" tabindex="1"
-                                   name="folder_name"
-                                   autocomplete="off" autofocus>
-                            <label class="label-control" for="input_folder_name"><i class="uil uil-folder-info"></i>&nbsp;Folder
-                                Name</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="add_modal_ok" type="button" class="btn btn-success" tabindex="2"
-                            style="padding: 0.5rem 3rem;">OK
-                    </button>
-                    <button id="add_modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
-                            tabindex="3"
-                            style="padding: 0.5rem 3rem;">Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="launch-mod" tabindex="-1" role="dialog" aria-labelledby="modModalLabel"
-         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 40%;margin-top: 10rem;">
-            <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modModalLabel">Modify Folder Name</h5>
-                </div>
-                <div class="modal-body">
-                    <form id="modifyFolderForm">
-                        <div class="form-group">
-                            <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
-                            <div class="form-group"
-                                 style="margin:1rem 0 3rem 0;display: inline-flex;align-content: center;width: 100%;">
-                                <span style="color:#787976;font-weight: bold;display: inline-flex;flex-basis: 35%;align-items: center;justify-content: center;">Select Folder Name:</span>
-                                <select id="folder_names" class="selectpicker show-menu-arrow show-tick" tabindex="1"
-                                        data-live-search="true"
-                                        style="display: inline-flex;" data-width="100%"
-                                        data-size="5">
-                                    <option>&nbsp;...</option>
-                                    {% for f in folders %}
-                                        {% ifnotequal f.name "ALL" %}
-                                            <option data-tokens={{ f.name }}>{{ f.name }}</option>
-                                        {% endifnotequal %}
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-                            <div class="form-group">
-                                <input value="" class="form-control-input" id="input_folder_mod_name" tabindex="2"
-                                       name="input_folder_name"
-                                       autocomplete="off" autofocus>
-                                <label class="label-control" for="input_folder_mod_name"><i
-                                        class="uil uil-folder-info"></i>&nbsp;New
-                                    Folder
-                                    Name</label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="modal_modify_ok" type="button" class="btn btn-success" tabindex="3"
-                            style="padding: 0.5rem 3rem;">OK
-                    </button>
-                    <button id="modal_modify_close" type="button" class="btn btn-secondary" data-dismiss="modal"
-                            tabindex="4"
-                            style="padding: 0.5rem 3rem;">Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
-         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">UPLOAD</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="file-loading">
-                        <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
-                               accept="image/*" data-browse-on-zone-click="true">
-                    </div>
-                    <div id="kartik-file-errors"></div>
-                </div>
-                <div class="modal-footer">
-                    <button id="upload_modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="padding: 0.5rem 3rem;">Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- Counter -->
     <div id="counter" style="margin-top: 5rem">
         <div class="cell">
             <div class="counter-value number-count" data-count={{ count }}>1</div>
-            <div class="counter-info">Folder(s)<br>In Total</div>
+            <div class="counter-info">People<br>In Total</div>
         </div>
         <div class="cell" style="width: 210px">
             <div class="counter-value number-count" data-count={{ capacity_now }}>1</div>
@@ -144,7 +29,6 @@
             <div class="counter-value number-count" data-count="5">1</div>
             <div class="counter-info">GB<br>In Total</div>
         </div>
-        <input id="now_folder_fake_name" type="hidden" style="display: none;" value={{ ALL_folderfakename }}>
     </div>
     <!-- end of counter -->
 
@@ -153,216 +37,43 @@
         <div class="container" style="padding: 0;">
             <div class="row">
                 <div class="col-lg-12" style="padding: 0;height: 6rem">
-                    <div class="section-title">FOLDER</div>
-                    <h2 class="test">FOLDER That You're Proud Of</h2>
+                    <div class="section-title">FACE</div>
+                    <h2 class="test">AI Face</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
 
-            <div id="mytab" class="tabs-x align-center tabs-above"
-                 style="background: rgba(252,252,252,0.9);border-radius: 1rem;">
-                <ul id="myTab-tabs-above" class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="allimgs" class="nav-link active" id="all-tab-tabs-above"
-                                            href="#all-tabs-above"
-                                            role="tab" data-toggle="tab" aria-controls="all"
-                                            aria-expanded="true" style="border-radius: 1rem 0 0 0;"><i class="uil uil-image"></i>&nbsp;All Images</a></li>
-                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="folders" class="nav-link" id="folder-tab-tabs-above"
-                                            href="#folder-tabs-above"
-                                            role="tab-kv" data-toggle="tab" aria-controls="folder"
-                                            aria-expanded="true" style="border-radius: 0 1rem 0 0;"><i class="uil uil-folder"></i>&nbsp;Folders</a></li>
-                </ul>
-                <div id="myTabContent-tabs-above" class="tab-content"
-                     style="background: rgba(245,245,245,0.5);border-radius:0 0 1rem 1rem ;">
 
-                    <div class="tab-pane fade show active" id="all-tabs-above" role="tabpanel"
-                         aria-labelledby="all-tab-tabs-above">
-                        <div class="row">
-                            <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                                <button id="imgs_change_model" class="btn-solid-reg" type="button" value="select"
-                                        style="display: flex;margin: 0.5rem 1rem;">
-                                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                                </button>
-                                <button type="button" class="upload_btn btn-solid-reg" data-toggle="modal"
-                                        data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
-                                </button>
-                                <button id="imgs_select_all" class="btn-solid-reg" type="button" value="zero"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                                    <span class="select_all_text"><i
-                                            class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                                    <span class="cancel_text" style="display: none;"><i
-                                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                                </button>
-                                <button id="imgs_download_few" class="btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;"><span><i
-                                        class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
-                                        class="imgs_select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-                                <button id="imgs_delete_few" class="rm-btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span class="imgs_select_cnt"
-                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="grid" style="text-align: center;background:transparent;">
-                                    <form id="imageFewForm">
-                                        {% for p in ALL_imgs %}
-                                            <div class="element-item development"
-                                                 id="img_{{ p.id }}"
-                                                 style="text-align: center;background:transparent;">
-                                                <div>
-                                                    <a title="{{ p.name }}" class="popup-with-move-anim"
-                                                       href='#box_{{ p.id }}'>
-                                                        <div class="element-item-overlay"><span class="element_1"
-                                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
-                                                        </div>
-                                                        <div class="zoomImage11 element_2"
-                                                             style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
-                                                    </a>
-                                                    <a class="choose_model_img" style="border-radius: 0.5rem;"
-                                                       title="{{ p.name }}">
-                                                        <div class="element-item-overlay"><span class="element_3"
-                                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
-                                                        </div>
-                                                        <div class="zoomImage11 choose_zoomImage11 element_4"
-                                                             style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
-                                                        <input class="img_select element_5" type="checkbox"
-                                                               style="display: none"
-                                                               value={{ p.fake_name }} name="img_name">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-
-                                    </form>
-
-                                </div> <!-- end of grid -->
-                                <!-- end of filter -->
-
-                            </div> <!-- end of col -->
-                        </div> <!-- end of row -->
-                        {% for p in ALL_imgs %}
-                            <div id='box_{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
-                                <div class="row">
-                                    <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
-                                    <div class="col-lg-8" style="text-align:center;margin:auto 0;">
-                                        <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
-                                    </div> <!-- end of col -->
-                                    <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147)">
-                                        <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
-                                            class="element_7" title="{{ p.name }}">{{ p.name }}</h3>
-                                        <hr class="line-heading">
-                                        <h6 style="margin-bottom: 0">UPLOAD TIME:</h6>
-                                        <b class="element_8">  {{ p.upload_time }}</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">SIZE:</h6>
-                                        <b class="element_9">  {{ p.size }}&nbsp;MB</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">WIDTH:</h6>
-                                        <b class="element_10">  {{ p.height }}&nbsp;px</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">HEIGHT:</h6>
-                                        <b class="element_11">  {{ p.width }}&nbsp;px</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">TAG:</h6>
-                                        <b class="element_12">  {{ p.nowtag }}</b>
-                                        <div class="btn-local1" style="margin-top: 3rem;">
-                                            <form class="downloadOneForm">
-                                                <input class="download_input element_13"
-                                                       value={{ p.fake_name }} type="hidden"
-                                                       name="img_name">
-                                                <button class="download_one btn-small" type="button"><i
-                                                        class="uil uil-image-download"></i>&nbsp;DownLoad
-                                                </button>
-                                                <button class="delete_one rm-btn-small" type="button"
-                                                        style="margin-left:0.5rem;"><i
-                                                        class="uil uil-image-times"></i>&nbsp;Delete
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div> <!-- end of col -->
-                                </div> <!-- end of row -->
-                            </div> <!-- end of lightbox-basic -->
-                        {% endfor %}
-                        <!-- end of lightbox -->
-                    </div>
-
-                    <div class="tab-pane fade" id="folder-tabs-above" role="tabpanel"
-                         aria-labelledby="folder-tab-tabs-above">
-                        <div class="row">
-                            <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                                <button id="folders_change_model" class="btn-solid-reg" type="button" value="select"
-                                        style="display: flex;margin: 0.5rem 1rem;">
-                                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                                </button>
-
-                                <button id="folders_select_all" class="btn-solid-reg" type="button" value="zero"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                                    <span class="select_all_text"><i
-                                            class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                                    <span class="cancel_text" style="display: none;"><i
-                                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                                </button>
-
-                                <button id="folders_delete_few" class="rm-btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span id="folders_select_cnt"
-                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-
-                                <button type="button" class="add_btn btn-solid-reg folder_add" data-toggle="modal"
-                                        data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
-                                </button>
-
-                                <button type="button" class="add_btn btn-solid-reg folder_add" data-toggle="modal"
-                                        data-target="#launch-mod" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span><i class="uil uil-folder-info"></i>&nbsp;Modify Folder Name</span>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="grid folder" style="text-align: center;background:transparent;">
-                                    <form id="folderFewForm">
-                                        {% for p in Folders %}
-                                            <div class="element-item development"
-                                                 id="folder_{{ p.id }}"
-                                                 style="text-align: center;background:transparent;">
-                                                <a title="{{ p.name }}" class="popup-with-move-anim"
-                                                   href={{ p.href }} name="{{ p.name }}">
-                                                    <div class="element-item-overlay">
-                                                <span class="element_1"
-                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
-                                                    </div>
-                                                    <div class="zoomImage11 element_2"
-                                                         style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
-                                                </a>
-                                                <a class="choose_model_img" style="border-radius: 0.5rem;"
-                                                   title="{{ p.name }}" name="{{ p.name }}">
-                                                    <div class="element-item-overlay"><span class="element_3"
-                                                                                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
-                                                    </div>
-                                                    <div class="zoomImage11 choose_zoomImage11 element_4"
-                                                         style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
-                                                    <input class="folder_select element_5" type="checkbox"
-                                                           style="display: none"
-                                                           value={{ p.fake_name }} name="folder_name">
-                                                </a>
-                                            </div>
-                                        {% endfor %}
-
-                                    </form>
-
-                                </div> <!-- end of grid -->
-                                <!-- end of filter -->
-
-                            </div> <!-- end of col -->
-                        </div> <!-- end of row -->
-                    </div>
+            <div class="row">
+                <div style="display: flex;flex-wrap: wrap;align-items: center;">
+                    <a type="button" class="upload_btn btn-solid-reg" href="/mypics/"
+                       style="display: flex;margin: 0.5rem 1rem;">
+                        <span> <i class="uil uil-image-upload"></i>&nbsp;Go To UPLOAD</span>
+                    </a>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="grid folder" style="text-align: center;background:transparent;">
+                        <form id="folderFewForm">
+                            {% for f in Faces %}
+                                <div class="element-item development"
+                                     id="faces_{{ f.id }}"
+                                     style="text-align: center;background:transparent;">
+                                    <a href={{ f.href }}>
+                                        <div class="element-item-overlay">
+                                                <span class="element_1"
+                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">See&nbsp;Images</span>
+                                        </div>
+                                        <div class="zoomImage11 element_2"
+                                             style="background-image: url({{ f.cover_path }});border-radius: 0.5rem;"></div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </form>
+                    </div> <!-- end of grid -->
+                    <!-- end of filter -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
         </div> <!-- end of container -->
     </div> <!-- end of filter -->
     <!-- end of projects -->
@@ -388,22 +99,8 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/fileinput.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/piexif.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/sortable.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js"></script>
     <script src="/static/vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="/static/vendor/bootstrap-tabs-x/js/bootstrap-tabs-x.min.js"></script>
-    <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
-    <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
-    <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
-    <script src="/static/js/mypics/main.js"></script>
-    <script src="/static/js/upload/main.js"></script>
-    <script src="/static/js/download/main.js"></script>
-    <script src="/static/js/delete_folder/main.js"></script>
-    <script src="/static/js/delete_img/main.js"></script>
-    <script src="/static/js/modify_folder/main.js"></script>
+    <script src="/static/js/face/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 
 {% endblock %}

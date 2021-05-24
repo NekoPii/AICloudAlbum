@@ -67,7 +67,7 @@ $(".delete_one").click(function () {
 });
 
 $("#imgs_delete_few").click(function () {
-    if($(".select_cnt").text()=="00"){
+    if($(".select_cnt").text()=="000"){
         toastr.info("No Images Selected !");
     }
     else {

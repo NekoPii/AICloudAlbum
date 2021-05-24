@@ -83,7 +83,12 @@
                     </button>
                     <button id="getTag" class="btn-solid-reg" type="button"
                             style="display: flex;margin: 0.5rem 1rem;">
-                        <span><i class="uil uil-apps"></i>&nbsp;GET ALL TAG</span>
+                        <span><i class="uil uil-tag-alt"></i>&nbsp;GET ALL TAG</span>
+                    </button>
+                    <button id="getFewFaceRec" class="btn-solid-reg" type="button"
+                            style="display: flex;margin: 0.5rem 1rem;">
+                        <span><i class="uil uil-smile-squint-wink-alt"></i>&nbsp;GET
+                            <span class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected Images Face Recognition</span>
                     </button>
                     <button id="select_all" class="btn-solid-reg" type="button" value="zero"
                             style="display: none;margin: 0.5rem 1rem;">
@@ -176,7 +181,7 @@
                 </div> <!-- end of col -->
                 <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147)">
                     <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
-                        class="element_7" title="{{p.name}}">{{ p.name }}</h3>
+                        class="element_7" title="{{ p.name }}">{{ p.name }}</h3>
                     <hr class="line-heading">
                     <h6 style="margin-bottom: 0">UPLOAD TIME:</h6>
                     <b class="element_8">  {{ p.upload_time }}</b>
@@ -195,7 +200,10 @@
                             <button class="download_one btn-small" type="button"><i
                                     class="uil uil-image-download"></i>&nbsp;DownLoad
                             </button>
-                            <button class="delete_one rm-btn-small" type="button" style="margin-left:0.5rem;"><i
+                            <button class="getFaceRec btn-small" type="button" style="margin-left:0.5rem;">
+                                <i class="uil uil-smile-wink-alt"></i>&nbsp;Get Face Recogntion
+                            </button>
+                            <button class="delete_one rm-btn-small" type="button" style="text-align: center"><i
                                     class="uil uil-image-times"></i>&nbsp;Delete
                             </button>
                         </form>
@@ -224,5 +232,6 @@
     <script src="/static/js/download/main.js"></script>
     <script src="/static/js/delete_img/main.js"></script>
     <script src="/static/js/getTag/main.js"></script>
+    <script src="/static/js/getFaceRec/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 {% endblock %}
