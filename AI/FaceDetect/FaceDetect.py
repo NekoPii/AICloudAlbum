@@ -3,6 +3,9 @@ import face_recognition
 import numpy as np
 import cv2
 
+upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "upload_imgs")
+face_data_path = os.path.join(upload_imgs_dir, "ExistingFace")
+face_code_path = os.path.join(upload_imgs_dir, "ExistingFaceCode")
 
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
@@ -53,7 +56,8 @@ def MakeCodeForFaceData(face_data_path, face_code_path):
         # 将加载图像编码为特征向量
         cur_img_code = face_recognition.face_encodings(current_image)[0]
         # 存储到文件中
-        np.save(face_code_path+"/"+image+".npy",cur_img_code)
+        np.save(face_code_path + "/" + image + ".npy", cur_img_code)
+
 
 # 人脸识别
 # 将要识别的人脸编码数据集放在face_code_path下
@@ -103,7 +107,7 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
             # 截取
             face_img = img[top:bottom, left:right]
             # 命名保证不重复
-            face_img_name = img_name+"-"+i.__str__()+img_name_postfix
+            face_img_name = img_name + "-" + i.__str__() + img_name_postfix
             face_img_filepath = face_data_path + "/" + face_img_name
             cv2.imwrite(face_img_filepath, face_img)
             # 自动为新加入图片的编码数据存储到文件中
@@ -115,9 +119,7 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
 # 如isCodePrepared为真，则直接使用事先准备好的面部编码数据,否则将根据面部数据集中的照片生成
 # 返回[isFace, face_locations, recognized_faces]
 # 分别为是否检测出人脸、面部识别框位置和识别出的图片名
-def FaceRecogPrepared(filepath, isCodePrepared = True):
-    face_data_path = os.getcwd()+"/"+'ExistingFace'
-    face_code_path = os.getcwd()+"/"+'ExistingFaceCode'
+def FaceRecogPrepared(filepath, isCodePrepared=True):
     result = FaceDetection(filepath)
     if len(result) == 0:
         return [False, [], []]
@@ -127,7 +129,3 @@ def FaceRecogPrepared(filepath, isCodePrepared = True):
         names, img_codes = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
         AddToExistingFace(filepath, result, names, img_codes, face_data_path, face_code_path)
         return [True, result, names]
-
-
-
-

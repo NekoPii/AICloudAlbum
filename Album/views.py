@@ -1230,21 +1230,176 @@ def search_tag(request):
     return redirect("/login/")
 
 
+def faceMainPage(request):
+    if request.session.get("is_login"):
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        faces = models.Face.objects.filter(user_id=user.phone)
+
+        Faces = []
+        total_cnt = 0
+        cnt = 1
+        for f in faces:
+            if cnt < 26:
+                face_cover_img = models.Picture.objects.get(id=f.face_cover)
+                f.href = "/face/" + face_cover_img.fake_name + "/"
+                f.cover_path = os.path.join('/upload_imgs/ExistingFace/',
+                                            face_cover_img.fake_name + '.' + face_cover_img.type)
+                f.id = cnt
+                f.fake_name = face_cover_img.fake_name
+                Faces.append(f)
+                total_cnt += f.cnt
+            else:
+                total_cnt += f.cnt
+
+            cnt += 1
+
+        count = total_cnt
+        capacity_now = round(user.now_capacity, 2)
+
+        return render(request, "Album/face.html", locals())
+    else:
+        return redirect("/login/")
+
+
+def faceDetailPage(request, face_cover_fake_name):
+    if request.session.get("is_login"):
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+
+        FaceDetails = []
+        cnt = 1
+        total_cnt = 0
+        now_face_img = models.Picture.objects.filter(user_id=user.phone, fake_name=face_cover_fake_name)
+        if now_face_img:
+            now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=now_face_img[0].id)
+            if now_Face:
+                now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
+                for facepic in now_FacePic:
+                    if cnt < 26:
+                        now_img = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
+                        now_img.size = round(now_img.size, 2)
+                        now_img.path = os.path.join('/upload_imgs/compress_imgs/',
+                                                    now_img.fake_name + '.' + now_img.type)
+                        now_img.id = cnt
+                        FaceDetails.append(now_img)
+                        total_cnt += 1
+                    else:
+                        total_cnt += 1
+
+                    cnt += 1
+
+                count = total_cnt
+                capacity_now = round(user.now_capacity, 2)
+
+                return render(request, "Album/face_detail.html", locals())
+
+            else:
+                return faceMainPage(request)
+        else:
+            return faceMainPage(request)
+    else:
+        return redirect("/login/")
+
+
 @csrf_exempt
-def get_faceDetect(request):
+def get_one_faceDetect(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            phone = request.session["phone"]
+            now_imgs_fakename = request.POST["img_name"]
+            nowUser = models.User.objects.get(phone=phone)
+            res = {"faceRec_status": None, "isnotFace": None}
+            if now_imgs_fakename:
+                pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=now_imgs_fakename)
+                if pic.is_face:
+                    res["faceRec_status"] = "true"
+                    return HttpResponse(json.dumps(res))
+                else:
+                    try:
+                        pic_path = os.path.join(store_dir, now_imgs_fakename)
+                        isFace, face_locations, recognized_faces = FaceRecogPrepared(pic_path)
+                        if isFace:
+                            res["isnotFace"] = "false"
+                            if recognized_faces == "Not matched":
+                                newFace = models.Face(face_cover=pic.id, cnt=1, user_id=nowUser.phone)
+                                newFace.save()
+                                newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
+                                newFacePic.save()
+                            else:
+                                now_face_cover_fakename = recognized_faces.rsplit(".", 1)[0]
+                                now_face_cover_img = models.Picture.objects.get(user_id=nowUser.phone,
+                                                                                fake_name=now_face_cover_fakename)
+                                nowFace = models.Face.objects.get(face_cover=now_face_cover_img.id,
+                                                                  user_id=nowUser.phone)
+                                nowFace.cnt += 1
+                                nowFace.save()
+                                newFacePic = models.FacePic(face_id=nowFace.id, pic_id=pic.id)
+                                newFacePic.save()
+                            pic.is_face = 1
+                            pic.save()
+                            res["faceRec_status"] = "true"
+                        else:
+                            res["isnotFace"] = "true"
+                    except:
+                        res["faceRec_status"] = "false"
+
+                return HttpResponse(json.dumps(res))
+
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+@csrf_exempt
+def get_select_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
             phone = request.session["phone"]
             select_imgs_fakename = request.POST.getlist("img_name")
-            select_cnt=len(select_imgs_fakename)
-
+            select_cnt = len(select_imgs_fakename)
+            nowUser = models.User.objects.get(phone=phone)
+            res = {"faceRec_status": None, "faceRec_cnt": None, "select_cnt": select_cnt}
+            isnotFace_cnt = 0
+            cnt = 0
             if select_imgs_fakename:
                 for img_fakename in select_imgs_fakename:
-                    pic=models.Picture.objects.get(fake_name=img_fakename)
+                    pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
                         continue
                     else:
-                        pic_path=os.path.join(store_dir,img_fakename)
+                        isnotFace_cnt += 1
+                        try:
+                            pic_path = os.path.join(store_dir, img_fakename)
+                            isFace, face_locations, recognized_faces = FaceRecogPrepared(pic_path)
+                            if isFace:
+                                if recognized_faces == "Not matched":
+                                    newFace = models.Face(face_cover=pic.id, cnt=1, user_id=nowUser.phone)
+                                    newFace.save()
+                                    newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
+                                    newFacePic.save()
+                                else:
+                                    now_face_cover_fakename = recognized_faces.rsplit(".", 1)[0]
+                                    now_face_cover_img = models.Picture.objects.get(user_id=nowUser.phone,
+                                                                                    fake_name=now_face_cover_fakename)
+                                    nowFace = models.Face.objects.get(face_cover=now_face_cover_img.id,
+                                                                      user_id=nowUser.phone)
+                                    nowFace.cnt += 1
+                                    nowFace.save()
+                                    newFacePic = models.FacePic(face_id=nowFace.id, pic_id=pic.id)
+                                    newFacePic.save()
+                                pic.is_face = 1
+                                pic.save()
+                                cnt += 1
+                        except:
+                            pass
+                if cnt < isnotFace_cnt:
+                    res["faceRec_status"] = "false"
+                else:
+                    res["faceRec_status"] = "true"
+                res["faceRec_cnt"] = cnt
+                return HttpResponse(json.dumps(res))
 
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
