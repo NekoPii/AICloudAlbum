@@ -18,6 +18,7 @@ from django.utils.encoding import escape_uri_path
 from django.views.decorators.csrf import csrf_exempt
 
 from AI.ImgClass.MyImgClass import ImageClassification
+from AI.FaceDetect.FaceDetect import FaceRecogPrepared
 from AICloudAlbum import settings
 from AICloudAlbum.settings import MEDIA_ROOT
 from . import models
@@ -281,7 +282,7 @@ def mypics_folder(request):
 
         count = folders.count()
         capacity_now = round(user.now_capacity, 2)
-        ALL_folderfakename=ALL_folder.fake_name
+        ALL_folderfakename = ALL_folder.fake_name
 
         return render(request, "Album/mypics.html", locals())
     else:
@@ -397,7 +398,7 @@ def upload_upload_syn(request, folder_fake_name):
                         ALL_folder.cnt += 1
                         ALL_folder.total_size += new_img.size
                         ALL_folder.modify_time = datetime.datetime.now()
-                        ALL_folder
+                        ALL_folder.save()
 
                     now_user.now_capacity = ALL_folder.total_size
                     now_user.save()
@@ -429,8 +430,13 @@ def upload_upload_syn(request, folder_fake_name):
                         img.save(compress_img_path)
 
                 except:  # 数据库加入失败，则不保留上传图片
-                    os.remove(img_path)
-                    os.remove(now_img_path)
+                    if os.path.exists(img_path):
+                        os.remove(img_path)
+                    if os.path.exists(now_img_path):
+                        os.remove(now_img_path)
+                    if os.path.exists(compress_img_path):
+                        os.remove(compress_img_path)
+
                     return HttpResponse(json.dumps({"status": False}))  # data.response.status=false 表示当前发生传输错误
 
                 '''
@@ -559,7 +565,12 @@ def upload_upload_asyn(request, folder_fake_name):
                     img.save(compress_img_path)
 
             except:  # 数据库加入失败，则不保留上传图片
-                os.remove(img_path)
+                if os.path.exists(img_path):
+                    os.remove(img_path)
+                if os.path.exists(now_img_path):
+                    os.remove(now_img_path)
+                if os.path.exists(compress_img_path):
+                    os.remove(compress_img_path)
                 mutex_x.release()
                 return HttpResponse(json.dumps({"status": False}))  # data.response.status=false 表示当前发生传输错误
 
@@ -1216,4 +1227,24 @@ def search_tag(request):
 
         return render(request, "Album/welcome.html", locals())
 
+    return redirect("/login/")
+
+
+@csrf_exempt
+def get_faceDetect(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            phone = request.session["phone"]
+            select_imgs_fakename = request.POST.getlist("img_name")
+            select_cnt=len(select_imgs_fakename)
+
+            if select_imgs_fakename:
+                for img_fakename in select_imgs_fakename:
+                    pic=models.Picture.objects.get(fake_name=img_fakename)
+                    if pic.is_face:
+                        continue
+                    else:
+                        pic_path=os.path.join(store_dir,img_fakename)
+
+        return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
