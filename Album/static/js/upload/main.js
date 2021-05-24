@@ -3,7 +3,6 @@ var syn_cnt = 0;
 
 $(document).ready(function () {
     var folder_fake_name = $("#now_folder_fake_name").val()
-    console.log(folder_fake_name)
     toastr.options = {
         "closeButton": false,
         "newestOnTop": true,
@@ -151,7 +150,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.reload();
+                                window.location.href="?t=i";
                                 asyn_cnt = 0;
                             }
                         }
@@ -179,7 +178,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.reload();
+                                window.location.href="?t=i";
                                 syn_cnt = 0;
                             }
                         }

@@ -196,7 +196,7 @@ var pics_count;
         fixedBgPos: true,
         overflowY: 'auto',
         closeBtnInside: true,
-        preloader: false,
+        preloader: true,
         midClick: true,
         removalDelay: 300,
         mainClass: 'my-mfp-slide-bottom'
@@ -442,7 +442,7 @@ $("#input_folder_name").on("keypress", function (event) {
                     } else if (add_status == "true") {
                         toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
                         setTimeout(function () {
-                            window.location.reload();
+                            window.location.href = "?t=f";
                             //$("#folder-tab-tabs-above").click();
                         }, 400);
                     }
@@ -478,7 +478,7 @@ $("#add_modal_ok").click(function () {
                 } else if (add_status == "true") {
                     toastr.success("\"" + input_name + "\" Folder Add Successfully ~");
                     setTimeout(function () {
-                        window.location.reload();
+                        window.location.href = "?t=f";
                         //$("#folder-tab-tabs-above").click();
                     }, 400);
                 }

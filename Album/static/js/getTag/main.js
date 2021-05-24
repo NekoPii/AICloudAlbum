@@ -45,7 +45,7 @@ $("#getTag").click(function () {
                 toastr.success("Get Tag Success !")
                 $("#getTag").attr("disabled", false)
                 setTimeout(function () {
-                    window.location.reload()
+                    window.location.href="?t=i";
                 }, 500)
             } else {
                 toastr.options = {
