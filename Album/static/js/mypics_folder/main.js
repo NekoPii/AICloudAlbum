@@ -8,8 +8,9 @@ var pics_count;
 
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#download_few").css("display", "none");
-    $("#delete_few").css("display", "none");
+    $("#imgs_download_few").css("display", "none");
+    $("#imgs_delete_few").css("display", "none");
+    $("#getFewFaceRec").css("display", "none");
     $("#select_all").css("display", "none");
     $(".download_select").prop("checked", false);
 
@@ -34,8 +35,8 @@ var pics_count;
 
     $("#top").hide()
         .on("click", function () {
-        $('html, body').animate({scrollTop: 0}, 300);
-    })
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
 
 
     $("#back")
@@ -206,20 +207,23 @@ var pics_count;
 
 $("#change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
+        cnt = 0;
         $(".upload_btn").css("display", "none");
         $("#next").css("display", "none");
         $("#back").css("display", "none");
         $(this).val("view");
         $(".select_text").css("display", "none");
         $(".view_text").css("display", "");
-        $("#download_few").css("display", "flex")
-        $("#delete_few").css("display", "flex");
-        $("#select_all").css("display", "flex")
+        $("#imgs_download_few").css("display", "flex")
+        $("#imgs_delete_few").css("display", "flex");
+        $("#getFewFaceRec").css("display", "flex");
+        $("#select_all").css("display", "flex");
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
         $(".popup-with-move-anim").css("display", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
-        cnt = 0;
         $(".select_cnt").text(cnt.toString());
     } else if ($(this).val() === "view") {// 退出选择
         $(".upload_btn").css("display", "flex");
@@ -232,15 +236,19 @@ $("#change_model").click(function () {
             $("#back").css("display", "inline-block");
         }
 
+        cnt = 0;
         $(this).val("select");
         $(".select_text").css("display", "");
         $(".view_text").css("display", "none");
-        $("#download_few").css("display", "none")
-        $("#delete_few").css("display", "none");
-        $("#select_all").css("display", "none")
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
+        $("#imgs_download_few").css("display", "none")
+        $("#imgs_delete_few").css("display", "none");
+        $("#getFewFaceRec").css("display", "none");
+        $("#select_all").val("zero").css("display", "none");
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
-        cnt = 0;
+        $(".download_select").prop("checked", false);
     }
 });
 
@@ -252,11 +260,11 @@ $(".choose_model_img").click(function () {
         $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
         $(".select_cnt").text(cnt.toString());
-        if (cnt < $(this).length) {
+        if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt == $(this).length) {
+        } else if (cnt === $(".choose_model_img").length) {
             $("#select_all").val("all");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
@@ -271,7 +279,7 @@ $(".choose_model_img").click(function () {
             $("#select_all").val("zero");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt == $(".choose_model_img").length) {
+        } else if (cnt === $(".choose_model_img").length) {
             $("#select_all").val("all");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
@@ -280,7 +288,7 @@ $(".choose_model_img").click(function () {
 });
 
 $("#select_all").click(function () {
-    if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
+    if ($(this).val() === "zero" && cnt < $(".choose_model_img").length) {
         $(".download_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
@@ -289,7 +297,7 @@ $("#select_all").click(function () {
         $(this).val("all");
         $(".select_all_text").css("display", "none");
         $(".cancel_text").css("display", "");
-    } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
+    } else if ($(this).val() === "all" && cnt === $(".choose_model_img").length) {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");

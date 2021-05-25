@@ -44,11 +44,32 @@ $("#getFewFaceRec").click(function () {
                         "hideMethod": "fadeOut",
                         "onclick": null,
                     };
-                    toastr.success("Get Face Recognition Success !")
-                    $(this).attr("disabled", false)
-                    setTimeout(function () {
-                        window.location.href = "?t=i";
-                    }, 500)
+                    $("#getFewFaceRec").attr("disabled", false);
+                    toastr.success("Get Face Recognition Success !");
+                    return new Promise(function (resolve, reject) {
+                        $.confirm({
+                            title: 'Click to Face Right Now',
+                            content: "Are you want to go to face page right now ?",
+                            type: 'green',
+                            buttons: {
+                                Yes: {
+                                    btnClass: 'btn-success text-white',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        resolve();
+                                        window.location.href = "/face/";
+                                    }
+                                },
+                                No: {
+                                    btnClass: 'btn-default text-black',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        resolve();
+                                    }
+                                }
+                            }
+                        });
+                    });
                 } else {
                     toastr.options = {
                         "closeButton": false,
@@ -104,8 +125,9 @@ $(".getFaceRec").click(function () {
         url: "/one_faceRec/",
         type: "POST",
         data: downloadOneForm.serialize(),
+        dataType: "json",
         success: function (data) {
-            console.log(data);
+            toastr.clear()
             if (data["faceRec_status"] === "true") {
                 toastr.options = {
                     "closeButton": false,
@@ -123,11 +145,32 @@ $(".getFaceRec").click(function () {
                     "hideMethod": "fadeOut",
                     "onclick": null,
                 };
+                $("#getFewFaceRec").attr("disabled", false);
                 toastr.success("Get Face Recognition Success !")
-                $(this).attr("disabled", false)
-                setTimeout(function () {
-                    window.location.href = "?t=i";
-                }, 500)
+                return new Promise(function (resolve, reject) {
+                    $.confirm({
+                        title: 'Click to Face Right Now',
+                        content: "Are you want to go to face page right now ?",
+                        type: 'green',
+                        buttons: {
+                            Yes: {
+                                btnClass: 'btn-success text-white',
+                                keys: ['enter'],
+                                action: function () {
+                                    resolve();
+                                    window.location.href = "/face/";
+                                }
+                            },
+                            No: {
+                                btnClass: 'btn-default text-black',
+                                keys: ['enter'],
+                                action: function () {
+                                    resolve();
+                                }
+                            }
+                        }
+                    });
+                });
             } else {
                 toastr.options = {
                     "closeButton": false,

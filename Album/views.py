@@ -35,6 +35,7 @@ threshold = 1080
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
 store_dir = os.path.join(root_dir, "upload_imgs")
+
 if not os.path.exists(store_dir):
     os.mkdir(store_dir)
 
@@ -718,6 +719,16 @@ def delete_img(request, folder_fake_name):
 
                     path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                     compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+
+                    facepic = models.FacePic.objects.filter(pic_id=now_pic.id)
+                    if facepic:
+                        for now_facepic in facepic:
+                            now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                            if now_face:
+                                now_face[0].cnt -= 1
+                                now_face[0].save()
+                            now_facepic.delete()
+
                     now_pic.delete()
                     os.remove(path)
                     os.remove(compress_path)
@@ -756,6 +767,16 @@ def delete_img(request, folder_fake_name):
 
                     path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                     compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+
+                    facepic = models.FacePic.objects.filter(pic_id=now_pic.id)
+                    if facepic:
+                        for now_facepic in facepic:
+                            now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                            if now_face:
+                                now_face[0].cnt -= 1
+                                now_face[0].save()
+                            now_facepic.delete()
+
                     now_pic.delete()
                     os.remove(path)
                     os.remove(compress_path)
@@ -832,6 +853,16 @@ def delete_select_img(request, folder_fake_name):
 
                             path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                             compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+
+                            facepic = models.FacePic.objects.filter(pic_id=now_pic.id)
+                            if facepic:
+                                for now_facepic in facepic:
+                                    now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                                    if now_face:
+                                        now_face[0].cnt -= 1
+                                        now_face[0].save()
+                                    now_facepic.delete()
+
                             now_pic.delete()
                             os.remove(path)
                             os.remove(compress_path)
@@ -871,6 +902,16 @@ def delete_select_img(request, folder_fake_name):
 
                             path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                             compress_path = os.path.join(store_compress_dir, now_pic.fake_name + "." + now_pic.type)
+
+                            facepic = models.FacePic.objects.filter(pic_id=now_pic.id)
+                            if facepic:
+                                for now_facepic in facepic:
+                                    now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                                    if now_face:
+                                        now_face[0].cnt -= 1
+                                        now_face[0].save()
+                                    now_facepic.delete()
+
                             now_pic.delete()
                             os.remove(path)
                             os.remove(compress_path)
@@ -1239,18 +1280,21 @@ def faceMainPage(request):
 
         Faces = []
         cnt = 1
+        valid_cnt = 0
         for f in faces:
-            now_cover_fakename = f.face_cover.split(".")[0]
-            f.href = "/face/" + now_cover_fakename + "/"
-            f.cover_path = os.path.join('/upload_imgs/ExistingFace/', f.face_cover)
-            f.id = cnt
-            f.fake_name = now_cover_fakename
-            Faces.append(f)
-            cnt += 1
-            if cnt == 26:
-                break
+            if f.cnt > 0:
+                valid_cnt += 1
+                now_cover_fakename = f.face_cover.split(".")[0]
+                f.href = "/face/" + now_cover_fakename + "/"
+                f.cover_path = os.path.join('/upload_imgs/ExistingFace/', f.face_cover)
+                f.id = cnt
+                f.fake_name = now_cover_fakename
+                Faces.append(f)
+                cnt += 1
+                if cnt == 26:
+                    break
 
-        count = len(faces)
+        count = valid_cnt
         capacity_now = round(user.now_capacity, 2)
 
         return render(request, "Album/face.html", locals())
@@ -1329,7 +1373,7 @@ def get_one_faceDetect(request):
                                         newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
                                         newFacePic.save()
                                     else:
-                                        nowFace = models.Face.objects.get(face_cover=recognized_faces,
+                                        nowFace = models.Face.objects.get(face_cover=now_recognized_face,
                                                                           user_id=nowUser.phone)
                                         nowFace.cnt += 1
                                         nowFace.save()
@@ -1382,7 +1426,7 @@ def get_select_faceDetect(request):
                                             newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
                                             newFacePic.save()
                                         else:
-                                            nowFace = models.Face.objects.get(face_cover=recognized_faces,
+                                            nowFace = models.Face.objects.get(face_cover=now_recognized_face,
                                                                               user_id=nowUser.phone)
                                             nowFace.cnt += 1
                                             nowFace.save()

@@ -262,8 +262,6 @@ $("#imageFewForm .choose_model_img").click(function () {
         $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
         $(".imgs_select_cnt").text(cnt.toString());
-        console.log("cnt:" + cnt)
-        console.log("len:" + $("#imageFewForm .choose_model_img").length)
         if (cnt < $("#imageFewForm .choose_model_img").length) {
             $("#imgs_select_all").val("zero");
             $("#imgs_select_all .select_all_text").css("display", "");
@@ -279,8 +277,6 @@ $("#imageFewForm .choose_model_img").click(function () {
         $(this).css("border", "0.25rem solid #00C9FF");
         cnt += 1;
         $(".imgs_select_cnt").text(cnt.toString());
-        console.log("cnt:" + cnt)
-        console.log("len:" + $("#imageFewForm .choose_model_img").length)
         if (cnt < $("#imageFewForm .choose_model_img").length) {
             $("#imgs_select_all").val("zero");
             $("#imgs_select_all .select_all_text").css("display", "");
@@ -294,8 +290,6 @@ $("#imageFewForm .choose_model_img").click(function () {
 });
 
 $("#imgs_select_all").click(function () {
-    console.log("select_all:cnt" + cnt);
-    console.log("select_all:len" + $("#imageFewForm .choose_model_img").length);
     if ($(this).val() === "zero" && cnt < $("#imageFewForm .choose_model_img").length) {
         $("#imageFewForm .img_select").prop("checked", true);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 1);

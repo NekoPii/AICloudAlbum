@@ -1,5 +1,5 @@
 $("#getTag").click(function () {
-    $("#getTag").attr("disabled", true)
+    $(this).attr("disabled", true)
     var folder_fake_name = $("#now_folder_fake_name").val()
     toastr.options = {
         "closeButton": false,
@@ -25,7 +25,7 @@ $("#getTag").click(function () {
         dataType: "json",
         success: function (data) {
             toastr.clear()
-            if (data["getTag_status"] == "true") {
+            if (data["getTag_status"] === "true") {
                 toastr.options = {
                     "closeButton": false,
                     "newestOnTop": true,
@@ -43,9 +43,9 @@ $("#getTag").click(function () {
                     "onclick": null,
                 };
                 toastr.success("Get Tag Success !")
-                $("#getTag").attr("disabled", false)
+                $(this).attr("disabled", false)
                 setTimeout(function () {
-                    window.location.href="?t=i";
+                    window.location.reload();
                 }, 500)
             } else {
                 toastr.options = {
@@ -65,13 +65,13 @@ $("#getTag").click(function () {
                     "onclick": null,
                 };
                 toastr.warning("Get Tag Failed !")
-                $("#getTag").attr("disabled", false)
+                $(this).attr("disabled", false)
             }
         },
         error: function () {
             toastr.clear()
             toastr.error("Error , Please Try again !")
-            $("#getTag").attr("disabled", false)
+            $(this).attr("disabled", false)
         }
     });
 });

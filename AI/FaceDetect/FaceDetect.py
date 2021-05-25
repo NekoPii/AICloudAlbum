@@ -126,6 +126,11 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
 # 返回[isFace, face_locations, recognized_faces]
 # 分别为是否检测出人脸、面部识别框位置和识别出的图片名
 def FaceRecogPrepared(filepath, isCodePrepared=True):
+    if not os.path.exists(face_data_path):
+        os.mkdir(face_data_path)
+    if not os.path.exists(face_code_path):
+        os.mkdir(face_code_path)
+        
     result = FaceDetection(filepath)
     if len(result) == 0:
         return [False, [], []]

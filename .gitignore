@@ -6,3 +6,6 @@ __pycache__
 /upload_imgs/
 
 
+/AI/FaceDetect/ExistingFace/
+/AI/FaceDetect/ExistingFaceCode/
+/AI/FaceDetect/images/
