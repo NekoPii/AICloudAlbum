@@ -105,6 +105,7 @@ $(".getFaceRec").click(function () {
         type: "POST",
         data: downloadOneForm.serialize(),
         success: function (data) {
+            console.log(data);
             if (data["faceRec_status"] === "true") {
                 toastr.options = {
                     "closeButton": false,
@@ -144,7 +145,7 @@ $(".getFaceRec").click(function () {
                     "hideMethod": "fadeOut",
                     "onclick": null,
                 };
-                toastr.warning("Get Face Failed !")
+                toastr.warning("Get Face Recognition Failed !")
                 $(this).attr("disabled", false)
             }
         },

@@ -7,6 +7,7 @@ upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(_
 face_data_path = os.path.join(upload_imgs_dir, "ExistingFace")
 face_code_path = os.path.join(upload_imgs_dir, "ExistingFaceCode")
 
+
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点
 def FaceDetection(filename):
@@ -97,6 +98,7 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
     img = cv2.imread(filepath)
     img_name = ''.join(os.path.splitext(os.path.basename(filepath))[0:-1])
     img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
+    saved_face_img_name = []
     for i in range(len(recognized_faces)):
         if recognized_faces[i] == "Not matched":
             block = known_face_locations[i]
@@ -109,10 +111,14 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
             # 命名保证不重复
             face_img_name = img_name + "-" + i.__str__() + img_name_postfix
             face_img_filepath = face_data_path + "/" + face_img_name
+            saved_face_img_name.append(face_img_name)
             cv2.imwrite(face_img_filepath, face_img)
             # 自动为新加入图片的编码数据存储到文件中
             face_img_code = face_codes[i]
             np.save(face_code_path + "/" + face_img_name + ".npy", face_img_code)
+        else:
+            saved_face_img_name.append("")
+    return saved_face_img_name
 
 
 # 这个函数集成了检测人脸的函数，直接调用即可
@@ -127,5 +133,5 @@ def FaceRecogPrepared(filepath, isCodePrepared=True):
         if not isCodePrepared:
             MakeCodeForFaceData(face_data_path, face_code_path)
         names, img_codes = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
-        AddToExistingFace(filepath, result, names, img_codes, face_data_path, face_code_path)
-        return [True, result, names]
+        saved_face_img_name = AddToExistingFace(filepath, result, names, img_codes, face_data_path, face_code_path)
+        return [True, result, names, saved_face_img_name]

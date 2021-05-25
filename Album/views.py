@@ -1240,12 +1240,11 @@ def faceMainPage(request):
         Faces = []
         cnt = 1
         for f in faces:
-            face_cover_img = models.Picture.objects.get(id=f.face_cover)
-            f.href = "/face/" + face_cover_img.fake_name + "/"
-            f.cover_path = os.path.join('/upload_imgs/ExistingFace/',
-                                        face_cover_img.fake_name + '.' + face_cover_img.type)
+            now_cover_fakename = f.face_cover.split(".")[0]
+            f.href = "/face/" + now_cover_fakename + "/"
+            f.cover_path = os.path.join('/upload_imgs/ExistingFace/', f.face_cover)
             f.id = cnt
-            f.fake_name = face_cover_img.fake_name
+            f.fake_name = now_cover_fakename
             Faces.append(f)
             cnt += 1
             if cnt == 26:
@@ -1268,9 +1267,9 @@ def faceDetailPage(request, face_cover_fake_name):
         FaceDetails = []
         cnt = 1
         total_cnt = 0
-        now_face_img = models.Picture.objects.filter(user_id=user.phone, fake_name=face_cover_fake_name)
+        now_face_img = models.Picture.objects.filter(user_id=user.phone, fake_name=face_cover_fake_name.split("-")[0])
         if now_face_img:
-            now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=now_face_img[0].id)
+            now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
             if now_Face:
                 now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
                 for facepic in now_FacePic:
@@ -1289,6 +1288,7 @@ def faceDetailPage(request, face_cover_fake_name):
 
                 count = total_cnt
                 capacity_now = round(user.now_capacity, 2)
+                face_cover_fake_name = face_cover_fake_name
 
                 return render(request, "Album/face_detail.html", locals())
 
@@ -1316,27 +1316,26 @@ def get_one_faceDetect(request):
                 else:
                     try:
                         pic_path = os.path.join(store_dir, now_imgs_fakename) + "." + pic.type
-                        isFace, face_locations, recognized_faces = FaceRecogPrepared(pic_path)
+                        isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path)
                         if isFace:
                             res["isnotFace"] = "false"
                             if recognized_faces:
+                                index = 0
                                 for now_recognized_face in recognized_faces:
                                     if now_recognized_face == "Not matched":
-                                        newFace = models.Face(face_cover=pic.id, cnt=1, user_id=nowUser.phone)
+                                        newFace = models.Face(face_cover=saved_face_img_name[index],
+                                                              cnt=1, user_id=nowUser.phone)
                                         newFace.save()
                                         newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
                                         newFacePic.save()
                                     else:
-                                        now_recognized_face = now_recognized_face.rsplit(".", 1)[0].split("-")
-                                        now_face_cover_fakename = now_recognized_face[0]
-                                        now_face_cover_img = models.Picture.objects.get(user_id=nowUser.phone,
-                                                                                        fake_name=now_face_cover_fakename)
-                                        nowFace = models.Face.objects.get(face_cover=now_face_cover_img.id,
+                                        nowFace = models.Face.objects.get(face_cover=recognized_faces,
                                                                           user_id=nowUser.phone)
                                         nowFace.cnt += 1
                                         nowFace.save()
                                         newFacePic = models.FacePic(face_id=nowFace.id, pic_id=pic.id)
                                         newFacePic.save()
+                                    index += 1
                             pic.is_face = 1
                             pic.save()
                             res["faceRec_status"] = "true"
@@ -1371,26 +1370,25 @@ def get_select_faceDetect(request):
                         isnotFace_cnt += 1
                         try:
                             pic_path = os.path.join(store_dir, img_fakename) + "." + pic.type
-                            isFace, face_locations, recognized_faces = FaceRecogPrepared(pic_path)
+                            isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path)
                             if isFace:
                                 if recognized_faces:
+                                    index = 0
                                     for now_recognized_face in recognized_faces:
                                         if now_recognized_face == "Not matched":
-                                            newFace = models.Face(face_cover=pic.id, cnt=1, user_id=nowUser.phone)
+                                            newFace = models.Face(face_cover=saved_face_img_name[index],
+                                                                  cnt=1, user_id=nowUser.phone)
                                             newFace.save()
                                             newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
                                             newFacePic.save()
                                         else:
-                                            now_recognized_face = now_recognized_face.rsplit(".", 1)[0].split("-")
-                                            now_face_cover_fakename = now_recognized_face[0]
-                                            now_face_cover_img = models.Picture.objects.get(user_id=nowUser.phone,
-                                                                                            fake_name=now_face_cover_fakename)
-                                            nowFace = models.Face.objects.get(face_cover=now_face_cover_img.id,
+                                            nowFace = models.Face.objects.get(face_cover=recognized_faces,
                                                                               user_id=nowUser.phone)
                                             nowFace.cnt += 1
                                             nowFace.save()
                                             newFacePic = models.FacePic(face_id=nowFace.id, pic_id=pic.id)
                                             newFacePic.save()
+                                        index += 1
                                 pic.is_face = 1
                                 pic.save()
                                 cnt += 1
