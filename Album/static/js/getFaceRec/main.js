@@ -90,7 +90,31 @@ $("#getFewFaceRec").click(function () {
                     if (data["faceRec_cnt"] === 0) {
                         toastr.warning("Get Face Failed !")
                     } else {
-                        toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)")
+                        toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)");
+                        return new Promise(function (resolve, reject) {
+                            $.confirm({
+                                title: 'Click to Face Right Now',
+                                content: "Are you want to go to face page right now ?",
+                                type: 'green',
+                                buttons: {
+                                    Yes: {
+                                        btnClass: 'btn-success text-white',
+                                        keys: ['enter'],
+                                        action: function () {
+                                            resolve();
+                                            window.location.href = "/face/";
+                                        }
+                                    },
+                                    No: {
+                                        btnClass: 'btn-default text-black',
+                                        keys: ['enter'],
+                                        action: function () {
+                                            resolve();
+                                        }
+                                    }
+                                }
+                            });
+                        });
                     }
                     $("#getFewFaceRec").attr("disabled", false)
                 }

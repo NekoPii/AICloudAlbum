@@ -992,6 +992,16 @@ def delete_folder(request):
             for img in now_imgs:
                 path = os.path.join(store_dir, img.fake_name + "." + img.type)
                 compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
+
+                facepic = models.FacePic.objects.filter(pic_id=img.id)
+                if facepic:
+                    for now_facepic in facepic:
+                        now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                        if now_face:
+                            now_face[0].cnt -= 1
+                            now_face[0].save()
+                        now_facepic.delete()
+
                 img.delete()
                 try:
                     os.remove(path)
@@ -1055,6 +1065,16 @@ def delete_select_folder(request):
                     for img in now_imgs:
                         path = os.path.join(store_dir, img.fake_name + "." + img.type)
                         compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
+
+                        facepic = models.FacePic.objects.filter(pic_id=img.id)
+                        if facepic:
+                            for now_facepic in facepic:
+                                now_face = models.Face.objects.filter(id=now_facepic.face_id)
+                                if now_face:
+                                    now_face[0].cnt -= 1
+                                    now_face[0].save()
+                                now_facepic.delete()
+
                         img.delete()
                         try:
                             os.remove(path)
