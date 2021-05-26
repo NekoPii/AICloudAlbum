@@ -29,7 +29,7 @@ urlpatterns = [
     path("get_tag/<str:folder_fake_name>/", views.getTag, name="getTag"),
     path("search_tag/", views.search_tag, name="searchTag"),  # 导航栏按照标签搜索图片
     path("face/", views.faceMainPage, name="face"),
-    path("face/<str:face_cover_fake_name>/",views.faceDetailPage,name="faceDetail"),
+    path("face/<str:face_cover_fake_name>/", views.faceDetailPage, name="faceDetail"),
     path("select_faceRec/", views.get_select_faceDetect, name="select_faceRec"),
     path("one_faceRec/", views.get_one_faceDetect, name="one_faceRec"),
 ]

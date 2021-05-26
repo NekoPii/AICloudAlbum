@@ -6,6 +6,7 @@ import cv2
 upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "upload_imgs")
 face_data_path = os.path.join(upload_imgs_dir, "ExistingFace")
 face_code_path = os.path.join(upload_imgs_dir, "ExistingFaceCode")
+pad_ratio = 0.15
 
 
 # 定位面部框
@@ -96,6 +97,8 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
 # face_codes 每个识别框对应的编码
 def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_codes, face_data_path, face_code_path):
     img = cv2.imread(filepath)
+    h = img.shape[0]
+    w = img.shape[1]
     img_name = ''.join(os.path.splitext(os.path.basename(filepath))[0:-1])
     img_name_postfix = os.path.splitext(os.path.basename(filepath))[-1]
     saved_face_img_name = []
@@ -107,7 +110,9 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
             bottom = block[2]
             left = block[3]
             # 截取
-            face_img = img[top:bottom, left:right]
+            pad_h = round(h * pad_ratio)
+            pad_w = round(w * pad_ratio)
+            face_img = img[max(top - pad_h, 0):min(bottom + pad_h, h), max(left - pad_w, 0):min(right + pad_w, w)]
             # 命名保证不重复
             face_img_name = img_name + "-" + i.__str__() + img_name_postfix
             face_img_filepath = face_data_path + "/" + face_img_name
@@ -130,7 +135,7 @@ def FaceRecogPrepared(filepath, isCodePrepared=True):
         os.mkdir(face_data_path)
     if not os.path.exists(face_code_path):
         os.mkdir(face_code_path)
-        
+
     result = FaceDetection(filepath)
     if len(result) == 0:
         return [False, [], []]

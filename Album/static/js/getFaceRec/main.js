@@ -2,7 +2,7 @@ $("#getFewFaceRec").click(function () {
     if ($(".select_cnt").text() === "000") {
         toastr.info("No Images Selected !")
     } else {
-        $(this).attr("disabled", true)
+        $("#getFewFaceRec").attr("disabled", true)
         toastr.options = {
             "closeButton": false,
             "newestOnTop": true,
@@ -87,14 +87,18 @@ $("#getFewFaceRec").click(function () {
                         "hideMethod": "fadeOut",
                         "onclick": null,
                     };
-                    toastr.warning("Get Face Failed !")
-                    $(this).attr("disabled", false)
+                    if (data["faceRec_cnt"] === 0) {
+                        toastr.warning("Get Face Failed !")
+                    } else {
+                        toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)")
+                    }
+                    $("#getFewFaceRec").attr("disabled", false)
                 }
             },
             error: function () {
                 toastr.clear()
                 toastr.error("Error , Please Try again !")
-                $(this).attr("disabled", false)
+                $("#getFewFaceRec").attr("disabled", false)
             }
         });
     }
@@ -145,7 +149,7 @@ $(".getFaceRec").click(function () {
                     "hideMethod": "fadeOut",
                     "onclick": null,
                 };
-                $("#getFewFaceRec").attr("disabled", false);
+                $(".getFaceRec").removeAttr("disabled");
                 toastr.success("Get Face Recognition Success !")
                 return new Promise(function (resolve, reject) {
                     $.confirm({
@@ -165,6 +169,7 @@ $(".getFaceRec").click(function () {
                                 btnClass: 'btn-default text-black',
                                 keys: ['enter'],
                                 action: function () {
+                                    $(this).removeAttr("disabled");
                                     resolve();
                                 }
                             }
@@ -172,6 +177,7 @@ $(".getFaceRec").click(function () {
                     });
                 });
             } else {
+                $(".getFaceRec").removeAttr("disabled");
                 toastr.options = {
                     "closeButton": false,
                     "newestOnTop": true,
@@ -188,14 +194,17 @@ $(".getFaceRec").click(function () {
                     "hideMethod": "fadeOut",
                     "onclick": null,
                 };
-                toastr.warning("Get Face Recognition Failed !")
-                $(this).attr("disabled", false)
+                if (data["isnotFace"] === "true") {
+                    toastr.warning("Unable to recognize that the current picture contains a face !")
+                } else {
+                    toastr.warning("Get Face Recognition Failed !")
+                }
             }
         },
         error: function () {
             toastr.clear()
             toastr.error("Error , Please Try again !")
-            $(this).attr("disabled", false)
+            $(".getFaceRec").removeAttr("disabled");
         }
     });
 });

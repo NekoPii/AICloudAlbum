@@ -1311,33 +1311,29 @@ def faceDetailPage(request, face_cover_fake_name):
         FaceDetails = []
         cnt = 1
         total_cnt = 0
-        now_face_img = models.Picture.objects.filter(user_id=user.phone, fake_name=face_cover_fake_name.split("-")[0])
-        if now_face_img:
-            now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
-            if now_Face:
-                now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
-                for facepic in now_FacePic:
-                    if cnt < 26:
-                        now_img = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
-                        now_img.size = round(now_img.size, 2)
-                        now_img.path = os.path.join('/upload_imgs/compress_imgs/',
-                                                    now_img.fake_name + '.' + now_img.type)
-                        now_img.id = cnt
-                        FaceDetails.append(now_img)
-                        total_cnt += 1
-                    else:
-                        total_cnt += 1
+        now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
+        if now_Face:
+            now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
+            for facepic in now_FacePic:
+                if cnt < 26:
+                    now_img = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
+                    now_img.size = round(now_img.size, 2)
+                    now_img.path = os.path.join('/upload_imgs/compress_imgs/',
+                                                now_img.fake_name + '.' + now_img.type)
+                    now_img.id = cnt
+                    FaceDetails.append(now_img)
+                    total_cnt += 1
+                else:
+                    total_cnt += 1
 
-                    cnt += 1
+                cnt += 1
 
-                count = total_cnt
-                capacity_now = round(user.now_capacity, 2)
-                face_cover_fake_name = face_cover_fake_name
+            count = total_cnt
+            capacity_now = round(user.now_capacity, 2)
+            face_cover_fake_name = face_cover_fake_name
 
-                return render(request, "Album/face_detail.html", locals())
+            return render(request, "Album/face_detail.html", locals())
 
-            else:
-                return faceMainPage(request)
         else:
             return faceMainPage(request)
     else:
