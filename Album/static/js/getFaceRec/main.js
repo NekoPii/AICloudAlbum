@@ -26,8 +26,7 @@ $("#getFewFaceRec").click(function () {
 
         var face_process = setInterval(function () {
             $.getJSON("/show_faceprocess/", function (res) {
-                $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"]);
-                console.log(res)
+                $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"])
                 if (res["face_process_val"] === 1) {
                     clearInterval(face_process);
                     setTimeout(function () {

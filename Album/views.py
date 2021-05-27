@@ -1489,10 +1489,10 @@ def get_select_faceDetect(request):
             isnotFace_cnt = 0
             cnt = 0
             if select_imgs_fakename:
-                for index, img_fakename in enumerate(select_imgs_fakename):
+                for img_index, img_fakename in enumerate(select_imgs_fakename):
                     pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
-                        face_process = (index + 1) / select_cnt
+                        face_process = (img_index + 1) / select_cnt
                         continue
                     else:
                         isnotFace_cnt += 1
@@ -1523,7 +1523,7 @@ def get_select_faceDetect(request):
                                 cnt += 1
                         except:
                             pass
-                        face_process = (index + 1) / select_cnt
+                        face_process = (img_index + 1) / select_cnt
                 if cnt < isnotFace_cnt:
                     res["faceRec_status"] = "false"
                 else:
