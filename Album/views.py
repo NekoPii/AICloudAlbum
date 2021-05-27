@@ -30,6 +30,7 @@ import time
 
 zeroid = 1
 threshold = 1080
+face_process = 0
 
 # Create your views here.
 
@@ -1360,10 +1361,20 @@ def faceDetailPage(request, face_cover_fake_name):
         return redirect("/login/")
 
 
+def show_face_process(request):
+    # print(face_process)
+    global face_process
+    #res = {"face_process": face_process}
+    return JsonResponse(face_process,safe=False)
+    #return HttpResponse(json.dumps(res))
+
+
 @csrf_exempt
 def get_one_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global face_process
+            face_process = 0
             phone = request.session["phone"]
             now_imgs_fakename = request.POST["img_name"]
             nowUser = models.User.objects.get(phone=phone)
@@ -1372,6 +1383,7 @@ def get_one_faceDetect(request):
                 pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=now_imgs_fakename)
                 if pic.is_face:
                     res["faceRec_status"] = "true"
+                    face_process = 1
                     return HttpResponse(json.dumps(res))
                 else:
                     try:
@@ -1403,6 +1415,7 @@ def get_one_faceDetect(request):
                             res["isnotFace"] = "true"
                     except:
                         res["faceRec_status"] = "false"
+                    face_process = 1
 
                 return HttpResponse(json.dumps(res))
 
@@ -1414,6 +1427,8 @@ def get_one_faceDetect(request):
 def get_select_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global face_process
+            face_process = 0
             phone = request.session["phone"]
             select_imgs_fakename = request.POST.getlist("img_name")
             select_cnt = len(select_imgs_fakename)
@@ -1425,6 +1440,7 @@ def get_select_faceDetect(request):
                 for img_fakename in select_imgs_fakename:
                     pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
+                        face_process += (1 / select_cnt)
                         continue
                     else:
                         isnotFace_cnt += 1
@@ -1454,6 +1470,7 @@ def get_select_faceDetect(request):
                                 cnt += 1
                         except:
                             pass
+                        face_process += (1 / select_cnt)
                 if cnt < isnotFace_cnt:
                     res["faceRec_status"] = "false"
                 else:

@@ -20,6 +20,44 @@ $("#getFewFaceRec").click(function () {
             "onclick": null,
         };
         toastr.info("Get Select Images' Face Recognition ...");
+
+        $("#face-process").modal("show");
+        //$("#face-process-btn").click();
+
+        var process = setInterval(function () {
+            /*$.ajax({
+                url: "/show_faceprocess/",
+                type: "GET",
+                dataType: "json",
+                data:"",
+                success: function (data) {
+                    face_process = data["face_process"]
+                    console.log(face_process)
+                    $("#face_process_bar").css("width", face_process * 100 + "%");
+                    $("#face_process_text").text(face_process * 100 + "%");
+                    if (face_process === 1) {
+                        console.log(face_process);
+                        clearInterval(process);
+                        $("#face-process").modal("hide");
+                        //$("#faceprocess_modal_close").click();
+                    }
+                }
+            })
+             */
+            $.getJSON("/show_faceprocess/", function (face_process) {
+                console.log(face_process)
+                $("#face_process_bar").css("width", face_process * 100 + "%");
+                $("#face_process_text").text(face_process * 100 + "%");
+                if (face_process === 1) {
+                    console.log(face_process);
+                    clearInterval(process);
+                    $("#face-process").modal("hide");
+                    //$("#faceprocess_modal_close").click();
+                }
+            })
+        }, 1000);
+
+
         $.ajax({
             url: "/select_faceRec/",
             type: "POST",

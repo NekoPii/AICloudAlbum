@@ -32,4 +32,5 @@ urlpatterns = [
     path("face/<str:face_cover_fake_name>/", views.faceDetailPage, name="faceDetail"),
     path("select_faceRec/", views.get_select_faceDetect, name="select_faceRec"),
     path("one_faceRec/", views.get_one_faceDetect, name="one_faceRec"),
+    path("show_faceprocess/",views.show_face_process,name="face_process"),
 ]

@@ -83,7 +83,7 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
         # 加载特征向量
         cur_img_code = np.load(face_code_path + "/" + face_code)
         # 将你的图像和图像对比，看是否为同一人
-        compare_results = face_recognition.compare_faces(image_codes, cur_img_code)
+        compare_results = face_recognition.compare_faces(image_codes, cur_img_code,tolerance=0.4)
         for i in range(len(image_codes)):
             if compare_results[i]:
                 names[i] = face_code.split(".npy")[0]

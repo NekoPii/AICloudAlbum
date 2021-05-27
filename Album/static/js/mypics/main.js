@@ -154,7 +154,7 @@ var pics_count;
                             countNum: countTo
                         },
                         {
-                            duration: 2000,
+                            duration: 1000,
                             easing: 'swing',
                             step: function () {
                                 $this.text(Math.floor(this.countNum));
