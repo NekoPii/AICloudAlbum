@@ -39,7 +39,7 @@
 
     <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 90%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadModalLabel">UPLOAD</h5>
@@ -60,36 +60,73 @@
         </div>
     </div>
 
-    <div class="modal fade" id="face-process" tabindex="-1" role="dialog" aria-labelledby="faceProcessModalLabel"
+    <div class="modal fade" id="face-process" tabindex="-1" role="dialog"
+         aria-labelledby="faceProcessModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="faceProcessModalLabel">Face Recognition Process</h5>
+                    <h5 class="modal-title" id="faceProcessModalLabel">Face Recognition Processing ... </h5>
                 </div>
                 <div class="modal-body">
-                    <div class="progress progress-striped">
-                        <div id="face_process_bar" class="progress-bar progress-bar-success" role="progressbar"
-                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">
-                            <span id="face_process_text" class="sr-only">0%</span><span>完成</span>
+                    <div class="progress">
+                        <div id="face_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="faceprocess_modal_close" type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="padding: 0.5rem 3rem;display: none;">Close
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div style="display:none;visibility: hidden;">
-        <button id="face-process-btn" type="button" data-toggle="modal"
-                data-target="#face-process" style="display: none;margin: 0.5rem 1rem;">
-        </button>
+    <div class="modal fade" id="tag-process" tabindex="-1" role="dialog"
+         aria-labelledby="tagProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagProcessModalLabel">Tag Recognition Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="tag_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
+         aria-labelledby="deleteimgProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteimgProcessModalLabel">Deleting Image(s) ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="delete_img_process_bar"
+                             class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 

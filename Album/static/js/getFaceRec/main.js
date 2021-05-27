@@ -24,38 +24,22 @@ $("#getFewFaceRec").click(function () {
         $("#face-process").modal("show");
         //$("#face-process-btn").click();
 
-        var process = setInterval(function () {
-            /*$.ajax({
-                url: "/show_faceprocess/",
-                type: "GET",
-                dataType: "json",
-                data:"",
-                success: function (data) {
-                    face_process = data["face_process"]
-                    console.log(face_process)
-                    $("#face_process_bar").css("width", face_process * 100 + "%");
-                    $("#face_process_text").text(face_process * 100 + "%");
-                    if (face_process === 1) {
-                        console.log(face_process);
-                        clearInterval(process);
+        var face_process = setInterval(function () {
+            $.getJSON("/show_faceprocess/", function (res) {
+                $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"]);
+                console.log(res)
+                if (res["face_process_val"] === 1) {
+                    clearInterval(face_process);
+                    setTimeout(function () {
                         $("#face-process").modal("hide");
-                        //$("#faceprocess_modal_close").click();
-                    }
-                }
-            })
-             */
-            $.getJSON("/show_faceprocess/", function (face_process) {
-                console.log(face_process)
-                $("#face_process_bar").css("width", face_process * 100 + "%");
-                $("#face_process_text").text(face_process * 100 + "%");
-                if (face_process === 1) {
-                    console.log(face_process);
-                    clearInterval(process);
-                    $("#face-process").modal("hide");
+                    }, 500);
+                    setTimeout(function () {
+                        $("#face_process_bar").css("width", "0%").text("0%");
+                    }, 600);
                     //$("#faceprocess_modal_close").click();
                 }
             })
-        }, 1000);
+        }, 100);
 
 
         $.ajax({
@@ -64,71 +48,27 @@ $("#getFewFaceRec").click(function () {
             data: $("#imageFewForm").serialize(),
             dataType: "json",
             success: function (data) {
-                toastr.clear()
-                if (data["faceRec_status"] === "true") {
-                    toastr.options = {
-                        "closeButton": false,
-                        "newestOnTop": true,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": true,
-                        "showDuration": "100",
-                        "hideDuration": "1000",
-                        "timeOut": "1000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut",
-                        "onclick": null,
-                    };
-                    $("#getFewFaceRec").attr("disabled", false);
-                    toastr.success("Get Face Recognition Success !");
-                    return new Promise(function (resolve, reject) {
-                        $.confirm({
-                            title: 'Click to Face Right Now',
-                            content: "Are you want to go to face page right now ?",
-                            type: 'green',
-                            buttons: {
-                                Yes: {
-                                    btnClass: 'btn-success text-white',
-                                    keys: ['enter'],
-                                    action: function () {
-                                        resolve();
-                                        window.location.href = "/face/";
-                                    }
-                                },
-                                No: {
-                                    btnClass: 'btn-default text-black',
-                                    keys: ['enter'],
-                                    action: function () {
-                                        resolve();
-                                    }
-                                }
-                            }
-                        });
-                    });
-                } else {
-                    toastr.options = {
-                        "closeButton": false,
-                        "newestOnTop": true,
-                        "progressBar": false,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": true,
-                        "showDuration": "100",
-                        "hideDuration": "1000",
-                        "timeOut": "1000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut",
-                        "onclick": null,
-                    };
-                    if (data["faceRec_cnt"] === 0) {
-                        toastr.warning("Get Face Failed !")
-                    } else {
-                        toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)");
+                setTimeout(function () {
+                    toastr.clear()
+                    if (data["faceRec_status"] === "true") {
+                        toastr.options = {
+                            "closeButton": false,
+                            "newestOnTop": true,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": true,
+                            "showDuration": "100",
+                            "hideDuration": "1000",
+                            "timeOut": "1000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            "onclick": null,
+                        };
+                        $("#getFewFaceRec").attr("disabled", false);
+                        toastr.success("Get Face Recognition Success !");
                         return new Promise(function (resolve, reject) {
                             $.confirm({
                                 title: 'Click to Face Right Now',
@@ -153,13 +93,62 @@ $("#getFewFaceRec").click(function () {
                                 }
                             });
                         });
+                    } else {
+                        toastr.options = {
+                            "closeButton": false,
+                            "newestOnTop": true,
+                            "progressBar": false,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": true,
+                            "showDuration": "100",
+                            "hideDuration": "1000",
+                            "timeOut": "1000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut",
+                            "onclick": null,
+                        };
+                        if (data["faceRec_cnt"] === 0) {
+                            toastr.warning("Get Face Failed !")
+                        } else {
+                            toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)");
+                            return new Promise(function (resolve, reject) {
+                                $.confirm({
+                                    title: 'Click to Face Right Now',
+                                    content: "Are you want to go to face page right now ?",
+                                    type: 'green',
+                                    buttons: {
+                                        Yes: {
+                                            btnClass: 'btn-success text-white',
+                                            keys: ['enter'],
+                                            action: function () {
+                                                resolve();
+                                                window.location.href = "/face/";
+                                            }
+                                        },
+                                        No: {
+                                            btnClass: 'btn-default text-black',
+                                            keys: ['enter'],
+                                            action: function () {
+                                                resolve();
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                        $("#getFewFaceRec").attr("disabled", false)
                     }
-                    $("#getFewFaceRec").attr("disabled", false)
-                }
+                }, 500);
             },
             error: function () {
                 toastr.clear()
                 toastr.error("Error , Please Try again !")
+                clearInterval(face_process);
+                $("#face-process").modal("hide");
+                $("#face_process_bar").css("width", "0%").text("0%");
                 $("#getFewFaceRec").attr("disabled", false)
             }
         });
@@ -168,7 +157,23 @@ $("#getFewFaceRec").click(function () {
 
 
 $(".getFaceRec").click(function () {
-    $(this).attr("disabled", true)
+    $(this).attr("disabled", true);
+
+    $("#face-process").modal("show");
+    var face_process = setInterval(function () {
+        $.getJSON("/show_faceprocess/", function (res) {
+            $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"]);
+            if (res["face_process_val"] === 1) {
+                clearInterval(face_process);
+                setTimeout(function () {
+                    $("#face-process").modal("hide");
+                }, 500);
+                setTimeout(function () {
+                    $("#face_process_bar").css("width", "0%").text("0%");
+                }, 600);
+            }
+        })
+    }, 100);
     toastr.options = {
         "closeButton": false,
         "newestOnTop": true,
@@ -193,79 +198,84 @@ $(".getFaceRec").click(function () {
         data: downloadOneForm.serialize(),
         dataType: "json",
         success: function (data) {
-            toastr.clear()
-            if (data["faceRec_status"] === "true") {
-                toastr.options = {
-                    "closeButton": false,
-                    "newestOnTop": true,
-                    "progressBar": false,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": true,
-                    "showDuration": "100",
-                    "hideDuration": "1000",
-                    "timeOut": "1000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut",
-                    "onclick": null,
-                };
-                $(".getFaceRec").removeAttr("disabled");
-                toastr.success("Get Face Recognition Success !")
-                return new Promise(function (resolve, reject) {
-                    $.confirm({
-                        title: 'Click to Face Right Now',
-                        content: "Are you want to go to face page right now ?",
-                        type: 'green',
-                        buttons: {
-                            Yes: {
-                                btnClass: 'btn-success text-white',
-                                keys: ['enter'],
-                                action: function () {
-                                    resolve();
-                                    window.location.href = "/face/";
-                                }
-                            },
-                            No: {
-                                btnClass: 'btn-default text-black',
-                                keys: ['enter'],
-                                action: function () {
-                                    $(this).removeAttr("disabled");
-                                    resolve();
+            setTimeout(function () {
+                toastr.clear()
+                if (data["faceRec_status"] === "true") {
+                    toastr.options = {
+                        "closeButton": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": true,
+                        "showDuration": "100",
+                        "hideDuration": "1000",
+                        "timeOut": "1000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "onclick": null,
+                    };
+                    $(".getFaceRec").removeAttr("disabled");
+                    toastr.success("Get Face Recognition Success !")
+                    return new Promise(function (resolve, reject) {
+                        $.confirm({
+                            title: 'Click to Face Right Now',
+                            content: "Are you want to go to face page right now ?",
+                            type: 'green',
+                            buttons: {
+                                Yes: {
+                                    btnClass: 'btn-success text-white',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        resolve();
+                                        window.location.href = "/face/";
+                                    }
+                                },
+                                No: {
+                                    btnClass: 'btn-default text-black',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        $(this).removeAttr("disabled");
+                                        resolve();
+                                    }
                                 }
                             }
-                        }
+                        });
                     });
-                });
-            } else {
-                $(".getFaceRec").removeAttr("disabled");
-                toastr.options = {
-                    "closeButton": false,
-                    "newestOnTop": true,
-                    "progressBar": false,
-                    "positionClass": "toast-top-right",
-                    "preventDuplicates": true,
-                    "showDuration": "100",
-                    "hideDuration": "1000",
-                    "timeOut": "1000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut",
-                    "onclick": null,
-                };
-                if (data["isnotFace"] === "true") {
-                    toastr.warning("Unable to recognize that the current picture contains a face !")
                 } else {
-                    toastr.warning("Get Face Recognition Failed !")
+                    $(".getFaceRec").removeAttr("disabled");
+                    toastr.options = {
+                        "closeButton": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": true,
+                        "showDuration": "100",
+                        "hideDuration": "1000",
+                        "timeOut": "1000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "onclick": null,
+                    };
+                    if (data["isnotFace"] === "true") {
+                        toastr.warning("Unable to recognize that the current picture contains a face !")
+                    } else {
+                        toastr.warning("Get Face Recognition Failed !")
+                    }
                 }
-            }
+            }, 500)
         },
         error: function () {
             toastr.clear()
             toastr.error("Error , Please Try again !")
+            clearInterval(face_process);
+            $("#face-process").modal("hide");
+            $("#face_process_bar").css("width", "0%").text("0%");
             $(".getFaceRec").removeAttr("disabled");
         }
     });

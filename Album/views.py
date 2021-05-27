@@ -31,6 +31,10 @@ import time
 zeroid = 1
 threshold = 1080
 face_process = 0
+tag_process = 0
+delete_img_process = 0
+delete_folder_process = 0
+eps = 1e-5
 
 # Create your views here.
 
@@ -43,6 +47,10 @@ if not os.path.exists(store_dir):
 store_compress_dir = os.path.join(store_dir, "compress_imgs")
 if not os.path.exists(store_compress_dir):
     os.mkdir(store_compress_dir)
+
+ExistingFace_dir = os.path.join(store_dir, "ExistingFace")
+if not os.path.exists(ExistingFace_dir):
+    os.mkdir(ExistingFace_dir)
 
 
 # ==================================== 工具函数
@@ -62,6 +70,42 @@ def getFreeDiskSize():  # MB
     else:
         st = os.statvfs(store_dir)
         return st.f_bavail * st.f_frsize / 1024
+
+
+def show_face_process(request):
+    global face_process
+    if abs(face_process - 1) < eps:
+        face_process = 1
+    now_face_process = str(round(face_process * 100, 2)) + "%"
+    res = {"now_face_process": now_face_process, "face_process_val": face_process}
+    return JsonResponse(res, safe=False)
+
+
+def show_tag_process(request):
+    global tag_process
+    if abs(tag_process - 1) < eps:
+        tag_process = 1
+    now_tag_process = str(round(tag_process * 100, 2)) + "%"
+    res = {"now_tag_process": now_tag_process, "tag_process_val": tag_process}
+    return JsonResponse(res, safe=False)
+
+
+def show_delete_img_process(request):
+    global delete_img_process
+    if abs(delete_img_process - 1) < eps:
+        delete_img_process = 1
+    now_delete_img_process = str(round(delete_img_process * 100, 2)) + "%"
+    res = {"now_delete_img_process": now_delete_img_process, "delete_img_process_val": delete_img_process}
+    return JsonResponse(res, safe=False)
+
+
+def show_delete_folder_process(request):
+    global delete_folder_process
+    if abs(delete_folder_process - 1) < eps:
+        delete_folder_process = 1
+    now_delete_folder_process = str(round(delete_folder_process * 100, 2)) + "%"
+    res = {"now_delete_folder_process": now_delete_folder_process, "delete_folder_process_val": delete_folder_process}
+    return JsonResponse(res, safe=False)
 
 
 # ==================================== views
@@ -688,7 +732,8 @@ def download_select(request):
 def delete_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
-
+            global delete_img_process
+            delete_img_process = 0
             phone = request.session["phone"]
 
             fake_name = request.POST["img_name"]
@@ -806,7 +851,7 @@ def delete_img(request, folder_fake_name):
                 res["delete_status"] = "true"
             except:
                 res["delete_status"] = "false"
-
+            delete_img_process = 1
             response = HttpResponse(json.dumps(res))
             return response
         return mypics_pics(request, folder_fake_name)
@@ -817,7 +862,8 @@ def delete_img(request, folder_fake_name):
 def delete_select_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
-
+            global delete_img_process
+            delete_img_process = 0
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("img_name")
@@ -832,7 +878,7 @@ def delete_select_img(request, folder_fake_name):
 
             if check_list:
                 cnt = 0
-                for now in check_list:
+                for index, now in enumerate(check_list):
                     try:
                         now_pic = models.Picture.objects.get(fake_name=now)
                         pic_folder = models.Folder.objects.get(pk=now_pic.folder_id)
@@ -942,7 +988,7 @@ def delete_select_img(request, folder_fake_name):
                         cnt += 1
                     except:
                         pass
-
+                    delete_img_process = (index + 1) / total_cnt
                 res["delete_cnt"] = cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
@@ -963,6 +1009,8 @@ def delete_select_img(request, folder_fake_name):
 def delete_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global delete_folder_process
+            delete_folder_process = 0
 
             phone = request.session["phone"]
 
@@ -1022,7 +1070,7 @@ def delete_folder(request):
                 ALL_foldercover.save()
 
             res["delete_status"] = "true"
-
+            delete_folder_process = 1
             response = HttpResponse(json.dumps(res))
             return response
         return render(request, "Album/mypics.html", locals())
@@ -1033,7 +1081,8 @@ def delete_folder(request):
 def delete_select_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-
+            global delete_folder_process
+            delete_folder_process = 0
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("folder_name")
@@ -1048,7 +1097,7 @@ def delete_select_folder(request):
 
             if check_list:
                 cnt = 0
-                for now in check_list:
+                for index, now in enumerate(check_list):
                     now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=now)
                     if now_folder.name == "ALL":
                         continue
@@ -1063,7 +1112,8 @@ def delete_select_folder(request):
                     now_user.save()
 
                     now_imgs = models.Picture.objects.filter(folder_id=now_folder.id)
-                    for img in now_imgs:
+                    now_imgs_cnt = len(now_imgs)
+                    for img_index, img in enumerate(now_imgs):
                         path = os.path.join(store_dir, img.fake_name + "." + img.type)
                         compress_path = os.path.join(store_compress_dir, img.fake_name + "." + img.type)
 
@@ -1083,6 +1133,7 @@ def delete_select_folder(request):
 
                         except:
                             pass
+                        delete_folder_process = (index + (img_index / now_imgs_cnt)) / total_cnt
 
                     now_folder.delete()
                     cnt += 1
@@ -1098,6 +1149,7 @@ def delete_select_folder(request):
                     ALL_foldercover.save()
 
                 res["delete_cnt"] = cnt
+                delete_folder_process = (index + 1) / total_cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
                     response = HttpResponse(json.dumps(res))
@@ -1196,6 +1248,7 @@ def modify_folder(request, now_folder_name):
     return redirect("/login/")
 
 
+'''
 def runImgClass(p, all_tag, now_path):
     res = ImageClassification(now_path)
     print(res)
@@ -1203,12 +1256,15 @@ def runImgClass(p, all_tag, now_path):
     p.is_tag = 1
     p.save()
     return
+'''
 
 
 @csrf_exempt
 def getTag(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global tag_process
+            tag_process = 0
 
             phone = request.session["phone"]
 
@@ -1226,24 +1282,28 @@ def getTag(request, folder_fake_name):
 
             cnt = 0
 
-            try:
+            total_cnt = len(now_pics)
 
-                pool = ThreadPoolExecutor(5)
-
-                for p in now_pics:
+            for index, p in enumerate(now_pics):
+                try:
                     now_path = os.path.join(store_dir, p.fake_name + "." + p.type)
                     if not os.path.exists(now_path):
                         raise Exception("Path not exist")
-                    pool.submit(runImgClass, p, all_tag, now_path)
-                    cnt += 1
+                    if p.is_tag:
+                        tag_process = (index + 1) / total_cnt
+                        continue
+                    else:
+                        now_res = ImageClassification(now_path)
+                        p.tag_id = all_tag.get(tag=now_res[0]).id
+                        p.is_tag = 1
+                        p.save()
+                        cnt += 1
+                        tag_process = (index + 1) / total_cnt
+                except:
+                    pass
+                    tag_process = (index + 1) / total_cnt
 
-                pool.shutdown(wait=True)
-
-                res["getTag_status"] = "true"
-
-            except:
-                res["getTag_status"] = "false"
-
+            res["getTag_status"] = "true"
             res["getTag_cnt"] = cnt
 
             for conn in connections.all():
@@ -1252,7 +1312,6 @@ def getTag(request, folder_fake_name):
             response = HttpResponse(json.dumps(res))
 
             return response
-
         return render(request, "Album/mypics_folder.html", locals())
     return redirect("/login/")
 
@@ -1307,7 +1366,7 @@ def faceMainPage(request):
                 valid_cnt += 1
                 now_cover_fakename = f.face_cover.split(".")[0]
                 f.href = "/face/" + now_cover_fakename + "/"
-                f.cover_path = os.path.join('/upload_imgs/ExistingFace/', f.face_cover)
+                f.cover_path = "/upload_imgs/ExistingFace/" + user.phone + "/" + f.face_cover
                 f.id = cnt
                 f.fake_name = now_cover_fakename
                 Faces.append(f)
@@ -1361,14 +1420,6 @@ def faceDetailPage(request, face_cover_fake_name):
         return redirect("/login/")
 
 
-def show_face_process(request):
-    # print(face_process)
-    global face_process
-    #res = {"face_process": face_process}
-    return JsonResponse(face_process,safe=False)
-    #return HttpResponse(json.dumps(res))
-
-
 @csrf_exempt
 def get_one_faceDetect(request):
     if request.session.get("is_login"):
@@ -1388,7 +1439,8 @@ def get_one_faceDetect(request):
                 else:
                     try:
                         pic_path = os.path.join(store_dir, now_imgs_fakename) + "." + pic.type
-                        isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path)
+                        isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
+                                                                                                          nowUser.phone)
                         if isFace:
                             res["isnotFace"] = "false"
                             if recognized_faces:
@@ -1437,16 +1489,17 @@ def get_select_faceDetect(request):
             isnotFace_cnt = 0
             cnt = 0
             if select_imgs_fakename:
-                for img_fakename in select_imgs_fakename:
+                for index, img_fakename in enumerate(select_imgs_fakename):
                     pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
-                        face_process += (1 / select_cnt)
+                        face_process = (index + 1) / select_cnt
                         continue
                     else:
                         isnotFace_cnt += 1
                         try:
                             pic_path = os.path.join(store_dir, img_fakename) + "." + pic.type
-                            isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path)
+                            isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
+                                                                                                              nowUser.phone)
                             if isFace:
                                 if recognized_faces:
                                     index = 0
@@ -1470,7 +1523,7 @@ def get_select_faceDetect(request):
                                 cnt += 1
                         except:
                             pass
-                        face_process += (1 / select_cnt)
+                        face_process = (index + 1) / select_cnt
                 if cnt < isnotFace_cnt:
                     res["faceRec_status"] = "false"
                 else:

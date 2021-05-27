@@ -24,7 +24,7 @@
 
     <div class="modal fade" id="launch-add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 50%;margin-top: 15rem;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 50%;margin-top: 15rem;">
             <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
@@ -56,7 +56,7 @@
 
     <div class="modal fade" id="launch-mod" tabindex="-1" role="dialog" aria-labelledby="modModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 40%;margin-top: 10rem;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 40%;margin-top: 10rem;">
             <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modModalLabel">Modify Folder Name</h5>
@@ -108,7 +108,7 @@
 
     <div class="modal fade" id="launch-upload" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 90%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="uploadModalLabel">UPLOAD</h5>
@@ -129,6 +129,49 @@
         </div>
     </div>
 
+    <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
+         aria-labelledby="deleteimgProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteimgProcessModalLabel">Deleting Image(s) ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="delete_img_process_bar"
+                             class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-folder-process" tabindex="-1" role="dialog"
+         aria-labelledby="deletefolderProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletefolderProcessModalLabel">Deleting Folder(s) ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="delete_folder_process_bar"
+                             class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Counter -->
     <div id="counter" style="margin-top: 5rem">
@@ -161,14 +204,26 @@
             <div id="mytab" class="tabs-x align-center tabs-above"
                  style="background: rgba(252,252,252,0.9);border-radius: 1rem;">
                 <ul id="myTab-tabs-above" class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="allimgs" class="nav-link active" id="all-tab-tabs-above"
-                                            href="#all-tabs-above"
-                                            role="tab" data-toggle="tab" aria-controls="all"
-                                            aria-expanded="true" style="border-radius: 1rem 0 0 0;"><i class="uil uil-image"></i>&nbsp;All Images</a></li>
-                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="folders" class="nav-link" id="folder-tab-tabs-above"
-                                            href="#folder-tabs-above"
-                                            role="tab-kv" data-toggle="tab" aria-controls="folder"
-                                            aria-expanded="true" style="border-radius: 0 1rem 0 0;"><i class="uil uil-folder"></i>&nbsp;Folders</a></li>
+                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="allimgs"
+                                                                                                class="nav-link active"
+                                                                                                id="all-tab-tabs-above"
+                                                                                                href="#all-tabs-above"
+                                                                                                role="tab"
+                                                                                                data-toggle="tab"
+                                                                                                aria-controls="all"
+                                                                                                aria-expanded="true"
+                                                                                                style="border-radius: 1rem 0 0 0;"><i
+                            class="uil uil-image"></i>&nbsp;All Images</a></li>
+                    <li class="nav-item" style="width: 50%;text-align: center;color: white;"><a data-value="folders"
+                                                                                                class="nav-link"
+                                                                                                id="folder-tab-tabs-above"
+                                                                                                href="#folder-tabs-above"
+                                                                                                role="tab-kv"
+                                                                                                data-toggle="tab"
+                                                                                                aria-controls="folder"
+                                                                                                aria-expanded="true"
+                                                                                                style="border-radius: 0 1rem 0 0;"><i
+                            class="uil uil-folder"></i>&nbsp;Folders</a></li>
                 </ul>
                 <div id="myTabContent-tabs-above" class="tab-content"
                      style="background: rgba(245,245,245,0.5);border-radius:0 0 1rem 1rem ;">

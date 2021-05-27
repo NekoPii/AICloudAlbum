@@ -39,7 +39,7 @@ def FaceRecognition(filename, face_data_path, known_face_locations=None):
         # 将加载图像编码为特征向量
         cur_img_code = face_recognition.face_encodings(current_image)[0]
         # 将你的图像和图像对比，看是否为同一人
-        compare_results = face_recognition.compare_faces(image_codes, cur_img_code)
+        compare_results = face_recognition.compare_faces(image_codes, cur_img_code, tolerance=0.4)
         for i in range(len(image_codes)):
             if compare_results[i]:
                 names[i] = image
@@ -83,7 +83,7 @@ def FaceRecognitionWithPreprocCode(filename, face_code_path, known_face_location
         # 加载特征向量
         cur_img_code = np.load(face_code_path + "/" + face_code)
         # 将你的图像和图像对比，看是否为同一人
-        compare_results = face_recognition.compare_faces(image_codes, cur_img_code,tolerance=0.4)
+        compare_results = face_recognition.compare_faces(image_codes, cur_img_code, tolerance=0.4)
         for i in range(len(image_codes)):
             if compare_results[i]:
                 names[i] = face_code.split(".npy")[0]
@@ -132,18 +132,20 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
 # 如isCodePrepared为真，则直接使用事先准备好的面部编码数据,否则将根据面部数据集中的照片生成
 # 返回[isFace, face_locations, recognized_faces]
 # 分别为是否检测出人脸、面部识别框位置和识别出的图片名
-def FaceRecogPrepared(filepath, isCodePrepared=True):
-    if not os.path.exists(face_data_path):
-        os.mkdir(face_data_path)
-    if not os.path.exists(face_code_path):
-        os.mkdir(face_code_path)
+def FaceRecogPrepared(filepath, nowUser, isCodePrepared=True):
+    now_face_data_path=os.path.join(face_data_path,nowUser)
+    now_face_code_path=os.path.join(face_code_path,nowUser)
+    if not os.path.exists(now_face_data_path):
+        os.mkdir(now_face_data_path)
+    if not os.path.exists(now_face_code_path):
+        os.mkdir(now_face_code_path)
 
     result = FaceDetection(filepath)
     if len(result) == 0:
         return [False, [], [], []]
     else:
         if not isCodePrepared:
-            MakeCodeForFaceData(face_data_path, face_code_path)
-        names, img_codes = FaceRecognitionWithPreprocCode(filepath, face_code_path, result)
-        saved_face_img_name = AddToExistingFace(filepath, result, names, img_codes, face_data_path, face_code_path)
+            MakeCodeForFaceData(now_face_data_path, now_face_code_path)
+        names, img_codes = FaceRecognitionWithPreprocCode(filepath, now_face_code_path, result)
+        saved_face_img_name = AddToExistingFace(filepath, result, names, img_codes, now_face_data_path, now_face_code_path)
         return [True, result, names, saved_face_img_name]
