@@ -259,9 +259,12 @@ def ajax_folders(request):
     if request.is_ajax():
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
-        folders = models.Folder.objects.filter(user_id=user.phone)
+        all_tag = models.Tag.objects.all()
+        folders = models.Folder.objects.filter(user_id=user.phone).exclude(name="ALL")
+        pictures = models.Picture.objects.filter(user_id=user.phone)
         json_data = {}
         json_data["folders"] = []
+        json_data["pictures"] = []
         cnt = 1
         for p in folders:
             foldercover = models.FolderCover.objects.get(folder_id=p.id)
@@ -274,8 +277,22 @@ def ajax_folders(request):
                       "href": p.href}
             json_data["folders"].append(folder)
             cnt += 1
-        count = folders.count()
-        json_data["count"] = count
+
+        cnt = 1
+        for p in pictures:
+            p.size = round(p.size, 2)
+            p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+            p.id = cnt
+            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time,
+                   "tag": all_tag.get(id=p.tag_id).tag}
+            json_data["pictures"].append(pic)
+            cnt += 1
+
+        folder_count = folders.count()
+        img_count=pictures.count()
+        json_data["folder_count"] = folder_count
+        json_data["img_count"] = img_count
         json_data["status"] = 1
 
         return JsonResponse(json_data)

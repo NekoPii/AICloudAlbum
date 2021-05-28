@@ -141,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sidebar-nav li.sidebar-nav-item:hover {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(220, 220, 220);
 }
 
 .sidebar-nav li.sidebar-nav-item a {

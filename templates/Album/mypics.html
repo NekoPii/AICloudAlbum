@@ -422,23 +422,35 @@
     </div> <!-- end of filter -->
     <!-- end of projects -->
 
-    <!-- pages-->
+    <!-- pages_img/folder-->
     <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 10rem">
         <button id="top" class="btn-small" type="button" value="zero">
             <i class="fas fa-arrow-up"></i>
         </button>
     </div>
     <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
-        <button id="back" class="btn-small" type="button" value="zero"
-                style="display: inline;margin-bottom: 0.5rem">
+        <button id="img_back" class="btn-small" type="button" value="zero"
+                style="display: none;margin-bottom: 0.5rem">
             <i class="fas fa-angle-up"></i>
         </button>
-        <button id="next" class="btn-small" type="button" value="zero"
-                style="display: inline;margin: 0 auto;">
+        <button id="img_next" class="btn-small" type="button" value="zero"
+                style="display: none;margin: 0 auto;">
+            <i class="fas fa-angle-down"></i>
+        </button>
+    </div>
+
+    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
+        <button id="folder_back" class="btn-small" type="button" value="zero"
+                style="display: none;margin-bottom: 0.5rem">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <button id="folder_next" class="btn-small" type="button" value="zero"
+                style="display: none;margin: 0 auto;">
             <i class="fas fa-angle-down"></i>
         </button>
     </div>
     <!--end of pages-->
+
 
 {% endblock %}
 

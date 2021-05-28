@@ -1,6 +1,10 @@
-var current_page = 1;
-var pics;
-var pics_count;
+var current_page_folder = 1;
+var current_page_imgs = 1;
+var folders;
+var folder_count;
+var imgs;
+var img_count;
+var currentPage = 0;
 (function ($) {
     "use strict";
 
@@ -32,11 +36,17 @@ var pics_count;
 
 
     $.getJSON("/ajax_folders/", function (data) {
-        pics = data["folders"];
-        pics_count = data["count"];
-        if (pics_count <= 25) {
-            $("#next").css("display", "none");
+        folders = data["folders"];
+        folder_count = data["folder_count"];
+        imgs = data["pictures"];
+        img_count = data["img_count"];
+        if (currentPage && folder_count > 25) {
+            $("#folder_next").css("display", "inline-block");
         }
+        else if(!currentPage && img_count > 25){
+            $("#img_next").css("display", "inline-block");
+        }
+
     });
 
     $(window).bind('scroll', function () {
@@ -52,40 +62,70 @@ var pics_count;
             $('html, body').animate({scrollTop: 0}, 300);
         })
 
+    $("#all-tab-tabs-above").click(function () {
+        currentPage = 0;
+        $("#folder_next").css("display", "none");
+        $("#folder_back").css("display", "none");
+        $("#img_next").css("display", "none");
+        $("#img_back").css("display", "none");
+        if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+            $("#img_next").css("display", "inline-block");
+        } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+            $("#img_next").css("display", "inline-block");
+            $("#img_back").css("display", "inline-block");
+        } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+            $("#img_back").css("display", "inline-block");
+        }
+    })
 
-    $("#back")
-        .css("display", "none")
+    $("#folder-tab-tabs-above").click(function () {
+        currentPage = 1;
+        $("#img_next").css("display", "none");
+        $("#img_back").css("display", "none");
+        $("#folder_next").css("display", "none");
+        $("#folder_back").css("display", "none");
+        if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+            $("#folder_next").css("display", "inline-block");
+        } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+            $("#folder_next").css("display", "inline-block");
+            $("#folder_back").css("display", "inline-block");
+        } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+            $("#folder_back").css("display", "inline-block");
+        }
+    })
+
+    $("#folder_back")
         .click(function () {
-            if (current_page > 1) {
-                current_page--;
-                $("#next").css("display", "inline-block")
-                $("#back").css("display", "inline-block")
-                if (current_page === 1) {
-                    $("#next").css("display", "inline-block")
-                    $("#back").css("display", "none")
+            if (current_page_folder > 1) {
+                current_page_folder--;
+                $("#folder_next").css("display", "inline-block")
+                $("#folder_back").css("display", "inline-block")
+                if (current_page_folder === 1) {
+                    $("#folder_next").css("display", "inline-block")
+                    $("#folder_back").css("display", "none")
                 }
                 for (var i = 1; i <= 25; i++) {
-                    var pic_number = (current_page - 1) * 25 + i;
-                    var element1 = "#img_" + i + " .popup-with-move-anim";
-                    var element2 = "#img_" + i + " .element_1";
-                    var element3 = "#img_" + i + " .element_2";
-                    var element4 = "#img_" + i + " .choose_model_img";
-                    var element5 = "#img_" + i + " .element_3";
-                    var element6 = "#img_" + i + " .element_4";
-                    var element7 = "#img_" + i + " .element_5";
+                    var pic_number = (current_page_folder - 1) * 25 + i;
+                    var element1 = "#folder_" + i + " .popup-with-move-anim";
+                    var element2 = "#folder_" + i + " .element_1";
+                    var element3 = "#folder_" + i + " .element_2";
+                    var element4 = "#folder_" + i + " .choose_model_img";
+                    var element5 = "#folder_" + i + " .element_3";
+                    var element6 = "#folder_" + i + " .element_4";
+                    var element7 = "#folder_" + i + " .element_5";
 
                     pic_number--;
-                    $(element1).attr("title", pics[pic_number]["name"]);
-                    $(element1).attr("href", pics[pic_number]["href"]);
-                    $(element2).text(pics[pic_number]["name"]);
-                    $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
-                    $(element4).attr("title", pics[pic_number]["name"]);
-                    $(element5).text(pics[pic_number]["name"]);
-                    $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
-                    $(element7).val(pics[pic_number]["fake_name"]);
+                    $(element1).attr("title", folders[pic_number]["name"]);
+                    $(element1).attr("href", folders[pic_number]["href"]);
+                    $(element2).text(folders[pic_number]["name"]);
+                    $(element3).css("backgroundImage", "url(" + folders[pic_number]["path"] + ")");
+                    $(element4).attr("title", folders[pic_number]["name"]);
+                    $(element5).text(folders[pic_number]["name"]);
+                    $(element6).css("backgroundImage", "url(" + folders[pic_number]["path"] + ")");
+                    $(element7).val(folders[pic_number]["fake_name"]);
 
                     pic_number++;
-                    $("#img_" + i).css("display", "block")
+                    $("#folder_" + i).css("display", "block")
 
                 }
 
@@ -94,19 +134,117 @@ var pics_count;
 
         })
 
-    $("#next")
+    $("#folder_next")
         .click(function () {
-            if ((pics_count - current_page * 25) > 0) {
-                $("#next").css("display", "inline-block")
-                $("#back").css("display", "inline-block")
-                if (pics_count - (1 + current_page) * 25 <= 0) {
-                    $("#next").css("display", "none")
-                    $("#back").css("display", "inline-block")
+            console.log("success");
+            if ((folder_count - current_page_folder * 25) > 0) {
+                $("#folder_next").css("display", "inline-block")
+                $("#folder_back").css("display", "inline-block")
+                console.log("success");
+                if (folder_count - (1 + current_page_folder) * 25 <= 0) {
+                    $("#folder_next").css("display", "none")
                 }
                 for (var i = 1; i <= 25; i++) {
-                    var pic_number = current_page * 25 + i;
+                    var pic_number = current_page_folder * 25 + i;
 
-                    if (pic_number <= pics_count) {
+                    if (pic_number <= folder_count) {
+                        var element1 = "#folder_" + i + " .popup-with-move-anim";
+                        var element2 = "#folder_" + i + " .element_1";
+                        var element3 = "#folder_" + i + " .element_2";
+                        var element4 = "#folder_" + i + " .choose_model_img";
+                        var element5 = "#folder_" + i + " .element_3";
+                        var element6 = "#folder_" + i + " .element_4";
+                        var element7 = "#folder_" + i + " .element_5";
+
+                        pic_number--;
+                        $(element1).attr("title", folders[pic_number].name);
+                        $(element1).attr("href", folders[pic_number]["href"]);
+                        $(element2).text(folders[pic_number]["name"]);
+                        $(element3).css("backgroundImage", "url(" + folders[pic_number]["path"] + ")");
+                        $(element4).attr("title", folders[pic_number]["name"]);
+                        $(element5).text(folders[pic_number]["name"]);
+                        $(element6).css("backgroundImage", "url(" + folders[pic_number]["path"] + ")");
+                        $(element7).val(folders[pic_number]["fake_name"]);
+
+                        pic_number++;
+                        $("#folder_" + i).css("display", "block")
+
+                    } else {
+                        $("#folder_" + i).css("display", "none")
+                    }
+
+                }
+                current_page_folder++;
+            }
+
+        })
+
+    $("#img_back")
+        .click(function () {
+            if (current_page_imgs > 1) {
+                current_page_imgs--;
+                $("#img_next").css("display", "inline-block")
+                $("#img_back").css("display", "inline-block")
+                if (current_page_imgs === 1) {
+                    $("#img_next").css("display", "inline-block")
+                    $("#img_back").css("display", "none")
+                }
+                for (var i = 1; i <= 25; i++) {
+                    var img_number = (current_page_imgs - 1) * 25 + i;
+                    var element1 = "#img_" + i + " .popup-with-move-anim";
+                    var element2 = "#img_" + i + " .element_1";
+                    var element3 = "#img_" + i + " .element_2";
+                    var element4 = "#img_" + i + " .choose_model_img";
+                    var element5 = "#img_" + i + " .element_3";
+                    var element6 = "#img_" + i + " .element_4";
+                    var element7 = "#img_" + i + " .element_5";
+                    var element8 = "#box_" + i + " .element_6";
+                    var element9 = "#box_" + i + " .element_7";
+                    var element10 = "#box_" + i + " .element_8";
+                    var element11 = "#box_" + i + " .element_9";
+                    var element12 = "#box_" + i + " .element_10";
+                    var element13 = "#box_" + i + " .element_11";
+                    var element14 = "#box_" + i + " .element_12";
+                    var element15 = "#box_" + i + " .element_13";
+
+                    img_number--;
+                    $(element1).attr("title", imgs[img_number]["name"]);
+                    $(element2).text(imgs[img_number]["name"]);
+                    $(element3).css("backgroundImage", "url(" + imgs[img_number]["path"] + ")");
+                    $(element4).attr("title", imgs[img_number]["name"]);
+                    $(element5).text(imgs[img_number]["name"]);
+                    $(element6).css("backgroundImage", "url(" + imgs[img_number]["path"] + ")");
+                    $(element7).val(imgs[img_number]["fake_name"]);
+                    $(element8).attr("src", imgs[img_number]["path"]);
+                    $(element8).attr("alt", imgs[img_number]["name"]);
+                    $(element9).text(imgs[img_number]["name"]);
+                    $(element10).text(imgs[img_number]["upload_time"]);
+                    $(element11).text(imgs[img_number]["size"]);
+                    $(element12).text(imgs[img_number]["height"]);
+                    $(element13).text(imgs[img_number]["width"]);
+                    $(element14).val(imgs[img_number]["tag"]);
+                    $(element15).val(imgs[img_number]["fake_name"]);
+                    img_number++;
+                    $("#img_" + i).css("display", "block")
+                    $("#box_" + i).css("display", "block")
+
+                }
+            }
+        })
+
+    $("#img_next")
+        .click(function () {
+            if ((img_count - current_page_imgs * 25) > 0) {
+                $("#img_next").css("display", "inline-block")
+                $("#img_back").css("display", "inline-block")
+                if (img_count - (1 + current_page_imgs) * 25 <= 0) {
+                    $("#img_next").css("display", "none")
+                    $("#img_back").css("display", "inline-block")
+                }
+                for (var i = 1; i <= 25; i++) {
+                    var img_number = current_page_imgs * 25 + i;
+
+                    if (img_number <= img_count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
                         var element2 = "#img_" + i + " .element_1";
                         var element3 = "#img_" + i + " .element_2";
@@ -114,26 +252,46 @@ var pics_count;
                         var element5 = "#img_" + i + " .element_3";
                         var element6 = "#img_" + i + " .element_4";
                         var element7 = "#img_" + i + " .element_5";
-
-                        pic_number--;
-                        $(element1).attr("title", pics[pic_number].name);
-                        $(element1).attr("href", pics[pic_number]["href"]);
-                        $(element2).text(pics[pic_number]["name"]);
-                        $(element3).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
-                        $(element4).attr("title", pics[pic_number]["name"]);
-                        $(element5).text(pics[pic_number]["name"]);
-                        $(element6).css("backgroundImage", "url(" + pics[pic_number]["path"] + ")");
-                        $(element7).val(pics[pic_number]["fake_name"]);
-
-                        pic_number++;
+                        var element8 = "#box_" + i + " .element_6";
+                        var element9 = "#box_" + i + " .element_7";
+                        var element10 = "#box_" + i + " .element_8";
+                        var element11 = "#box_" + i + " .element_9";
+                        var element12 = "#box_" + i + " .element_10";
+                        var element13 = "#box_" + i + " .element_11";
+                        var element14 = "#box_" + i + " .element_12";
+                        var element15 = "#box_" + i + " .element_13";
+                        img_number--;
+                        $(element1).attr("title", imgs[img_number].name);
+                        $(element2).text(imgs[img_number]["name"]);
+                        $(element3).css("backgroundImage", "url(" + imgs[img_number]["path"] + ")");
+                        $(element4).attr("title", imgs[img_number]["name"]);
+                        $(element5).text(imgs[img_number]["name"]);
+                        $(element6).css("backgroundImage", "url(" + imgs[img_number]["path"] + ")");
+                        $(element7).val(imgs[img_number]["fake_name"]);
+                        $(element8).attr("src", imgs[img_number]["path"]);
+                        $(element8).attr("alt", imgs[img_number]["name"]);
+                        $(element9).text(imgs[img_number]["name"]);
+                        $(element10).text(imgs[img_number]["upload_time"]);
+                        $(element11).text(imgs[img_number]["size"] + " MB");
+                        $(element12).text(imgs[img_number]["height"] + " px");
+                        $(element13).text(imgs[img_number]["width"] + " px");
+                        $(element14).val(imgs[img_number]["tag"]);
+                        $(element15).val(imgs[img_number]["fake_name"]);
+                        img_number++;
                         $("#img_" + i).css("display", "block")
+                        $("#box_" + i).css("display", "block")
 
                     } else {
+
                         $("#img_" + i).css("display", "none")
+                        $("#box_" + i).css("display", "none")
                     }
 
                 }
-                current_page++;
+                current_page_imgs++;
+
+                resizeBy(100, 0)
+                // resizeBy(-100,0)
             }
 
         })
@@ -213,8 +371,6 @@ $("#imgs_change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
         cnt = 0;
         $(".upload_btn").css("display", "none");
-        $("#next").css("display", "none");
-        $("#back").css("display", "none");
         $(this).val("view");
         $("#imgs_change_model .select_text").css("display", "none");
         $("#imgs_change_model .view_text").css("display", "");
@@ -228,17 +384,13 @@ $("#imgs_change_model").click(function () {
         $("#imageFewForm .img_select").prop("checked", false);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
         $(".imgs_select_cnt").text(cnt.toString());
+        $("#img_next").css("display", "none");
+        $("#img_back").css("display", "none");
+        $("#folder_next").css("display", "none");
+        $("#folder_back").css("display", "none");
+
     } else if ($(this).val() === "view") {// 退出选择
         $(".upload_btn").css("display", "flex");
-        if (current_page === 1) {
-            $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 25) < 0) {
-            $("#back").css("display", "inline-block");
-        } else {
-            $("#next").css("display", "inline-block");
-            $("#back").css("display", "inline-block");
-        }
-
         cnt = 0;
         $(this).val("select");
         $("#imgs_change_model .select_text").css("display", "");
@@ -251,6 +403,26 @@ $("#imgs_change_model").click(function () {
         $("#imageFewForm .img_select").prop("checked", false);
         $("#imageFewForm .choose_model_img").css("display", "none");
         $("#imageFewForm .popup-with-move-anim").css("display", "block");
+
+        if (currentPage) {
+            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+                $("#folder_next").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+                $("#folder_next").css("display", "inline-block");
+                $("#folder_back").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+                $("#folder_back").css("display", "inline-block");
+            }
+        } else {
+            if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+                $("#img_next").css("display", "inline-block");
+            } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+                $("#img_next").css("display", "inline-block");
+                $("#img_back").css("display", "inline-block");
+            } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+                $("#img_back").css("display", "inline-block");
+            }
+        }
     }
 });
 
@@ -316,8 +488,6 @@ $("#folders_change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
         cnt = 0;
         $(".folder_add").css("display", "none");
-        $("#next").css("display", "none");
-        $("#back").css("display", "none");
         $(this).val("view");
         $("#folders_change_model .select_text").css("display", "none");
         $("#folders_change_model .view_text").css("display", "");
@@ -330,17 +500,12 @@ $("#folders_change_model").click(function () {
         $("#folderFewForm .folder_select").prop("checked", false);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
         $("#folders_select_cnt").text(cnt.toString());
+        $("#img_next").css("display", "none");
+        $("#img_back").css("display", "none");
+        $("#folder_next").css("display", "none");
+        $("#folder_back").css("display", "none");
     } else if ($(this).val() == "view") {// 退出选择
         $(".folder_add").css("display", "flex");
-        if (current_page === 1) {
-            $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 25) < 0) {
-            $("#back").css("display", "inline-block");
-        } else {
-            $("#next").css("display", "inline-block");
-            $("#back").css("display", "inline-block");
-        }
-
         cnt = 0;
         $(this).val("select");
         $("#folders_change_model .select_text").css("display", "");
@@ -352,6 +517,26 @@ $("#folders_change_model").click(function () {
         $("#folderFewForm .choose_model_img").css("display", "none");
         $("#folderFewForm .folder_select").prop("checked", false);
         $("#folderFewForm .popup-with-move-anim").css("display", "block");
+
+        if (currentPage) {
+            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+                $("#folder_next").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+                $("#folder_next").css("display", "inline-block");
+                $("#folder_back").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+                $("#folder_back").css("display", "inline-block");
+            }
+        } else {
+            if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+                $("#img_next").css("display", "inline-block");
+            } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+                $("#img_next").css("display", "inline-block");
+                $("#img_back").css("display", "inline-block");
+            } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+                $("#img_back").css("display", "inline-block");
+            }
+        }
 
     }
 });
