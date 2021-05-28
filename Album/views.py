@@ -17,6 +17,7 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import escape_uri_path
 from django.views.decorators.csrf import csrf_exempt
 
+from AI.ImgClass_new.typeSever import typeSever
 from AI.ImgClass.MyImgClass import ImageClassification
 from AI.FaceDetect.FaceDetect import FaceRecogPrepared
 from AICloudAlbum import settings
@@ -28,6 +29,8 @@ from PIL import Image
 from threading import Thread, Lock
 import time
 
+global type_sever
+type_sever = typeSever()
 zeroid = 1
 threshold = 1080
 face_process = 0
@@ -1310,7 +1313,7 @@ def getTag(request, folder_fake_name):
                         tag_process = (index + 1) / total_cnt
                         continue
                     else:
-                        now_res = ImageClassification(now_path)
+                        now_res = type_sever.pd(now_path)
                         p.tag_id = all_tag.get(tag=now_res[0]).id
                         p.is_tag = 1
                         p.save()
