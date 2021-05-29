@@ -98,7 +98,7 @@ var img_cnt = 0,
                 $("#folder_back").css("display", "inline-block");
             }
         }
-    )
+    });
 
     $("#folder_back")
         .click(function () {
