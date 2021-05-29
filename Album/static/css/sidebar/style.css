@@ -111,8 +111,8 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     z-index: 999;
     top: 0px;
-    left: -500px;
-    width: 250px;
+    left: -503px;
+    width: 251px;
     height: 100%;
     -webkit-transition: all .4s ease 0s;
     -moz-transition: all .4s ease 0s;

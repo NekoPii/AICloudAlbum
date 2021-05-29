@@ -1,6 +1,6 @@
 var current_page = 1;
 var pics;
-var pics_count;
+var count;
 (function ($) {
     "use strict";
     var now_folder_fake_name = $("#now_folder_fake_name").val()
@@ -17,9 +17,9 @@ var pics_count;
 
     $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
         pics = data["pics"];
-        pics_count = data["count"];
-        if (pics_count <= 25) {
-            $("#next").css("display", "none");
+        count = data["count"];
+        if (count > 25) {
+            $("#next").css("display", "inline-block");
         }
 
 
@@ -40,7 +40,6 @@ var pics_count;
 
 
     $("#back")
-        .css("display", "none")
         .click(function () {
             if (current_page > 1) {
                 current_page--;
@@ -95,17 +94,17 @@ var pics_count;
 
     $("#next")
         .click(function () {
-            if ((pics_count - current_page * 25) > 0) {
+            if ((count - current_page * 25) > 0) {
                 $("#next").css("display", "inline-block")
                 $("#back").css("display", "inline-block")
-                if (pics_count - (1 + current_page) * 25 <= 0) {
+                if (count - (1 + current_page) * 25 <= 0) {
                     $("#next").css("display", "none")
                     $("#back").css("display", "inline-block")
                 }
                 for (var i = 1; i <= 25; i++) {
                     var pic_number = current_page * 25 + i;
 
-                    if (pic_number <= pics_count) {
+                    if (pic_number <= count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
                         var element2 = "#img_" + i + " .element_1";
                         var element3 = "#img_" + i + " .element_2";
@@ -209,8 +208,6 @@ $("#change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
         cnt = 0;
         $(".upload_btn").css("display", "none");
-        $("#next").css("display", "none");
-        $("#back").css("display", "none");
         $(this).val("view");
         $(".select_text").css("display", "none");
         $(".view_text").css("display", "");
@@ -225,16 +222,11 @@ $("#change_model").click(function () {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".select_cnt").text(cnt.toString());
+        $("#next").css("display", "none");
+        $("#back").css("display", "none");
+
     } else if ($(this).val() === "view") {// 退出选择
         $(".upload_btn").css("display", "flex");
-        if (current_page === 1) {
-            $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 25) < 0) {
-            $("#back").css("display", "inline-block");
-        } else {
-            $("#next").css("display", "inline-block");
-            $("#back").css("display", "inline-block");
-        }
 
         cnt = 0;
         $(this).val("select");
@@ -249,6 +241,15 @@ $("#change_model").click(function () {
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
         $(".download_select").prop("checked", false);
+
+        if ((count - current_page * 25) > 0 && current_page === 1) {
+            $("#next").css("display", "inline-block");
+        } else if ((count - current_page * 25) > 0 && current_page > 1) {
+            $("#next").css("display", "inline-block");
+            $("#back").css("display", "inline-block");
+        } else if ((count - current_page * 25) <= 0 && current_page > 1) {
+            $("#back").css("display", "inline-block");
+        }
     }
 });
 
