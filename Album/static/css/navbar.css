@@ -2,6 +2,10 @@
 /*     02. Navigation     */
 /**************************/
 
+@font-face {
+    font-family: "Ink Free";
+    src: url("/static/fonts/ttf/Inkfree.ttf") format("truetype");
+}
 
 
 .navbar-custom {
