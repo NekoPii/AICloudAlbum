@@ -33,8 +33,8 @@ var pics_count;
 
     $("#top").hide()
         .on("click", function () {
-        $('html, body').animate({scrollTop: 0}, 300);
-    })
+            $('html, body').animate({scrollTop: 0}, 300);
+        })
 
 
     $("#back")
@@ -218,7 +218,7 @@ $("#change_model").click(function () {
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         cnt = 0;
-        $(".select_cnt").text(cnt.toString());
+        $("#select_img_cnt").val(cnt.toString());
     } else if ($(this).val() === "view") {// 退出选择
         $(".upload_btn").css("display", "flex");
         if (current_page === 1) {
@@ -248,7 +248,7 @@ $(".choose_model_img").click(function () {
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
         cnt -= 1;
-        $(".select_cnt").text(cnt.toString());
+        $("#select_img_cnt").val(cnt.toString());
         if (cnt < $(this).length) {
             $("#select_all").val("zero");
             $(".select_all_text").css("display", "");
@@ -263,7 +263,7 @@ $(".choose_model_img").click(function () {
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
         cnt += 1;
-        $(".select_cnt").text(cnt.toString());
+        $("#select_img_cnt").val(cnt.toString());
         if (cnt < $(".choose_model_img").length) {
             $("#select_all").val("zero");
             $(".select_all_text").css("display", "");
@@ -282,7 +282,7 @@ $("#select_all").click(function () {
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $(".choose_model_img").length;
-        $(".select_cnt").text(cnt.toString());
+        $("#select_img_cnt").val(cnt.toString());
         $(this).val("all");
         $(".select_all_text").css("display", "none");
         $(".cancel_text").css("display", "");
@@ -291,7 +291,7 @@ $("#select_all").click(function () {
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
-        $(".select_cnt").text(cnt.toString());
+        $("#select_img_cnt").val(cnt.toString());
         $(this).val("zero");
         $(".select_all_text").css("display", "");
         $(".cancel_text").css("display", "none");

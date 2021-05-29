@@ -7,6 +7,8 @@ var img_count;
 var currentPage = 0;
 var page_num_folder = 5;
 var page_num_img = 10;
+var img_cnt = 0,
+    folder_cnt = 0;
 (function ($) {
     "use strict";
 
@@ -29,12 +31,11 @@ var page_num_img = 10;
     $("#folders_change_model").val("select");
     $("#imgs_change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#folders_delete_few").css("display", "none");
-    $("#folders_select_all").css("display", "none");
-    $("#imgs_delete_few").css("display", "none");
-    $("#imgs_select_all").css("display", "none");
     $(".folder_select").prop("checked", false);
     $(".img_select").prop("checked", false);
+    $("#select_img_cnt").val("0");
+    $("#select_folder_cnt").val("0");
+    $("#folder-pop").css("display", "none");
 
 
     $.getJSON("/ajax_folders/", function (data) {
@@ -85,15 +86,19 @@ var page_num_img = 10;
         $("#img_back").css("display", "none");
         $("#folder_next").css("display", "none");
         $("#folder_back").css("display", "none");
+        $("#image-pop").css("display", "none");
+        $("#folder-pop").css("display", "");
         if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
-            $("#folder_next").css("display", "inline-block");
-        } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
-            $("#folder_next").css("display", "inline-block");
-            $("#folder_back").css("display", "inline-block");
-        } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
-            $("#folder_back").css("display", "inline-block");
+            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+                $("#folder_next").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
+                $("#folder_next").css("display", "inline-block");
+                $("#folder_back").css("display", "inline-block");
+            } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
+                $("#folder_back").css("display", "inline-block");
+            }
         }
-    })
+    )
 
     $("#folder_back")
         .click(function () {
@@ -374,35 +379,34 @@ $('.nav-item [data-toggle="tab"]').on('click', function (event) {
 
 $("#imgs_change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
-        cnt = 0;
-        $(".upload_btn").css("display", "none");
-        $(this).val("view");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(".upload_btn").fadeOut(500);
+        $(this).val("view").attr("title", "return View");
         $("#imgs_change_model .select_text").css("display", "none");
         $("#imgs_change_model .view_text").css("display", "");
-        $("#imgs_download_few").css("display", "flex")
-        $("#imgs_delete_few").css("display", "flex")
-        $("#imgs_select_all").css("display", "flex").val("zero")
+        $("#imgs_select_all").val("zero").attr("title", "Select All");
         $("#imgs_select_all .select_all_text").css("display", "");
         $("#imgs_select_all .cancel_text").css("display", "none");
         $("#imageFewForm .popup-with-move-anim").css("display", "none");
         $("#imageFewForm .choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $("#imageFewForm .img_select").prop("checked", false);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
-        $(".imgs_select_cnt").text(cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
         $("#img_next").css("display", "none");
         $("#img_back").css("display", "none");
         $("#folder_next").css("display", "none");
         $("#folder_back").css("display", "none");
 
     } else if ($(this).val() === "view") {// 退出选择
-        $(".upload_btn").css("display", "flex");
-        cnt = 0;
-        $(this).val("select");
+        $(".upload_btn").fadeIn(500);
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(this).val("select").attr("title", "Select");
         $("#imgs_change_model .select_text").css("display", "");
         $("#imgs_change_model .view_text").css("display", "none");
-        $("#imgs_download_few").css("display", "none")
-        $("#imgs_delete_few").css("display", "none")
-        $("#imgs_select_all").css("display", "none").val("zero")
+        $("#imgs_select_all").val("zero").attr("title", "Select All");
         $("#imgs_select_all .select_all_text").css("display", "");
         $("#imgs_select_all .cancel_text").css("display", "none");
         $("#imageFewForm .img_select").prop("checked", false);
@@ -437,14 +441,16 @@ $("#imageFewForm .choose_model_img").click(function () {
         $(this).find(".img_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
-        cnt -= 1;
-        $(".imgs_select_cnt").text(cnt.toString());
-        if (cnt < $("#imageFewForm .choose_model_img").length) {
-            $("#imgs_select_all").val("zero");
+        img_cnt -= 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("zero").attr("title", "Select All");
             $("#imgs_select_all .select_all_text").css("display", "");
             $("#imgs_select_all .cancel_text").css("display", "none");
-        } else if (cnt === $("#imageFewForm .choose_model_img").length) {
-            $("#imgs_select_all").val("all");
+        } else if (img_cnt === $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("all").attr("title", "Cnacel");
             $("#imgs_select_all .select_all_text").css("display", "none");
             $("#imgs_select_all .cancel_text").css("display", "");
         }
@@ -452,14 +458,16 @@ $("#imageFewForm .choose_model_img").click(function () {
         $(this).find(".img_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
-        cnt += 1;
-        $(".imgs_select_cnt").text(cnt.toString());
-        if (cnt < $("#imageFewForm .choose_model_img").length) {
-            $("#imgs_select_all").val("zero");
+        img_cnt += 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("zero").attr("title", "Select All");
             $("#imgs_select_all .select_all_text").css("display", "");
             $("#imgs_select_all .cancel_text").css("display", "none");
-        } else if (cnt === $("#imageFewForm .choose_model_img").length) {
-            $("#imgs_select_all").val("all");
+        } else if (img_cnt === $("#imageFewForm .choose_model_img").length) {
+            $("#imgs_select_all").val("all").attr("title", "Cancel");
             $("#imgs_select_all .select_all_text").css("display", "none");
             $("#imgs_select_all .cancel_text").css("display", "");
         }
@@ -467,22 +475,26 @@ $("#imageFewForm .choose_model_img").click(function () {
 });
 
 $("#imgs_select_all").click(function () {
-    if ($(this).val() === "zero" && cnt < $("#imageFewForm .choose_model_img").length) {
+    if ($(this).val() === "zero" && img_cnt < $("#imageFewForm .choose_model_img").length) {
         $("#imageFewForm .choose_model_img .img_select").prop("checked", true);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 1);
         $("#imageFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
-        cnt = $("#imageFewForm .choose_model_img").length;
-        $(".imgs_select_cnt").text(cnt.toString());
-        $(this).val("all");
+        img_cnt = $("#imageFewForm .choose_model_img").length;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("all").attr("title", "Cancel");
         $("#imgs_select_all .select_all_text").css("display", "none");
         $("#imgs_select_all .cancel_text").css("display", "");
-    } else if ($(this).val() === "all" && cnt === $("#imageFewForm .choose_model_img").length) {
+    } else if ($(this).val() === "all" && img_cnt === $("#imageFewForm .choose_model_img").length) {
         $("#imageFewForm .choose_model_img .img_select").prop("checked", false);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
         $("#imageFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
-        cnt = 0;
-        $(".imgs_select_cnt").text(cnt.toString());
-        $(this).val("zero");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("zero").attr("title", "Select All");
         $("#imgs_select_all .select_all_text").css("display", "");
         $("#imgs_select_all .cancel_text").css("display", "none");
     }
@@ -491,32 +503,33 @@ $("#imgs_select_all").click(function () {
 
 $("#folders_change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
-        cnt = 0;
-        $(".folder_add").css("display", "none");
-        $(this).val("view");
+        folder_cnt = 0;
+        $(".folder_func1").fadeOut(500);
+        $("#select_folder_cnt").val(folder_cnt.toString());
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $(this).val("view").attr("title", "return View");
         $("#folders_change_model .select_text").css("display", "none");
         $("#folders_change_model .view_text").css("display", "");
-        $("#folders_delete_few").css("display", "flex")
-        $("#folders_select_all").css("display", "flex").val("zero")
+        $("#folders_select_all").val("zero").attr("title", "Select All");
         $("#folders_select_all .select_all_text").css("display", "");
         $("#folders_select_all .cancel_text").css("display", "none");
         $("#folderFewForm .popup-with-move-anim").css("display", "none");
         $("#folderFewForm .choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $("#folderFewForm .folder_select").prop("checked", false);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
-        $("#folders_select_cnt").text(cnt.toString());
         $("#img_next").css("display", "none");
         $("#img_back").css("display", "none");
         $("#folder_next").css("display", "none");
         $("#folder_back").css("display", "none");
     } else if ($(this).val() == "view") {// 退出选择
-        $(".folder_add").css("display", "flex");
-        cnt = 0;
+        $(".folder_func1").fadeIn(500);
+        folder_cnt = 0;
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $("#select_folder_cnt").val(folder_cnt.toString());
         $(this).val("select");
         $("#folders_change_model .select_text").css("display", "");
         $("#folders_change_model .view_text").css("display", "none");
-        $("#folders_delete_few").css("display", "none")
-        $("#folders_select_all").css("display", "none").val("zero")
+        $("#folders_select_all").val("zero").attr("title", "Select All")
         $("#folders_select_all .select_all_text").css("display", "");
         $("#folders_select_all .cancel_text").css("display", "none");
         $("#folderFewForm .choose_model_img").css("display", "none");
@@ -552,14 +565,15 @@ $("#folderFewForm .choose_model_img").click(function () {
         $(this).find(".folder_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
-        cnt -= 1;
-        $("#folders_select_cnt").text(cnt.toString());
-        if (cnt < $("#folderFewForm .choose_model_img").length) {
-            $("#folders_select_all").val("zero");
+        folder_cnt -= 1;
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $("#select_folder_cnt").val(folder_cnt.toString());
+        if (folder_cnt < $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("zero").attr("title", "Select All");
             $("#folders_select_all .select_all_text").css("display", "");
             $("#folders_select_all .cancel_text").css("display", "none");
-        } else if (cnt === $("#folderFewForm .choose_model_img").length) {
-            $("#folders_select_all").val("all");
+        } else if (folder_cnt === $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("all").attr("title", "Cancel");
             $("#folders_select_all .select_all_text").css("display", "none");
             $("#folders_select_all .cancel_text").css("display", "");
         }
@@ -567,14 +581,15 @@ $("#folderFewForm .choose_model_img").click(function () {
         $(this).find(".folder_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
-        cnt += 1;
-        $("#folders_select_cnt").text(cnt.toString());
-        if (cnt < $("#folderFewForm .choose_model_img").length) {
-            $("#folders_select_all").val("zero");
+        folder_cnt += 1;
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $("#select_folder_cnt").val(folder_cnt.toString());
+        if (folder_cnt < $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("zero").attr("title", "Select All");
             $("#folders_select_all .select_all_text").css("display", "");
             $("#folders_select_all .cancel_text").css("display", "none");
-        } else if (cnt === $("#folderFewForm .choose_model_img").length) {
-            $("#folders_select_all").val("all");
+        } else if (folder_cnt === $("#folderFewForm .choose_model_img").length) {
+            $("#folders_select_all").val("all").attr("title", "Cancel");
             $("#folders_select_all .select_all_text").css("display", "none");
             $("#folders_select_all .cancel_text").css("display", "");
         }
@@ -582,22 +597,24 @@ $("#folderFewForm .choose_model_img").click(function () {
 });
 
 $("#folders_select_all").click(function () {
-    if ($(this).val() === "zero" && cnt < $("#folderFewForm .choose_model_img").length) {
+    if ($(this).val() === "zero" && folder_cnt < $("#folderFewForm .choose_model_img").length) {
         $("#folderFewForm .choose_model_img .folder_select").prop("checked", true);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 1);
         $("#folderFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
-        cnt = $("#folderFewForm .choose_model_img").length;
-        $("#folders_select_cnt").text(cnt.toString());
-        $(this).val("all");
+        folder_cnt = $("#folderFewForm .choose_model_img").length;
+        $("#select_folder_cnt").val(folder_cnt.toString());
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $(this).val("all").attr("title", "Cancel");
         $("#folders_select_all .select_all_text").css("display", "none");
         $("#folders_select_all .cancel_text").css("display", "");
-    } else if ($(this).val() === "all" && cnt === $("#folderFewForm .choose_model_img").length) {
+    } else if ($(this).val() === "all" && folder_cnt === $("#folderFewForm .choose_model_img").length) {
         $("#folderFewForm .choose_model_img .folder_select").prop("checked", false);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
         $("#folderFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
-        cnt = 0;
-        $("#folders_select_cnt").text(cnt.toString());
-        $(this).val("zero");
+        folder_cnt = 0;
+        $("#select_folder_cnt").val(folder_cnt.toString());
+        $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
+        $(this).val("zero").attr("title", "Select All");
         $("#folders_select_all .select_all_text").css("display", "");
         $("#folders_select_all .cancel_text").css("display", "none");
     }
@@ -640,6 +657,7 @@ $("#input_folder_name").on("keypress", function (event) {
         }
     }
 });
+
 
 $("#add_modal_ok").click(function () {
     var input_name = $("#input_folder_name").val();

@@ -46,7 +46,7 @@ $(".download_one").click(function () {
 });
 
 $("#imgs_download_few").click(function () {
-    if ($(".select_cnt").text() == "000") {
+    if ($("#select_img_cnt").val() === "0") {
         toastr.info("No Images Selected !")
     } else {
         toastr.info("Downloading ...");

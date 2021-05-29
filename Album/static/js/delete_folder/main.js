@@ -17,7 +17,8 @@ $(document).ready(function () {
 });
 
 $("#folders_delete_few").click(function () {
-    if ($("#select_cnt").text() == "0") {
+    console.log($("#select_folder_cnt").val())
+    if ($("#select_folder_cnt").val() === "0") {
         toastr.info("No Folder Selected !");
     } else {
         return new Promise(function (resolve, reject) {

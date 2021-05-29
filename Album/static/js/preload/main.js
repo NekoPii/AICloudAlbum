@@ -6,14 +6,14 @@
         if (document.readyState == "complete" || document.readyState == "interactive") {
             $('body').addClass('loaded');
             var t = getQueryString("t");
-                if (t) {
-                    if (t === "f") {
-                        $("#folder-tab-tabs-above").click();
-                    }
-                    if (t === "i") {
-                        $("#all-tab-tabs-above").click();
-                    }
+            if (t) {
+                if (t === "f") {
+                    $("#folder-tab-tabs-above").click();
                 }
+                if (t === "i") {
+                    $("#all-tab-tabs-above").click();
+                }
+            }
             setTimeout(function () {
                 $("#loader-wrapper")[0].style.display = "none";
             }, 400);

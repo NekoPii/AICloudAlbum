@@ -2,16 +2,25 @@ body {
     background: rgb(250, 250, 250);
 }
 
-#mytab a {
+#myTab-tabs-above a {
     color: #64b3f4;
     font-weight: bold;
+    border: none;
+    border-top: 3px solid transparent;
+    box-sizing: border-box;
 }
 
-#mytab a:active,
-#mytab a:focus,
-#mytab a:hover {
-    color: #1b88de;
-    background: white;
+#myTab-tabs-above a:active,
+#myTab-tabs-above a:focus,
+#myTab-tabs-above a:hover {
+    background-color: #64b3f4;
+    color: white;
+    border-top: 3px solid #64b3f4 !important;
+}
+
+#myTab-tabs-above .active {
+
+    border-top: 3px solid #64b3f4 !important;
 }
 
 #top {
@@ -450,6 +459,34 @@ body {
     left: 0;
     color: #fff;
     font: 700 1.125rem/1.625rem "Montserrat", sans-serif;
+}
+
+
+.filter .element-item .element-item-dirlay {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    text-align: center;
+}
+
+.filter .element-item .element-item-dirlay span {
+    position: absolute;
+    z-index: 3;
+    top: 42%;
+    right: 0;
+    left: 0;
+    color: #fff;
+    font: 700 1.125rem/1.625rem "Montserrat", sans-serif;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filter .element-item .element-item-dirlay span:hover {
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 

@@ -1,0 +1,321 @@
+
+.btn-float {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    display: inline-block;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.11);
+}
+
+.btn-float:hover {
+    text-decoration: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.13);
+}
+
+.btn-float:active, .btn-float:focus {
+    outline: none;
+}
+
+.btn-float + .btn-float {
+    margin-left: 5px;
+}
+
+.yellow {
+    background: #ffa000;
+}
+
+.blue {
+    background: #40c4ff;
+}
+
+.green {
+    background: #00e676;
+}
+
+.purple {
+    background: #8e24aa;
+}
+
+.pink {
+    background: #e91e63;
+}
+
+.icon-bars {
+    background: #fff;
+    height: 1px;
+    width: 22px;
+    margin: auto;
+    display: block;
+    position: relative;
+    -moz-transition: 0.3s 0.3s;
+    -o-transition: 0.3s 0.3s;
+    -webkit-transition: 0.3s;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.3s 0.3s;
+    transition: 0.3s 0.3s;
+}
+
+.icon-bars:after {
+    content: '';
+    position: absolute;
+    height: 22px;
+    width: 1px;
+    background: #fff;
+    top: -10px;
+}
+
+.float-btn-group {
+    position: relative;
+    float: right;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.float-btn-group .btn-triger {
+    z-index: 15;
+    float: left;
+}
+
+.float-btn-group .btn-list {
+    position: absolute;
+    right: 0;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.float-btn-group .btn-list li {
+    display: inline-block;
+}
+
+.float-btn-group.open .icon-bars {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+
+.popbtn .float-btn-group {
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    z-index: 900;
+}
+
+.uploadbtn .float-btn-group {
+    position: fixed;
+    left: 2rem;
+    bottom: 26rem;
+    z-index: 900;
+}
+
+.folder_func1 .float-btn-group {
+    position: fixed;
+    left: 2rem;
+    bottom: 20rem;
+    z-index: 900;
+}
+
+.popbtn .float-btn-group .icon-bars {
+    -webkit-transition: 0.1s;
+    transition: 0.2s;
+}
+
+.popbtn .float-btn-group .btn-list .btn-float {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    -ms-transform: scale(0, 0);
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+}
+
+.popbtn .float-btn-group .btn-list .btn-float:nth-child(1) {
+    -moz-transition: 0.1s 0.2s ease-in;
+    -o-transition: 0.1s 0.2s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-in;
+    transition: 0.1s 0.2s ease-in;
+}
+
+.popbtn .float-btn-group .btn-list .btn-float:nth-child(2) {
+    -moz-transition: 0.1s 0.3s ease-in;
+    -o-transition: 0.1s 0.3s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-in;
+    transition: 0.1s 0.3s ease-in;
+}
+
+.popbtn .float-btn-group .btn-list .btn-float:nth-child(3) {
+    -moz-transition: 0.1s 0.4s ease-in;
+    -o-transition: 0.1s 0.4s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.4s;
+    -webkit-transition: 0.1s 0.4s ease-in;
+    transition: 0.1s 0.4s ease-in;
+}
+
+.popbtn .float-btn-group .btn-list .btn-float:nth-child(4) {
+    -moz-transition: 0.1s 0.5s ease-in;
+    -o-transition: 0.1s 0.5s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.5s;
+    -webkit-transition: 0.1s 0.5s ease-in;
+    transition: 0.1s 0.5s ease-in;
+}
+
+.popbtn .float-btn-group .btn-list .btn-float:nth-child(5) {
+    -moz-transition: 0.1s 0.6s ease-in;
+    -o-transition: 0.1s 0.6s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.6s;
+    -webkit-transition: 0.1s 0.6s ease-in;
+    transition: 0.1s 0.6s ease-in;
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float {
+    opacity: 1;
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float:nth-child(1) {
+    top: -20rem;
+    -moz-transition: 0.1s 0.6s ease-out;
+    -o-transition: 0.1s 0.6s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.6s;
+    -webkit-transition: 0.1s 0.6s ease-out;
+    transition: 0.1s 0.6s ease-out;
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float:nth-child(2) {
+    top: -16rem;
+    -moz-transition: 0.1s 0.5s ease-out;
+    -o-transition: 0.1s 0.5s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.5s;
+    -webkit-transition: 0.1s 0.5s ease-out;
+    transition: 0.1s 0.5s ease-out;
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float:nth-child(3) {
+    top: -12rem;
+    -moz-transition: 0.1s 0.4s ease-out;
+    -o-transition: 0.1s 0.4s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.4s;
+    -webkit-transition: 0.1s 0.4s ease-out;
+    transition: 0.1s 0.4s ease-out;
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float:nth-child(4) {
+    top: -8rem;
+    -moz-transition: 0.1s 0.3s ease-out;
+    -o-transition: 0.1s 0.3s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-out;
+    transition: 0.1s 0.3s ease-out;
+}
+
+.popbtn .float-btn-group.open .btn-list .btn-float:nth-child(5) {
+    top: -4rem;
+    -moz-transition: 0.1s 0.2s ease-out;
+    -o-transition: 0.1s 0.2s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-out;
+    transition: 0.1s 0.2s ease-out;
+}
+
+
+
+#folder-pop .popbtn .float-btn-group .btn-list .btn-float {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    -ms-transform: scale(0, 0);
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+}
+
+#folder-pop .popbtn .float-btn-group .btn-list .btn-float:nth-child(1) {
+    -moz-transition: 0.1s 0.2s ease-in;
+    -o-transition: 0.1s 0.2s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-in;
+    transition: 0.1s 0.2s ease-in;
+}
+
+#folder-pop .popbtn .float-btn-group .btn-list .btn-float:nth-child(2) {
+    -moz-transition: 0.1s 0.3s ease-in;
+    -o-transition: 0.1s 0.3s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-in;
+    transition: 0.1s 0.3s ease-in;
+}
+
+#folder-pop .popbtn .float-btn-group.open .btn-list .btn-float {
+    opacity: 1;
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+}
+
+#folder-pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(1) {
+    top: -8rem;
+    -moz-transition: 0.1s 0.3s ease-out;
+    -o-transition: 0.1s 0.3s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-out;
+    transition: 0.1s 0.3s ease-out;
+}
+
+#folder-pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(2) {
+    top: -4rem;
+    -moz-transition: 0.1s 0.2s ease-out;
+    -o-transition: 0.1s 0.2s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-out;
+    transition: 0.1s 0.2s ease-out;
+}
+
+.btn-float:hover {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}

@@ -9,6 +9,7 @@
     <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/popbtn/main.css" rel="stylesheet">
     <link href="/static/css/upload/main.css" rel="stylesheet">
     <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
@@ -104,7 +105,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
          aria-labelledby="deleteimgProcessModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
@@ -129,8 +129,6 @@
 
 
 
-
-
     <!-- Projects -->
     <div id="projects" class="filter" style="padding-top: 1rem;padding-bottom: 1rem">
         <div class="container" style="padding: 0;">
@@ -140,47 +138,7 @@
                     <h2>Images That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
-            <div class="row">
-                <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                    <a href="/mypics/" class="btn-solid-reg" style="display: flex;margin: 0.5rem 1rem;">
-                        <span><i class="uil uil-step-backward">&nbsp;Back</i></span>
-                    </a>
-
-                    <button id="change_model" class="btn-solid-reg" type="button" value="select"
-                            style="display: flex;margin: 0.5rem 1rem;">
-                        <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                        <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                    </button>
-                    <button id="getTag" class="btn-solid-reg" type="button"
-                            style="display: flex;margin: 0.5rem 1rem;">
-                        <span><i class="uil uil-tag-alt"></i>&nbsp;GET ALL TAG</span>
-                    </button>
-                    <button id="select_all" class="btn-solid-reg" type="button" value="zero"
-                            style="display: none;margin: 0.5rem 1rem;">
-                        <span class="select_all_text"><i class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                        <span class="cancel_text" style="display: none;"><i
-                                class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                    </button>
-                    <button type="button" class="upload_btn btn-solid-reg" data-toggle="modal"
-                            data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
-                        <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
-                    </button>
-                    <button id="getFewFaceRec" class="btn-solid-reg" type="button"
-                            style="display: none;margin: 0.5rem 1rem;">
-                        <span><i class="uil uil-smile-squint-wink-alt"></i>&nbsp;GET
-                            <span class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected Images Face Recognition</span>
-                    </button>
-                    <button id="imgs_download_few" class="btn-solid-reg" type="button"
-                            style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
-                            class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                    </button>
-                    <button id="imgs_delete_few" class="rm-btn-solid-reg" type="button"
-                            style="display: none;margin: 0.5rem 1rem;"><span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span
-                            class="select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                    </button>
-                </div>
-            </div>
-
+            <input id="select_img_cnt" type="hidden" style="display: none;">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="grid" style="text-align: center;background-color: rgb(250,250,250)">
@@ -285,6 +243,45 @@
     <!-- end of lightbox -->
 
 
+    <div id="image-pop">
+        <div class="container upload_btn uploadbtn popbtn">
+            <div class="float-btn-group">
+                <button type="button" class="btn-float blue" data-toggle="modal"
+                        data-target="#launch-upload" title="Upload">
+                    <i class="uil uil-image-upload"></i>
+                </button>
+            </div>
+        </div>
+        <div class="container popbtn">
+            <div class="float-btn-group">
+                <button id="change_model" class="btn-float btn-triger blue" type="button" value="select"
+                        title="Select">
+                    <i class="select_text uil uil-list-ul"></i>
+                    <i class="view_text uil uil-left-arrow-from-left" style="display: none"></i>
+                </button>
+                <div class="btn-list">
+                    <button id="getTag" class="btn-float blue" type="button" title="Get All Tags">
+                        <i class="uil uil-tag-alt"></i>
+                    </button>
+                    <button id="getFewFaceRec" class="btn-float blue" type="button" title="Get Face Recognition">
+                        <i class="uil uil-smile-squint-wink-alt"></i>
+                    </button>
+                    <button id="imgs_download_few" class="btn-float blue" type="button">
+                        <i class="uil uil-image-download"></i>
+                    </button>
+                    <button id="imgs_delete_few" class="btn-float blue" type="button">
+                        <i class="uil uil-image-times"></i>
+                    </button>
+                    <button id="select_all" class="btn-float blue" type="button" value="zero" title="Select All">
+                        <i class="select_all_text uil uil-book-medical"></i>
+                        <i class="cancel_text uil uil-times-circle" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}
 
@@ -298,6 +295,7 @@
     <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
     <script src="/static/js/upload/main.js"></script>
+    <script src="/static/js/popbtn/main.js"></script>
     <script src="/static/js/mypics_folder/main.js"></script>
     <script src="/static/js/download/main.js"></script>
     <script src="/static/js/delete_img/main.js"></script>

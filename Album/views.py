@@ -81,7 +81,7 @@ def show_face_process(request):
     global face_process
     if abs(face_process - 1) < eps:
         face_process = 1
-    now_face_process = str(round(face_process * 100, 2)) + "%"
+    now_face_process = str(format(face_process * 100, '.2f')) + "%"
     res = {"now_face_process": now_face_process, "face_process_val": face_process}
     return JsonResponse(res, safe=False)
 
@@ -90,7 +90,7 @@ def show_tag_process(request):
     global tag_process
     if abs(tag_process - 1) < eps:
         tag_process = 1
-    now_tag_process = str(round(tag_process * 100, 2)) + "%"
+    now_tag_process = str(format(tag_process * 100, '.2f')) + "%"
     res = {"now_tag_process": now_tag_process, "tag_process_val": tag_process}
     return JsonResponse(res, safe=False)
 
@@ -99,7 +99,7 @@ def show_delete_img_process(request):
     global delete_img_process
     if abs(delete_img_process - 1) < eps:
         delete_img_process = 1
-    now_delete_img_process = str(round(delete_img_process * 100, 2)) + "%"
+    now_delete_img_process = str(format(delete_img_process * 100, '.2f')) + "%"
     res = {"now_delete_img_process": now_delete_img_process, "delete_img_process_val": delete_img_process}
     return JsonResponse(res, safe=False)
 
@@ -108,7 +108,7 @@ def show_delete_folder_process(request):
     global delete_folder_process
     if abs(delete_folder_process - 1) < eps:
         delete_folder_process = 1
-    now_delete_folder_process = str(round(delete_folder_process * 100, 2)) + "%"
+    now_delete_folder_process = str(format(delete_folder_process * 100, '.2f')) + "%"
     res = {"now_delete_folder_process": now_delete_folder_process, "delete_folder_process_val": delete_folder_process}
     return JsonResponse(res, safe=False)
 
@@ -241,7 +241,7 @@ def ajax_pics(request, folder_fake_name):
         json_data["pics"] = []
         cnt = 1
         for p in pics:
-            p.size = round(p.size, 2)
+            p.size = format(p.size, '.2f')
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
@@ -275,7 +275,7 @@ def ajax_folders(request):
             foldercover = models.FolderCover.objects.get(folder_id=p.id)
             cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
             p.href = "/mypics/" + p.fake_name + "/"
-            p.size = round(p.total_size, 2)
+            p.size = format(p.total_size, '.2f')
             p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
             folder = {"size": p.total_size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
@@ -285,7 +285,7 @@ def ajax_folders(request):
 
         cnt = 1
         for p in pictures:
-            p.size = round(p.size, 2)
+            p.size = format(p.size, '.2f')
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
@@ -295,7 +295,7 @@ def ajax_folders(request):
             cnt += 1
 
         folder_count = folders.count()
-        img_count=pictures.count()
+        img_count = pictures.count()
         json_data["folder_count"] = folder_count
         json_data["img_count"] = img_count
         json_data["status"] = 1
@@ -329,7 +329,7 @@ def mypics_folder(request):
             cover_img = models.Picture.objects.get(pk=foldercover.pic_id)
 
             p.href = "/mypics/" + p.fake_name + "/"
-            p.size = round(p.total_size, 2)
+            p.size = format(p.total_size, '.2f')
             p.path = os.path.join('/upload_imgs/compress_imgs/', cover_img.fake_name + '.' + cover_img.type)
             p.id = cnt
             Folders.append(p)
@@ -339,7 +339,7 @@ def mypics_folder(request):
 
         cnt = 1
         for img in ALL_folderimgs:
-            img.size = round(img.size, 2)
+            img.size = format(img.size, '.2f')
             img.path = os.path.join('/upload_imgs/compress_imgs/', img.fake_name + '.' + img.type)
             img.id = cnt
             img.nowtag = all_tag.get(id=img.tag_id).tag
@@ -349,7 +349,7 @@ def mypics_folder(request):
                 break
 
         count = folders.count()
-        capacity_now = round(user.now_capacity, 2)
+        capacity_now = format(user.now_capacity, '.2f')
         ALL_folderfakename = ALL_folder.fake_name
 
         return render(request, "Album/mypics.html", locals())
@@ -372,7 +372,7 @@ def mypics_pics(request, folder_fake_name):
             Pics = []
             cnt = 1
             for p in pics:
-                p.size = round(p.size, 2)
+                p.size = format(p.size, '.2f')
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
                 p.nowtag = all_tag.get(id=p.tag_id).tag
@@ -381,7 +381,7 @@ def mypics_pics(request, folder_fake_name):
                 if cnt > page_num_img:
                     break
             count = pics.count()
-            capacity_now = round(now_folder[0].total_size, 2)
+            capacity_now = format(now_folder[0].total_size, '.2f')
 
             now_folder_name = now_folder[0].name
             now_folder_fake_name = now_folder[0].fake_name
@@ -1296,7 +1296,7 @@ def getTag(request, folder_fake_name):
 
             now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
-            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id, tag_id=NoneTag.id)
+            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id)
 
             all_tag = models.Tag.objects.all()
 
@@ -1397,7 +1397,7 @@ def faceMainPage(request):
                     break
 
         count = valid_cnt
-        capacity_now = round(user.now_capacity, 2)
+        capacity_now = format(user.now_capacity, '.2f')
 
         return render(request, "Album/face.html", locals())
     else:
@@ -1419,7 +1419,7 @@ def faceDetailPage(request, face_cover_fake_name):
             for facepic in now_FacePic:
                 if cnt < 26:
                     now_img = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
-                    now_img.size = round(now_img.size, 2)
+                    now_img.size = format(now_img.size, '.2f')
                     now_img.path = os.path.join('/upload_imgs/compress_imgs/',
                                                 now_img.fake_name + '.' + now_img.type)
                     now_img.id = cnt
@@ -1431,7 +1431,7 @@ def faceDetailPage(request, face_cover_fake_name):
                 cnt += 1
 
             count = total_cnt
-            capacity_now = round(user.now_capacity, 2)
+            capacity_now = format(user.now_capacity, '.2f')
             face_cover_fake_name = face_cover_fake_name
 
             return render(request, "Album/face_detail.html", locals())

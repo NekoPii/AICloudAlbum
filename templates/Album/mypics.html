@@ -11,6 +11,7 @@
     <link href="/static/vendor/bootstrap-tabs-x/css/bootstrap-tabs-x.min.css" rel="stylesheet">
     <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/popbtn/main.css" rel="stylesheet">
     <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
     <link href="/static/css/mypics/styles.css" rel="stylesheet">
     <link href="/static/css/upload/main.css" rel="stylesheet">
@@ -129,6 +130,50 @@
         </div>
     </div>
 
+    <div class="modal fade" id="face-process" tabindex="-1" role="dialog"
+         aria-labelledby="faceProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faceProcessModalLabel">Face Recognition Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="face_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tag-process" tabindex="-1" role="dialog"
+         aria-labelledby="tagProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagProcessModalLabel">Tag Recognition Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="tag_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             style="width: 0;">0%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
          aria-labelledby="deleteimgProcessModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
@@ -196,8 +241,6 @@
         <div class="container" style="padding: 0;">
             <div class="row">
                 <div class="col-lg-12" style="padding: 0;height: 6rem">
-                    <div class="section-title">FOLDER</div>
-                    <h2 class="test">FOLDER That You're Proud Of</h2>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
 
@@ -226,40 +269,12 @@
                             class="uil uil-folder"></i>&nbsp;Folders</a></li>
                 </ul>
                 <div id="myTabContent-tabs-above" class="tab-content"
-                     style="background: rgba(245,245,245,0.5);border-radius:0 0 1rem 1rem ;">
+                     style="background: rgba(245,245,245,0.5);border-radius:0 0 1rem 1rem;border-bottom: 1px solid rgb(222, 226, 230);">
 
                     <div class="tab-pane fade show active" id="all-tabs-above" role="tabpanel"
                          aria-labelledby="all-tab-tabs-above">
-                        <div class="row">
-                            <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                                <button id="imgs_change_model" class="btn-solid-reg" type="button" value="select"
-                                        style="display: flex;margin: 0.5rem 1rem;">
-                                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                                </button>
-                                <button type="button" class="upload_btn btn-solid-reg" data-toggle="modal"
-                                        data-target="#launch-upload" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span> <i class="uil uil-image-upload"></i>&nbsp;UPLOAD</span>
-                                </button>
-                                <button id="imgs_select_all" class="btn-solid-reg" type="button" value="zero"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                                    <span class="select_all_text"><i
-                                            class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                                    <span class="cancel_text" style="display: none;"><i
-                                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                                </button>
-                                <button id="imgs_download_few" class="btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;"><span><i
-                                        class="uil uil-cloud-download"></i>&nbsp;Download&nbsp;<span
-                                        class="imgs_select_cnt" style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-                                <button id="imgs_delete_few" class="rm-btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span class="imgs_select_cnt"
-                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-                            </div>
-                        </div>
+                        <input id="select_img_cnt" type="hidden" style="display: none;">
+                        <input id="select_folder_cnt" type="hidden" style="display: none;">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="grid" style="text-align: center;background:transparent;">
@@ -344,40 +359,6 @@
                     <div class="tab-pane fade" id="folder-tabs-above" role="tabpanel"
                          aria-labelledby="folder-tab-tabs-above">
                         <div class="row">
-                            <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                                <button id="folders_change_model" class="btn-solid-reg" type="button" value="select"
-                                        style="display: flex;margin: 0.5rem 1rem;">
-                                    <span class="select_text"><i class="uil uil-apps"></i>&nbsp;SELECT</span>
-                                    <span class="view_text" style="display: none;"><i class="uil uil-image-v"></i>&nbsp;VIEW</span>
-                                </button>
-
-                                <button id="folders_select_all" class="btn-solid-reg" type="button" value="zero"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                                    <span class="select_all_text"><i
-                                            class="uil uil-book-medical"></i>&nbsp;SELECT ALL</span>
-                                    <span class="cancel_text" style="display: none;"><i
-                                            class="uil uil-times-circle"></i>&nbsp;CANCEL</span>
-                                </button>
-
-                                <button id="folders_delete_few" class="rm-btn-solid-reg" type="button"
-                                        style="display: none;margin: 0.5rem 1rem;">
-                    <span><i class="uil uil-cloud-times"></i>&nbsp;Delete&nbsp;<span id="folders_select_cnt"
-                                                                                     style="font-weight: bold;">0</span>&nbsp;Selected</span>
-                                </button>
-
-                                <button type="button" class="add_btn btn-solid-reg folder_add" data-toggle="modal"
-                                        data-target="#launch-add" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span><i class="uil uil-folder-plus"></i>&nbsp;Add Folder</span>
-                                </button>
-
-                                <button type="button" class="add_btn btn-solid-reg folder_add" data-toggle="modal"
-                                        data-target="#launch-mod" style="display: flex;margin: 0.5rem 1rem;">
-                                    <span><i class="uil uil-folder-info"></i>&nbsp;Modify Folder Name</span>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-12">
                                 <div class="grid folder" style="text-align: center;background:transparent;">
                                     <form id="folderFewForm">
@@ -387,17 +368,18 @@
                                                  style="text-align: center;background:transparent;">
                                                 <a title="{{ p.name }}" class="popup-with-move-anim"
                                                    href={{ p.href }} name="{{ p.name }}">
-                                                    <div class="element-item-overlay">
+                                                    <div class="element-item-dirlay">
                                                 <span class="element_1"
-                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
+                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1.5rem;border-radius: 1rem;">{{ p.name }} </span>
                                                     </div>
                                                     <div class="zoomImage11 element_2"
                                                          style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
                                                 </a>
                                                 <a id="folder_model_{{ p.id }}" class="choose_model_img" style="border-radius: 0.5rem;cursor: pointer;"
                                                    title="{{ p.name }}" name="{{ p.name }}">
-                                                    <div class="element-item-overlay"><span class="element_3"
-                                                                                            style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                                    <div class="element-item-dirlay">
+                                                        <span class="element_3"
+                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1.5rem;border-radius: 1rem;">{{ p.name }} </span>
                                                     </div>
                                                     <div class="zoomImage11 choose_zoomImage11 element_4"
                                                          style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
@@ -449,6 +431,80 @@
             <i class="fas fa-angle-down"></i>
         </button>
     </div>
+
+    <div id="image-pop">
+        <div class="container upload_btn uploadbtn popbtn">
+            <div class="float-btn-group">
+                <button type="button" class="btn-float blue" data-toggle="modal"
+                        data-target="#launch-upload" title="Upload">
+                    <i class="uil uil-image-upload"></i>
+                </button>
+            </div>
+        </div>
+        <div class="container popbtn">
+            <div class="float-btn-group">
+                <button id="imgs_change_model" class="btn-float btn-triger blue" type="button" value="select"
+                        title="Select">
+                    <i class="select_text uil uil-list-ul"></i>
+                    <i class="view_text uil uil-left-arrow-from-left" style="display: none"></i>
+                </button>
+                <div class="btn-list">
+                    <button id="getTag" class="btn-float blue" type="button" title="Get All Tags">
+                        <i class="uil uil-tag-alt"></i>
+                    </button>
+                    <button id="getFewFaceRec" class="btn-float blue" type="button" title="Get Face Recognition">
+                        <i class="uil uil-smile-squint-wink-alt"></i>
+                    </button>
+                    <button id="imgs_download_few" class="btn-float blue" type="button">
+                        <i class="uil uil-image-download"></i>
+                    </button>
+                    <button id="imgs_delete_few" class="btn-float blue" type="button">
+                        <i class="uil uil-image-times"></i>
+                    </button>
+                    <button id="imgs_select_all" class="btn-float blue" type="button" value="zero" title="Select All">
+                        <i class="select_all_text uil uil-book-medical"></i>
+                        <i class="cancel_text uil uil-times-circle" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="folder-pop">
+        <div class="container folder_func1 popbtn">
+            <div class="float-btn-group">
+                <button type="button" class="btn-float blue" data-toggle="modal"
+                        data-target="#launch-add" title="Add Folder">
+                    <i class="uil uil-folder-plus"></i>
+                </button>
+            </div>
+            <div class="float-btn-group" style="bottom:26rem;">
+                <button type="button" class="btn-float blue" data-toggle="modal"
+                        data-target="#launch-mod" title="Modify Folder">
+                    <i class="uil uil-folder-info"></i>
+                </button>
+            </div>
+        </div>
+        <div class="container popbtn">
+            <div class="float-btn-group">
+                <button id="folders_change_model" class="btn-float btn-triger blue" type="button" value="select"
+                        title="Select">
+                    <i class="select_text uil uil-list-ul"></i>
+                    <i class="view_text uil uil-left-arrow-from-left" style="display: none"></i>
+                </button>
+                <div class="btn-list">
+                    <button id="folders_delete_few" class="btn-float blue" type="button">
+                        <i class="uil uil-folder-times"></i>
+                    </button>
+                    <button id="folders_select_all" class="btn-float blue" type="button" value="zero"
+                            title="Select All">
+                        <i class="select_all_text uil uil-book-medical"></i>
+                        <i class="cancel_text uil uil-times-circle" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--end of pages-->
 
 
@@ -465,12 +521,15 @@
     <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
     <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
     <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
+    <script src="/static/js/popbtn/main.js"></script>
     <script src="/static/js/mypics/main.js"></script>
     <script src="/static/js/upload/main.js"></script>
     <script src="/static/js/download/main.js"></script>
     <script src="/static/js/delete_folder/main.js"></script>
     <script src="/static/js/delete_img/main.js"></script>
     <script src="/static/js/modify_folder/main.js"></script>
+    <script src="/static/js/getTag/main.js"></script>
+    <script src="/static/js/getFaceRec/main.js"></script>
     <script src="/static/js/preload/main.js"></script>
 
 {% endblock %}

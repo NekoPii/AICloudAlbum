@@ -2,6 +2,7 @@ var current_page = 1;
 var pics;
 var count;
 var page_num_img=10;
+var img_cnt = 0;
 (function ($) {
     "use strict";
     var now_folder_fake_name = $("#now_folder_fake_name").val()
@@ -9,11 +10,8 @@ var page_num_img=10;
 
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#imgs_download_few").css("display", "none");
-    $("#imgs_delete_few").css("display", "none");
-    $("#getFewFaceRec").css("display", "none");
-    $("#select_all").css("display", "none");
     $(".download_select").prop("checked", false);
+    $("#select_img_cnt").val("0");
 
 
     $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
@@ -209,38 +207,34 @@ var page_num_img=10;
 
 $("#change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
-        cnt = 0;
-        $(".upload_btn").css("display", "none");
-        $(this).val("view");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(".upload_btn").fadeOut(500);
+        $(this).val("view").attr("title", "return View");
+        $("#select_all").val("zero").attr("title", "Select All");
         $(".select_text").css("display", "none");
         $(".view_text").css("display", "");
-        $("#imgs_download_few").css("display", "flex")
-        $("#imgs_delete_few").css("display", "flex");
-        $("#getFewFaceRec").css("display", "flex");
-        $("#select_all").css("display", "flex");
         $(".select_all_text").css("display", "");
         $(".cancel_text").css("display", "none");
         $(".popup-with-move-anim").css("display", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
-        $(".select_cnt").text(cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
         $("#next").css("display", "none");
         $("#back").css("display", "none");
 
     } else if ($(this).val() === "view") {// 退出选择
-        $(".upload_btn").css("display", "flex");
-
-        cnt = 0;
-        $(this).val("select");
+        $(".upload_btn").fadeIn(500);
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(this).val("select").attr("title", "Select");
         $(".select_text").css("display", "");
         $(".view_text").css("display", "none");
+        $("#select_all").val("zero").attr("title", "Select All");
         $(".select_all_text").css("display", "");
         $(".cancel_text").css("display", "none");
-        $("#imgs_download_few").css("display", "none")
-        $("#imgs_delete_few").css("display", "none");
-        $("#getFewFaceRec").css("display", "none");
-        $("#select_all").val("zero").css("display", "none");
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
         $(".download_select").prop("checked", false);
@@ -262,14 +256,16 @@ $(".choose_model_img").click(function () {
         $(this).find(".download_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
-        cnt -= 1;
-        $(".select_cnt").text(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
-            $("#select_all").val("zero");
+        img_cnt -= 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $(".choose_model_img").length) {
+            $("#select_all").val("zero").attr("title", "Select All");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt === $(".choose_model_img").length) {
-            $("#select_all").val("all");
+        } else if (img_cnt === $(".choose_model_img").length) {
+            $("#select_all").val("all").attr("title", "Cnacel");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
         }
@@ -277,14 +273,16 @@ $(".choose_model_img").click(function () {
         $(this).find(".download_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
-        cnt += 1;
-        $(".select_cnt").text(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
-            $("#select_all").val("zero");
+        img_cnt += 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $(".choose_model_img").length) {
+            $("#select_all").val("zero").attr("title", "Select All");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt === $(".choose_model_img").length) {
-            $("#select_all").val("all");
+        } else if (img_cnt === $(".choose_model_img").length) {
+            $("#select_all").val("all").attr("title", "Cancel");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
         }
@@ -292,22 +290,26 @@ $(".choose_model_img").click(function () {
 });
 
 $("#select_all").click(function () {
-    if ($(this).val() === "zero" && cnt < $(".choose_model_img").length) {
+    if ($(this).val() === "zero" && img_cnt < $(".choose_model_img").length) {
         $(".choose_model_img .download_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
-        cnt = $(".choose_model_img").length;
-        $(".select_cnt").text(cnt.toString());
-        $(this).val("all");
+        img_cnt = $(".choose_model_img").length;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("all").attr("title", "Cancel");
         $(".select_all_text").css("display", "none");
         $(".cancel_text").css("display", "");
-    } else if ($(this).val() === "all" && cnt === $(".choose_model_img").length) {
+    } else if ($(this).val() === "all" && img_cnt === $(".choose_model_img").length) {
         $(".choose_model_img .download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
-        cnt = 0;
-        $(".select_cnt").text(cnt.toString());
-        $(this).val("zero");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("zero").attr("title", "Select All");
         $(".select_all_text").css("display", "");
         $(".cancel_text").css("display", "none");
     }
