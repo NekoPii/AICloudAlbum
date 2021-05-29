@@ -325,20 +325,31 @@
                                     <div class="col-lg-8" style="text-align:center;margin:auto 0;">
                                         <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                                     </div> <!-- end of col -->
-                                    <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147)">
+                                    <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147);font-family: 'Arial'">
                                         <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
                                             class="element_7" title="{{ p.name }}">{{ p.name }}</h3>
                                         <hr class="line-heading">
-                                        <h6 style="margin-bottom: 0">UPLOAD TIME:</h6>
-                                        <b class="element_8">  {{ p.upload_time }}</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">SIZE:</h6>
-                                        <b class="element_9">  {{ p.size }}&nbsp;MB</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">WIDTH:</h6>
-                                        <b class="element_10">  {{ p.height }}&nbsp;px</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">HEIGHT:</h6>
-                                        <b class="element_11">  {{ p.width }}&nbsp;px</b>
-                                        <h6 style="margin-top: 1rem;margin-bottom: 0">TAG:</h6>
-                                        <b class="element_12">  {{ p.nowtag }}</b>
+
+                                        <div style="margin-bottom: 0">
+                                            <h6 style="float: left;margin-bottom: 1rem">Upload time:</h6>
+                                            <b style="float: right" class="element_8">{{ p.upload_time }}</b>
+                                        </div>
+                                        <div style="margin-top: 0;margin-bottom: 0">
+                                            <h6 style="float: left;margin-bottom: 1rem">Size:</h6>
+                                            <b style="float: right" class="element_9">{{ p.size }}&nbsp;MB</b>
+                                        </div>
+                                        <div style="margin-top: 0;margin-bottom: 0">
+                                            <h6 style="float: left;margin-bottom: 1rem">Width:</h6>
+                                            <b style="float: right" class="element_10">{{ p.height }}&nbsp;px</b>
+                                        </div>
+                                        <div style="margin-top: 0;margin-bottom: 0">
+                                            <h6 style="float: left;margin-bottom: 1rem">Height:</h6>
+                                            <b style="float: right" class="element_11">{{ p.width }}&nbsp;px</b>
+                                        </div>
+                                        <div style="margin-top: 0;margin-bottom: 0">
+                                            <h6 style="float: left;margin-bottom: 1rem">Tag:</h6>
+                                            <b style="float: right" class="element_12">{{ p.nowtag }}</b>
+                                        </div>
                                         <div class="btn-local1" style="margin-top: 3rem;">
                                             <form class="downloadOneForm">
                                                 <input class="download_input element_13"

@@ -229,10 +229,10 @@ var img_cnt = 0,
                     $(element8).attr("alt", imgs[img_number]["name"]);
                     $(element9).text(imgs[img_number]["name"]);
                     $(element10).text(imgs[img_number]["upload_time"]);
-                    $(element11).text(imgs[img_number]["size"]);
-                    $(element12).text(imgs[img_number]["height"]);
-                    $(element13).text(imgs[img_number]["width"]);
-                    $(element14).val(imgs[img_number]["tag"]);
+                    $(element11).text(imgs[img_number]["size"]+ " MB");
+                    $(element12).text(imgs[img_number]["height"]+ " px");
+                    $(element13).text(imgs[img_number]["width"]+ " px");
+                    $(element14).text(imgs[img_number]["tag"]);
                     $(element15).val(imgs[img_number]["fake_name"]);
                     img_number++;
                     $("#img_" + i).css("display", "block")
@@ -286,7 +286,7 @@ var img_cnt = 0,
                         $(element11).text(imgs[img_number]["size"] + " MB");
                         $(element12).text(imgs[img_number]["height"] + " px");
                         $(element13).text(imgs[img_number]["width"] + " px");
-                        $(element14).val(imgs[img_number]["tag"]);
+                        $(element14).text(imgs[img_number]["tag"]);
                         $(element15).val(imgs[img_number]["fake_name"]);
                         img_number++;
                         $("#img_" + i).css("display", "block")

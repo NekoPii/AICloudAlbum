@@ -245,7 +245,7 @@ def ajax_pics(request, folder_fake_name):
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
-                   "height": p.height, "width": p.width, "upload_time": p.upload_time,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
                    "tag": all_tag.get(id=p.tag_id).tag}
             json_data["pics"].append(pic)
             cnt += 1
@@ -289,7 +289,7 @@ def ajax_folders(request):
             p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
             p.id = cnt
             pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
-                   "height": p.height, "width": p.width, "upload_time": p.upload_time,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
                    "tag": all_tag.get(id=p.tag_id).tag}
             json_data["pictures"].append(pic)
             cnt += 1
@@ -342,6 +342,7 @@ def mypics_folder(request):
             img.size = format(img.size, '.2f')
             img.path = os.path.join('/upload_imgs/compress_imgs/', img.fake_name + '.' + img.type)
             img.id = cnt
+            img.upload_time=img.upload_time.strftime('%Y-%m-%d')
             img.nowtag = all_tag.get(id=img.tag_id).tag
             ALL_imgs.append(img)
             cnt +=1
@@ -375,6 +376,7 @@ def mypics_pics(request, folder_fake_name):
                 p.size = format(p.size, '.2f')
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
+                p.upload_time = p.upload_time.strftime('%Y-%m-%d')
                 p.nowtag = all_tag.get(id=p.tag_id).tag
                 Pics.append(p)
                 cnt += 1
