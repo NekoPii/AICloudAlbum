@@ -1,11 +1,11 @@
 
 .btn-float {
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
+    width: 55px;
+    height: 55px;
+    line-height: 55px;
     display: inline-block;
     border: none;
-    font-size: 18px;
+    font-size: 1.5rem;
     color: #fff;
     text-align: center;
     position: relative;
@@ -13,12 +13,16 @@
     transition: 0.3s;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.11);
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.11);
 }
 
 .btn-float:hover {
     text-decoration: none;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(0, 0, 0, 0.13);
+}
+
+.btn-float i {
+    font-size: 1.5rem;
 }
 
 .btn-float:active, .btn-float:focus {
@@ -38,7 +42,7 @@
 }
 
 .green {
-    background: #00e676;
+    background: #00dbde;
 }
 
 .purple {
@@ -105,21 +109,21 @@
 
 .popbtn .float-btn-group {
     position: fixed;
-    left: 2rem;
+    left: 1.5rem;
     bottom: 2rem;
     z-index: 900;
 }
 
 .uploadbtn .float-btn-group {
     position: fixed;
-    left: 2rem;
-    bottom: 26rem;
+    left: 1.5rem;
+    bottom: 29rem;
     z-index: 900;
 }
 
 .folder_func1 .float-btn-group {
     position: fixed;
-    left: 2rem;
+    left: 1.5rem;
     bottom: 20rem;
     z-index: 900;
 }
@@ -192,7 +196,7 @@
 }
 
 .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(1) {
-    top: -20rem;
+    top: -22.5rem;
     -moz-transition: 0.1s 0.6s ease-out;
     -o-transition: 0.1s 0.6s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -202,7 +206,7 @@
 }
 
 .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(2) {
-    top: -16rem;
+    top: -18rem;
     -moz-transition: 0.1s 0.5s ease-out;
     -o-transition: 0.1s 0.5s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -212,7 +216,7 @@
 }
 
 .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(3) {
-    top: -12rem;
+    top: -13.5rem;
     -moz-transition: 0.1s 0.4s ease-out;
     -o-transition: 0.1s 0.4s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -222,7 +226,7 @@
 }
 
 .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(4) {
-    top: -8rem;
+    top: -9rem;
     -moz-transition: 0.1s 0.3s ease-out;
     -o-transition: 0.1s 0.3s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -232,7 +236,7 @@
 }
 
 .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(5) {
-    top: -4rem;
+    top: -4.5rem;
     -moz-transition: 0.1s 0.2s ease-out;
     -o-transition: 0.1s 0.2s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -240,7 +244,6 @@
     -webkit-transition: 0.1s 0.2s ease-out;
     transition: 0.1s 0.2s ease-out;
 }
-
 
 
 #folder-pop .popbtn .float-btn-group .btn-list .btn-float {
@@ -279,7 +282,7 @@
 }
 
 #folder-pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(1) {
-    top: -8rem;
+    top: -10rem;
     -moz-transition: 0.1s 0.3s ease-out;
     -o-transition: 0.1s 0.3s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -289,7 +292,7 @@
 }
 
 #folder-pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(2) {
-    top: -4rem;
+    top: -5rem;
     -moz-transition: 0.1s 0.2s ease-out;
     -o-transition: 0.1s 0.2s ease-out;
     -webkit-transition: 0.1s ease-out;
@@ -304,10 +307,6 @@
 
 @keyframes shake {
     10%, 90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-
-    20%, 80% {
-        transform: translate3d(2px, 0, 0);
+        transform: translate3d(0, -3px, 0);
     }
 }

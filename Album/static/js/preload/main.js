@@ -29,3 +29,11 @@ function getQueryString(name) {
     if (r != null) return unescape(r[2]);
     return null;
 }
+
+$("#change-color .bar").hover(function () {
+    // $(this).toggleClass('active');
+    $(this).find('.front').toggleClass('shine');
+});
+// $("#change-color .bar").click(function(){
+//     $(this).toggleClass('sleep');
+// });

@@ -3,7 +3,8 @@ body {
 }
 
 #myTab-tabs-above a {
-    color: #64b3f4;
+    color: rgb(133, 133, 133);
+    background-color: rgba(247,247,247,0.9);
     font-weight: bold;
     border: none;
     border-top: 3px solid transparent;
@@ -13,13 +14,18 @@ body {
 #myTab-tabs-above a:active,
 #myTab-tabs-above a:focus,
 #myTab-tabs-above a:hover {
+    color: #64b3f4;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 1px #888888;
     background-color: #64b3f4;
     color: white;
     border-top: 3px solid #64b3f4 !important;
 }
 
 #myTab-tabs-above .active {
-
+    color: #64b3f4;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 1px rgba(247, 247, 247, 0.9);
     border-top: 3px solid #64b3f4 !important;
 }
 
@@ -53,6 +59,13 @@ body {
 
 .scroll-to-top i {
     font-weight: 800
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    float: left;
+    padding-right: .5rem;
+    color: #64b3f4;
+    content: "/";
 }
 
 .zoomImage11 {
