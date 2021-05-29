@@ -31,6 +31,8 @@ import time
 
 global type_sever
 type_sever = typeSever()
+page_num_folder=5
+page_num_img=10
 zeroid = 1
 threshold = 1080
 face_process = 0
@@ -332,7 +334,7 @@ def mypics_folder(request):
             p.id = cnt
             Folders.append(p)
             cnt += 1
-            if cnt == 26:
+            if cnt > page_num_folder:
                 break
 
         cnt = 1
@@ -342,8 +344,8 @@ def mypics_folder(request):
             img.id = cnt
             img.nowtag = all_tag.get(id=img.tag_id).tag
             ALL_imgs.append(img)
-            cnt += 1
-            if cnt == 26:
+            cnt +=1
+            if cnt > page_num_img:
                 break
 
         count = folders.count()
@@ -376,7 +378,7 @@ def mypics_pics(request, folder_fake_name):
                 p.nowtag = all_tag.get(id=p.tag_id).tag
                 Pics.append(p)
                 cnt += 1
-                if cnt == 26:
+                if cnt > page_num_img:
                     break
             count = pics.count()
             capacity_now = round(now_folder[0].total_size, 2)

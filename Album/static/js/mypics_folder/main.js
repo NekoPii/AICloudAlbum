@@ -1,6 +1,7 @@
 var current_page = 1;
 var pics;
 var count;
+var page_num_img=10;
 (function ($) {
     "use strict";
     var now_folder_fake_name = $("#now_folder_fake_name").val()
@@ -18,7 +19,7 @@ var count;
     $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
         pics = data["pics"];
         count = data["count"];
-        if (count > 25) {
+        if (count > page_num_img) {
             $("#next").css("display", "inline-block");
         }
 
@@ -49,8 +50,8 @@ var count;
                     $("#next").css("display", "inline-block")
                     $("#back").css("display", "none")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = (current_page - 1) * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    var pic_number = (current_page - 1) * page_num_img + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
                     var element3 = "#img_" + i + " .element_2";
@@ -94,15 +95,15 @@ var count;
 
     $("#next")
         .click(function () {
-            if ((count - current_page * 25) > 0) {
+            if ((count - current_page * page_num_img) > 0) {
                 $("#next").css("display", "inline-block")
                 $("#back").css("display", "inline-block")
-                if (count - (1 + current_page) * 25 <= 0) {
+                if (count - (1 + current_page) * page_num_img <= 0) {
                     $("#next").css("display", "none")
                     $("#back").css("display", "inline-block")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = current_page * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    var pic_number = current_page * page_num_img + i;
 
                     if (pic_number <= count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
@@ -140,11 +141,13 @@ var count;
                         pic_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
+                        $("#img_model_"+i).addClass("choose_model_img");
 
                     } else {
 
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
+                        $("#img_model_"+i).removeClass("choose_model_img");
                     }
 
                 }
@@ -242,12 +245,12 @@ $("#change_model").click(function () {
         $(".popup-with-move-anim").css("display", "block");
         $(".download_select").prop("checked", false);
 
-        if ((count - current_page * 25) > 0 && current_page === 1) {
+        if ((count - current_page * page_num_img) > 0 && current_page === 1) {
             $("#next").css("display", "inline-block");
-        } else if ((count - current_page * 25) > 0 && current_page > 1) {
+        } else if ((count - current_page * page_num_img) > 0 && current_page > 1) {
             $("#next").css("display", "inline-block");
             $("#back").css("display", "inline-block");
-        } else if ((count - current_page * 25) <= 0 && current_page > 1) {
+        } else if ((count - current_page * page_num_img) <= 0 && current_page > 1) {
             $("#back").css("display", "inline-block");
         }
     }
@@ -290,7 +293,7 @@ $(".choose_model_img").click(function () {
 
 $("#select_all").click(function () {
     if ($(this).val() === "zero" && cnt < $(".choose_model_img").length) {
-        $(".download_select").prop("checked", true);
+        $(".choose_model_img .download_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $(".choose_model_img").length;
@@ -299,7 +302,7 @@ $("#select_all").click(function () {
         $(".select_all_text").css("display", "none");
         $(".cancel_text").css("display", "");
     } else if ($(this).val() === "all" && cnt === $(".choose_model_img").length) {
-        $(".download_select").prop("checked", false);
+        $(".choose_model_img .download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;

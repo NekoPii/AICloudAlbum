@@ -5,6 +5,8 @@ var folder_count;
 var imgs;
 var img_count;
 var currentPage = 0;
+var page_num_folder = 5;
+var page_num_img = 10;
 (function ($) {
     "use strict";
 
@@ -40,10 +42,9 @@ var currentPage = 0;
         folder_count = data["folder_count"];
         imgs = data["pictures"];
         img_count = data["img_count"];
-        if (currentPage && folder_count > 25) {
+        if (currentPage && folder_count > page_num_folder) {
             $("#folder_next").css("display", "inline-block");
-        }
-        else if(!currentPage && img_count > 25){
+        } else if (!currentPage && img_count > page_num_img) {
             $("#img_next").css("display", "inline-block");
         }
 
@@ -68,12 +69,12 @@ var currentPage = 0;
         $("#folder_back").css("display", "none");
         $("#img_next").css("display", "none");
         $("#img_back").css("display", "none");
-        if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+        if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs === 1) {
             $("#img_next").css("display", "inline-block");
-        } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+        } else if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs > 1) {
             $("#img_next").css("display", "inline-block");
             $("#img_back").css("display", "inline-block");
-        } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+        } else if ((img_count - current_page_imgs * page_num_img) <= 0 && current_page_imgs > 1) {
             $("#img_back").css("display", "inline-block");
         }
     })
@@ -84,12 +85,12 @@ var currentPage = 0;
         $("#img_back").css("display", "none");
         $("#folder_next").css("display", "none");
         $("#folder_back").css("display", "none");
-        if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+        if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
             $("#folder_next").css("display", "inline-block");
-        } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+        } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
             $("#folder_next").css("display", "inline-block");
             $("#folder_back").css("display", "inline-block");
-        } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+        } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
             $("#folder_back").css("display", "inline-block");
         }
     })
@@ -104,8 +105,8 @@ var currentPage = 0;
                     $("#folder_next").css("display", "inline-block")
                     $("#folder_back").css("display", "none")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = (current_page_folder - 1) * 25 + i;
+                for (var i = 1; i <= page_num_folder; i++) {
+                    var pic_number = (current_page_folder - 1) * page_num_folder + i;
                     var element1 = "#folder_" + i + " .popup-with-move-anim";
                     var element2 = "#folder_" + i + " .element_1";
                     var element3 = "#folder_" + i + " .element_2";
@@ -126,6 +127,7 @@ var currentPage = 0;
 
                     pic_number++;
                     $("#folder_" + i).css("display", "block")
+                    $("#folder_model_"+i).addClass("choose_model_img");
 
                 }
 
@@ -137,15 +139,15 @@ var currentPage = 0;
     $("#folder_next")
         .click(function () {
             console.log("success");
-            if ((folder_count - current_page_folder * 25) > 0) {
+            if ((folder_count - current_page_folder * page_num_folder) > 0) {
                 $("#folder_next").css("display", "inline-block")
                 $("#folder_back").css("display", "inline-block")
                 console.log("success");
-                if (folder_count - (1 + current_page_folder) * 25 <= 0) {
+                if (folder_count - (1 + current_page_folder) * page_num_folder <= 0) {
                     $("#folder_next").css("display", "none")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = current_page_folder * 25 + i;
+                for (var i = 1; i <= page_num_folder; i++) {
+                    var pic_number = current_page_folder * page_num_folder + i;
 
                     if (pic_number <= folder_count) {
                         var element1 = "#folder_" + i + " .popup-with-move-anim";
@@ -167,10 +169,11 @@ var currentPage = 0;
                         $(element7).val(folders[pic_number]["fake_name"]);
 
                         pic_number++;
-                        $("#folder_" + i).css("display", "block")
-
+                        $("#folder_" + i).css("display", "block");
+                        $("#folder_model_"+i).addClass("choose_model_img");
                     } else {
-                        $("#folder_" + i).css("display", "none")
+                        $("#folder_model_"+i).removeClass("choose_model_img");
+                        $("#folder_" + i).css("display", "none");
                     }
 
                 }
@@ -189,8 +192,8 @@ var currentPage = 0;
                     $("#img_next").css("display", "inline-block")
                     $("#img_back").css("display", "none")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var img_number = (current_page_imgs - 1) * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    var img_number = (current_page_imgs - 1) * page_num_img + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
                     var element3 = "#img_" + i + " .element_2";
@@ -227,6 +230,7 @@ var currentPage = 0;
                     img_number++;
                     $("#img_" + i).css("display", "block")
                     $("#box_" + i).css("display", "block")
+                    $("#img_model_"+i).addClass("choose_model_img");
 
                 }
             }
@@ -234,15 +238,15 @@ var currentPage = 0;
 
     $("#img_next")
         .click(function () {
-            if ((img_count - current_page_imgs * 25) > 0) {
+            if ((img_count - current_page_imgs * page_num_img) > 0) {
                 $("#img_next").css("display", "inline-block")
                 $("#img_back").css("display", "inline-block")
-                if (img_count - (1 + current_page_imgs) * 25 <= 0) {
+                if (img_count - (1 + current_page_imgs) * page_num_img <= 0) {
                     $("#img_next").css("display", "none")
                     $("#img_back").css("display", "inline-block")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var img_number = current_page_imgs * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    var img_number = current_page_imgs * page_num_img + i;
 
                     if (img_number <= img_count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
@@ -280,9 +284,10 @@ var currentPage = 0;
                         img_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
+                        $("#img_model_"+i).addClass("choose_model_img");
 
                     } else {
-
+                        $("#img_model_"+i).removeClass("choose_model_img");
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
                     }
@@ -405,21 +410,21 @@ $("#imgs_change_model").click(function () {
         $("#imageFewForm .popup-with-move-anim").css("display", "block");
 
         if (currentPage) {
-            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+            if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
                 $("#folder_next").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+            } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
                 $("#folder_next").css("display", "inline-block");
                 $("#folder_back").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+            } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
                 $("#folder_back").css("display", "inline-block");
             }
         } else {
-            if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+            if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs === 1) {
                 $("#img_next").css("display", "inline-block");
-            } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+            } else if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs > 1) {
                 $("#img_next").css("display", "inline-block");
                 $("#img_back").css("display", "inline-block");
-            } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+            } else if ((img_count - current_page_imgs * page_num_img) <= 0 && current_page_imgs > 1) {
                 $("#img_back").css("display", "inline-block");
             }
         }
@@ -463,7 +468,7 @@ $("#imageFewForm .choose_model_img").click(function () {
 
 $("#imgs_select_all").click(function () {
     if ($(this).val() === "zero" && cnt < $("#imageFewForm .choose_model_img").length) {
-        $("#imageFewForm .img_select").prop("checked", true);
+        $("#imageFewForm .choose_model_img .img_select").prop("checked", true);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 1);
         $("#imageFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $("#imageFewForm .choose_model_img").length;
@@ -472,7 +477,7 @@ $("#imgs_select_all").click(function () {
         $("#imgs_select_all .select_all_text").css("display", "none");
         $("#imgs_select_all .cancel_text").css("display", "");
     } else if ($(this).val() === "all" && cnt === $("#imageFewForm .choose_model_img").length) {
-        $("#imageFewForm .img_select").prop("checked", false);
+        $("#imageFewForm .choose_model_img .img_select").prop("checked", false);
         $("#imageFewForm .choose_zoomImage11").css("opacity", 0.5);
         $("#imageFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
@@ -519,21 +524,21 @@ $("#folders_change_model").click(function () {
         $("#folderFewForm .popup-with-move-anim").css("display", "block");
 
         if (currentPage) {
-            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
+            if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
                 $("#folder_next").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * 25) > 0 && current_page_folder > 1) {
+            } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
                 $("#folder_next").css("display", "inline-block");
                 $("#folder_back").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * 25) <= 0 && current_page_folder > 1) {
+            } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
                 $("#folder_back").css("display", "inline-block");
             }
         } else {
-            if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs === 1) {
+            if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs === 1) {
                 $("#img_next").css("display", "inline-block");
-            } else if ((img_count - current_page_imgs * 25) > 0 && current_page_imgs > 1) {
+            } else if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs > 1) {
                 $("#img_next").css("display", "inline-block");
                 $("#img_back").css("display", "inline-block");
-            } else if ((img_count - current_page_imgs * 25) <= 0 && current_page_imgs > 1) {
+            } else if ((img_count - current_page_imgs * page_num_img) <= 0 && current_page_imgs > 1) {
                 $("#img_back").css("display", "inline-block");
             }
         }
@@ -578,7 +583,7 @@ $("#folderFewForm .choose_model_img").click(function () {
 
 $("#folders_select_all").click(function () {
     if ($(this).val() === "zero" && cnt < $("#folderFewForm .choose_model_img").length) {
-        $("#folderFewForm .folder_select").prop("checked", true);
+        $("#folderFewForm .choose_model_img .folder_select").prop("checked", true);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 1);
         $("#folderFewForm .choose_model_img").css("border", "0.25rem solid #00C9FF");
         cnt = $("#folderFewForm .choose_model_img").length;
@@ -587,7 +592,7 @@ $("#folders_select_all").click(function () {
         $("#folders_select_all .select_all_text").css("display", "none");
         $("#folders_select_all .cancel_text").css("display", "");
     } else if ($(this).val() === "all" && cnt === $("#folderFewForm .choose_model_img").length) {
-        $("#folderFewForm .folder_select").prop("checked", false);
+        $("#folderFewForm .choose_model_img .folder_select").prop("checked", false);
         $("#folderFewForm .choose_zoomImage11").css("opacity", 0.5);
         $("#folderFewForm .choose_model_img").css("border", "0.25rem dashed #d7d2cc");
         cnt = 0;
