@@ -70,6 +70,8 @@ var img_cnt = 0,
         $("#folder_back").css("display", "none");
         $("#img_next").css("display", "none");
         $("#img_back").css("display", "none");
+        $("#image-pop").css("display", "");
+        $("#folder-pop").css("display", "none");
         if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs === 1) {
             $("#img_next").css("display", "inline-block");
         } else if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs > 1) {
