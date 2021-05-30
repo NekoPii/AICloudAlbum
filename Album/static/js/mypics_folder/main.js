@@ -49,6 +49,7 @@ var img_cnt = 0;
                     $("#back").css("display", "none")
                 }
                 for (var i = 1; i <= page_num_img; i++) {
+                    //toastr.info("change !")
                     var pic_number = (current_page - 1) * page_num_img + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
@@ -78,9 +79,9 @@ var img_cnt = 0;
                     $(element8).attr("alt", pics[pic_number]["name"]);
                     $(element9).text(pics[pic_number]["name"]);
                     $(element10).text(pics[pic_number]["upload_time"]);
-                    $(element11).text(imgs[img_number]["size"]+ " MB");
-                    $(element12).text(imgs[img_number]["height"]+ " px");
-                    $(element13).text(imgs[img_number]["width"]+ " px");
+                    $(element11).text(pics[pic_number]["size"]+ " MB");
+                    $(element12).text(pics[pic_number]["height"]+ " px");
+                    $(element13).text(pics[pic_number]["width"]+ " px");
                     $(element14).text(pics[pic_number]["tag"]);
                     $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
