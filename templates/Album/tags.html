@@ -14,27 +14,33 @@
 {% endblock %}
 
 {% block main %}
-    <!-- works -->
-    <div id="works" class=" clearfix grid">
-        {% for tag in ALL_tag_message %}
-            <figure class="effect-oscar  wowload fadeIn">
-                <img src={{ tag.img_path }} alt="img01"/>
-                <figcaption>
-                    <h2>{{ tag.tag_name_h }}</h2>
-                    <p><b>{{ tag.tag_pic_count }}</b> Wonderful {{ tag.tag_name_t }} Images in Your Collection<br>
-                        <a href={{ tag.href }} title={{ tag.tag_name_t }} data-gallery>View more</a></p>
-                </figcaption>
-            </figure>
-        {% endfor %}
-        <figure class="effect-oscar  wowload fadeIn">
-            <img src='/static/image/tags/more.jpg'  alt="img01"/>
-            <figcaption>
-                <h2>More</h2>
-                <p>More Tags will be Added Later<br>
-            </figcaption>
-        </figure>
-    </div>
-    <!-- works -->
+<!-- works -->
+<div id="works" class=" clearfix grid">
+    {% for tag in ALL_tag_message %}
+    <figure class="effect-oscar  wowload fadeIn">
+        <img src={{ tag.img_path }} alt="img01"/>
+        <figcaption>
+            <h2>{{ tag.tag_name_h }}</h2>
+            <p><b>{{ tag.tag_pic_count }}</b> Wonderful {{ tag.tag_name_t }} Images in Your Collection<br>
+                {% if tag.tag_pic_count %}
+                    <a href={{ tag.href }} title={{ tag.tag_name_t }} data-gallery>View more</a></p>
+                {% endif %}
+                {% if  tag.is_none %}
+                    <a href="/mypics/" title="mypics" data-gallery>Upload Images | Get Tags</a></p>
+                {% endif %}
+
+        </figcaption>
+    </figure>
+    {% endfor %}
+    <figure class="effect-oscar  wowload fadeIn">
+        <img src='/static/image/tags/more.jpg' alt="img01"/>
+        <figcaption>
+            <h2>More</h2>
+            <p>More Tags will be Added Later<br>
+        </figcaption>
+    </figure>
+</div>
+<!-- works -->
 {% endblock %}
 
 {% block js %}

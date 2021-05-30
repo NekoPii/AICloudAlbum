@@ -230,6 +230,36 @@ def ajax_val(request):
         return JsonResponse(json_data)
 
 
+def ajax_pics_tag(request, tag):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        tag_id = models.Tag.objects.get(tag=tag).id
+        pics = models.Picture.objects.filter(user_id=user.phone,tag=tag_id)
+        all_tag = models.Tag.objects.all()
+        json_data = {}
+        json_data["pics"] = []
+        cnt = 1
+        for p in pics:
+            p.size = format(p.size, '.2f')
+            p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+            p.id = cnt
+            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
+                   "tag": all_tag.get(id=p.tag_id).tag}
+            json_data["pics"].append(pic)
+            cnt += 1
+        count = pics.count()
+        json_data["count"] = count
+        json_data["status"] = 1
+
+        return JsonResponse(json_data)
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+
 def ajax_pics(request, folder_fake_name):
     if request.is_ajax():
         phone = request.session['phone']
@@ -370,16 +400,16 @@ def mypics_pics(request, folder_fake_name):
                 pics = models.Picture.objects.filter(user_id=phone)
             else:
                 pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
-            Pics = []
             cnt = 1
+            Pics=[]
             for p in pics:
                 p.size = format(p.size, '.2f')
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
                 p.id = cnt
                 p.upload_time = p.upload_time.strftime('%Y-%m-%d')
                 p.nowtag = all_tag.get(id=p.tag_id).tag
-                Pics.append(p)
                 cnt += 1
+                Pics.append(p)
                 if cnt > page_num_img:
                     break
             count = pics.count()
@@ -401,7 +431,7 @@ def tags(request):
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         all_tag = models.Tag.objects.all()
-        all_pic = models.Picture.objects.all()
+        pic = models.Picture.objects.filter(user_id=phone)
         ALL_tag_message = []
         Tags = []
         path = os.path.join(os.path.dirname(__file__), "static/txt/tags.txt")
@@ -413,13 +443,17 @@ def tags(request):
             Tags.append(str1[:-1])
         for tag in Tags:
             pic_tag_id = all_tag.get(tag=tag).id
-            pic_tag = all_pic.filter(tag_id=pic_tag_id)
+            pic_tag = pic.filter(tag_id=pic_tag_id)
             tag_message = {}
             tag_message["img_path"] = os.path.join('/static/image/tags/', tag + ".jpg")
             tag_message["href"] = "/tags/" + tag + "/"
             tag_message["tag_pic_count"] = pic_tag.count()
             tag_message["tag_name_h"] = tag.upper()
             tag_message["tag_name_t"] = tag.title()
+            if pic_tag.count()==0:
+                tag_message["is_none"] = True
+            else:
+                tag_message["is_none"] = False
             ALL_tag_message.append(tag_message)
 
         return render(request, "Album/tags.html", locals())
@@ -429,8 +463,31 @@ def tags(request):
 
 def tags_pics(request, tag):
     if request.session.get("is_login"):
+        tag_t=tag.title()
+        name = request.session['name']
+        phone = request.session['phone']
+        all_tag = models.Tag.objects.all()
+        user = models.User.objects.get(phone=phone)
+        tag_id = models.Tag.objects.get(tag=tag).id
+        pics = models.Picture.objects.filter(user_id=phone, tag=tag_id)
 
-        return render(request, "Album/tags.html", locals())
+        if pics:
+            cnt = 1
+            Pics=[]
+            for p in pics:
+                p.size = format(p.size, '.2f')
+                p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+                p.id = cnt
+                p.upload_time = p.upload_time.strftime('%Y-%m-%d')
+                p.nowtag = all_tag.get(id=p.tag_id).tag
+                cnt += 1
+                Pics.append(p)
+                if cnt > page_num_img:
+                    break
+            count = pics.count()
+            return render(request, "Album/mypic_tag.html", locals())
+        else:
+            return render(request, "Album/tags.html", locals())
     else:
         return redirect("/login/")
 
