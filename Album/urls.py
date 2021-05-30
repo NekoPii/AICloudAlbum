@@ -15,6 +15,7 @@ urlpatterns = [
     path("upload_upload_asyn/<str:folder_fake_name>/", views.upload_upload_asyn, name="upload_upload_asyn"),  # 异步上传
     path("mypics/", views.mypics_folder, name="mypics"),
     path("tags/", views.tags, name="tags"),
+    path("tags/<str:tag>/", views.tags_pics, name="tags_pics"),
     path("mypics/<str:folder_fake_name>/", views.mypics_pics, name="mypics_folder"),
     path("ajax_pics/<str:folder_fake_name>/", views.ajax_pics, name="ajax_pics"),  # 文件夹图片信息Ajax获取
     path("ajax_folders/", views.ajax_folders, name="ajax_folders"),  # 主页文件夹信息Ajax获取

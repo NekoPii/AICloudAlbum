@@ -31,8 +31,8 @@ import time
 
 global type_sever
 type_sever = typeSever()
-page_num_folder=5
-page_num_img=10
+page_num_folder = 5
+page_num_img = 10
 zeroid = 1
 threshold = 1080
 face_process = 0
@@ -342,10 +342,10 @@ def mypics_folder(request):
             img.size = format(img.size, '.2f')
             img.path = os.path.join('/upload_imgs/compress_imgs/', img.fake_name + '.' + img.type)
             img.id = cnt
-            img.upload_time=img.upload_time.strftime('%Y-%m-%d')
+            img.upload_time = img.upload_time.strftime('%Y-%m-%d')
             img.nowtag = all_tag.get(id=img.tag_id).tag
             ALL_imgs.append(img)
-            cnt +=1
+            cnt += 1
             if cnt > page_num_img:
                 break
 
@@ -397,6 +397,39 @@ def mypics_pics(request, folder_fake_name):
 
 def tags(request):
     if request.session.get("is_login"):
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        all_tag = models.Tag.objects.all()
+        all_pic = models.Picture.objects.all()
+        ALL_tag_message = []
+        Tags = []
+        path = os.path.join(os.path.dirname(__file__), "static/txt/tags.txt")
+        f0 = open(path, 'r')
+        while True:
+            str1 = f0.readline()
+            if not str1:
+                break
+            Tags.append(str1[:-1])
+        for tag in Tags:
+            pic_tag_id = all_tag.get(tag=tag).id
+            pic_tag = all_pic.filter(tag_id=pic_tag_id)
+            tag_message = {}
+            tag_message["img_path"] = os.path.join('/static/image/tags/', tag + ".jpg")
+            tag_message["href"] = "/tags/" + tag + "/"
+            tag_message["tag_pic_count"] = pic_tag.count()
+            tag_message["tag_name_h"] = tag.upper()
+            tag_message["tag_name_t"] = tag.title()
+            ALL_tag_message.append(tag_message)
+
+        return render(request, "Album/tags.html", locals())
+    else:
+        return redirect("/login/")
+
+
+def tags_pics(request, tag):
+    if request.session.get("is_login"):
+
         return render(request, "Album/tags.html", locals())
     else:
         return redirect("/login/")
