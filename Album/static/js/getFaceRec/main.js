@@ -33,7 +33,7 @@ $("#getFewFaceRec").click(function () {
                         $("#face-process").modal("hide");
                     }, 500);
                     setTimeout(function () {
-                        $("#face_process_bar").css("width", "0%").text("0%");
+                        $("#face_process_bar").css("width", "0.1%").text("0.1%");
                     }, 600);
                     //$("#faceprocess_modal_close").click();
                 }
@@ -147,7 +147,7 @@ $("#getFewFaceRec").click(function () {
                 toastr.error("Error , Please Try again !")
                 clearInterval(face_process);
                 $("#face-process").modal("hide");
-                $("#face_process_bar").css("width", "0%").text("0%");
+                $("#face_process_bar").css("width", "0.1%").text("0.1%");
                 $("#getFewFaceRec").attr("disabled", false)
             }
         });
@@ -168,7 +168,7 @@ $(".getFaceRec").click(function () {
                     $("#face-process").modal("hide");
                 }, 500);
                 setTimeout(function () {
-                    $("#face_process_bar").css("width", "0%").text("0%");
+                    $("#face_process_bar").css("width", "0.1%").text("0.1%");
                 }, 600);
             }
         })
@@ -274,7 +274,7 @@ $(".getFaceRec").click(function () {
             toastr.error("Error , Please Try again !")
             clearInterval(face_process);
             $("#face-process").modal("hide");
-            $("#face_process_bar").css("width", "0%").text("0%");
+            $("#face_process_bar").css("width", "0.1%").text("0.1%");
             $(".getFaceRec").removeAttr("disabled");
         }
     });

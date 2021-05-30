@@ -35,10 +35,10 @@ page_num_folder = 5
 page_num_img = 10
 zeroid = 1
 threshold = 1080
-face_process = 0
-tag_process = 0
-delete_img_process = 0
-delete_folder_process = 0
+face_process = 0.001
+tag_process = 0.001
+delete_img_process = 0.001
+delete_folder_process = 0.001
 eps = 1e-5
 
 # Create your views here.
@@ -79,6 +79,8 @@ def getFreeDiskSize():  # MB
 
 def show_face_process(request):
     global face_process
+    if face_process > 1:
+        face_process = 1
     if abs(face_process - 1) < eps:
         face_process = 1
     now_face_process = str(format(face_process * 100, '.2f')) + "%"
@@ -88,6 +90,8 @@ def show_face_process(request):
 
 def show_tag_process(request):
     global tag_process
+    if tag_process > 1:
+        tag_process = 1
     if abs(tag_process - 1) < eps:
         tag_process = 1
     now_tag_process = str(format(tag_process * 100, '.2f')) + "%"
@@ -97,6 +101,8 @@ def show_tag_process(request):
 
 def show_delete_img_process(request):
     global delete_img_process
+    if delete_img_process > 1:
+        delete_img_process = 1
     if abs(delete_img_process - 1) < eps:
         delete_img_process = 1
     now_delete_img_process = str(format(delete_img_process * 100, '.2f')) + "%"
@@ -106,6 +112,8 @@ def show_delete_img_process(request):
 
 def show_delete_folder_process(request):
     global delete_folder_process
+    if delete_folder_process > 1:
+        delete_folder_process = 1
     if abs(delete_folder_process - 1) < eps:
         delete_folder_process = 1
     now_delete_folder_process = str(format(delete_folder_process * 100, '.2f')) + "%"
@@ -382,6 +390,10 @@ def mypics_folder(request):
         count = folders.count()
         capacity_now = format(user.now_capacity, '.2f')
         ALL_folderfakename = ALL_folder.fake_name
+        if not ALL_imgs:
+            ALL_imgs = None
+        if not Folders:
+            Folders = None
 
         return render(request, "Album/mypics.html", locals())
     else:
@@ -417,6 +429,9 @@ def mypics_pics(request, folder_fake_name):
 
             now_folder_name = now_folder[0].name
             now_folder_fake_name = now_folder[0].fake_name
+
+            if not Pics:
+                Pics = None
 
             return render(request, "Album/mypics_folder.html", locals())
         else:
@@ -478,9 +493,9 @@ def tags_pics(request, tag):
             if cnt > page_num_img:
                 break
         count = pics.count()
-        is_null =False
-        if count==0:
-            is_null=True
+        is_null = False
+        if count == 0:
+            is_null = True
         capacity_now = format(user.now_capacity, '.2f')
         return render(request, "Album/mypic_tag.html", locals())
 
@@ -843,7 +858,7 @@ def delete_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
             global delete_img_process
-            delete_img_process = 0
+            delete_img_process = 0.001
             phone = request.session["phone"]
 
             fake_name = request.POST["img_name"]
@@ -973,7 +988,7 @@ def delete_select_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
             global delete_img_process
-            delete_img_process = 0
+            delete_img_process = 0.001
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("img_name")
@@ -1120,7 +1135,7 @@ def delete_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
             global delete_folder_process
-            delete_folder_process = 0
+            delete_folder_process = 0.001
 
             phone = request.session["phone"]
 
@@ -1192,7 +1207,7 @@ def delete_select_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
             global delete_folder_process
-            delete_folder_process = 0
+            delete_folder_process = 0.001
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("folder_name")
@@ -1374,7 +1389,7 @@ def getTag(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
             global tag_process
-            tag_process = 0
+            tag_process = 0.001
 
             phone = request.session["phone"]
 
@@ -1384,7 +1399,7 @@ def getTag(request, folder_fake_name):
 
             now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
-            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id)
+            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id, tag_id=NoneTag.id)
 
             all_tag = models.Tag.objects.all()
 
@@ -1412,6 +1427,8 @@ def getTag(request, folder_fake_name):
                 except:
                     pass
                     tag_process = (index + 1) / total_cnt
+
+            tag_process = 1
 
             res["getTag_status"] = "true"
             res["getTag_cnt"] = cnt
@@ -1486,6 +1503,8 @@ def faceMainPage(request):
 
         count = valid_cnt
         capacity_now = format(user.now_capacity, '.2f')
+        if not Faces:
+            Faces = None
 
         return render(request, "Album/face.html", locals())
     else:
@@ -1501,6 +1520,7 @@ def faceDetailPage(request, face_cover_fake_name):
         FaceDetails = []
         cnt = 1
         total_cnt = 0
+        all_tag=models.Tag.objects.all()
         now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
         if now_Face:
             now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
@@ -1511,6 +1531,7 @@ def faceDetailPage(request, face_cover_fake_name):
                     now_img.path = os.path.join('/upload_imgs/compress_imgs/',
                                                 now_img.fake_name + '.' + now_img.type)
                     now_img.id = cnt
+                    now_img.nowtag = all_tag.get(id=now_img.tag_id).tag
                     FaceDetails.append(now_img)
                     total_cnt += 1
                 else:
@@ -1535,7 +1556,7 @@ def get_one_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
             global face_process
-            face_process = 0
+            face_process = 0.001
             phone = request.session["phone"]
             now_imgs_fakename = request.POST["img_name"]
             nowUser = models.User.objects.get(phone=phone)
@@ -1548,9 +1569,11 @@ def get_one_faceDetect(request):
                     return HttpResponse(json.dumps(res))
                 else:
                     try:
+                        face_process = 0.33
                         pic_path = os.path.join(store_dir, now_imgs_fakename) + "." + pic.type
                         isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
                                                                                                           nowUser.phone)
+
                         if isFace:
                             res["isnotFace"] = "false"
                             if recognized_faces:
@@ -1590,7 +1613,7 @@ def get_select_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
             global face_process
-            face_process = 0
+            face_process = 0.001
             phone = request.session["phone"]
             select_imgs_fakename = request.POST.getlist("img_name")
             select_cnt = len(select_imgs_fakename)
@@ -1600,6 +1623,7 @@ def get_select_faceDetect(request):
             cnt = 0
             if select_imgs_fakename:
                 for img_index, img_fakename in enumerate(select_imgs_fakename):
+                    face_process = (img_index + 0.15) / select_cnt
                     pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
                         face_process = (img_index + 1) / select_cnt
@@ -1607,6 +1631,7 @@ def get_select_faceDetect(request):
                     else:
                         isnotFace_cnt += 1
                         try:
+                            face_process = (img_index + 0.33) / select_cnt
                             pic_path = os.path.join(store_dir, img_fakename) + "." + pic.type
                             isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
                                                                                                               nowUser.phone)

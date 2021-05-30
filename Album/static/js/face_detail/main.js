@@ -1,6 +1,8 @@
 var current_page = 1;
 var pics;
-var pics_count;
+var count;
+var page_num_img=10;
+var img_cnt = 0;
 (function ($) {
     "use strict";
     var now_folder_fake_name = $("#now_folder_fake_name").val()
@@ -8,20 +10,19 @@ var pics_count;
 
     $("#change_model").val("select");
     $(".choose_model_img").css("display", "none");
-    $("#download_few").css("display", "none");
-    $("#select_all").css("display", "none");
     $(".download_select").prop("checked", false);
+    $("#select_img_cnt").val("0");
 
 
-    /*
     $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
         pics = data["pics"];
-        pics_count = data["count"];
-        if (pics_count <= 25) {
-            $("#next").css("display", "none");
+        count = data["count"];
+        if (count > page_num_img) {
+            $("#next").css("display", "inline-block");
         }
+
+
     });
-     */
 
     $(window).bind('scroll', function () {
         if ($(window).scrollTop() <= 300) {
@@ -38,7 +39,6 @@ var pics_count;
 
 
     $("#back")
-        .css("display", "none")
         .click(function () {
             if (current_page > 1) {
                 current_page--;
@@ -48,8 +48,9 @@ var pics_count;
                     $("#next").css("display", "inline-block")
                     $("#back").css("display", "none")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = (current_page - 1) * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    //toastr.info("change !")
+                    var pic_number = (current_page - 1) * page_num_img + i;
                     var element1 = "#img_" + i + " .popup-with-move-anim";
                     var element2 = "#img_" + i + " .element_1";
                     var element3 = "#img_" + i + " .element_2";
@@ -78,10 +79,10 @@ var pics_count;
                     $(element8).attr("alt", pics[pic_number]["name"]);
                     $(element9).text(pics[pic_number]["name"]);
                     $(element10).text(pics[pic_number]["upload_time"]);
-                    $(element11).text(pics[pic_number]["size"]);
-                    $(element12).text(pics[pic_number]["height"]);
-                    $(element13).text(pics[pic_number]["width"]);
-                    $(element14).val(pics[pic_number]["tag"]);
+                    $(element11).text(pics[pic_number]["size"]+ " MB");
+                    $(element12).text(pics[pic_number]["height"]+ " px");
+                    $(element13).text(pics[pic_number]["width"]+ " px");
+                    $(element14).text(pics[pic_number]["tag"]);
                     $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
                     $("#img_" + i).css("display", "block")
@@ -93,17 +94,17 @@ var pics_count;
 
     $("#next")
         .click(function () {
-            if ((pics_count - current_page * 25) > 0) {
+            if ((count - current_page * page_num_img) > 0) {
                 $("#next").css("display", "inline-block")
                 $("#back").css("display", "inline-block")
-                if (pics_count - (1 + current_page) * 25 <= 0) {
+                if (count - (1 + current_page) * page_num_img <= 0) {
                     $("#next").css("display", "none")
                     $("#back").css("display", "inline-block")
                 }
-                for (var i = 1; i <= 25; i++) {
-                    var pic_number = current_page * 25 + i;
+                for (var i = 1; i <= page_num_img; i++) {
+                    var pic_number = current_page * page_num_img + i;
 
-                    if (pic_number <= pics_count) {
+                    if (pic_number <= count) {
                         var element1 = "#img_" + i + " .popup-with-move-anim";
                         var element2 = "#img_" + i + " .element_1";
                         var element3 = "#img_" + i + " .element_2";
@@ -134,16 +135,18 @@ var pics_count;
                         $(element11).text(pics[pic_number]["size"] + " MB");
                         $(element12).text(pics[pic_number]["height"] + " px");
                         $(element13).text(pics[pic_number]["width"] + " px");
-                        $(element14).val(pics[pic_number]["tag"]);
+                        $(element14).text(pics[pic_number]["tag"]);
                         $(element15).val(pics[pic_number]["fake_name"]);
                         pic_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
+                        $("#img_model_"+i).addClass("choose_model_img");
 
                     } else {
 
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
+                        $("#img_model_"+i).removeClass("choose_model_img");
                     }
 
                 }
@@ -171,7 +174,7 @@ var pics_count;
                             countNum: countTo
                         },
                         {
-                            duration: 2000,
+                            duration: 1000,
                             easing: 'swing',
                             step: function () {
                                 $this.text(Math.floor(this.countNum));
@@ -205,39 +208,46 @@ var pics_count;
 
 $("#change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
-        $(".upload_btn").css("display", "none");
-        $("#next").css("display", "none");
-        $("#back").css("display", "none");
-        $(this).val("view");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(".upload_btn").fadeOut(500);
+        $(this).val("view").attr("title", "return View");
+        $("#select_all").val("zero").attr("title", "Select All");
         $(".select_text").css("display", "none");
         $(".view_text").css("display", "");
-        $("#download_few").css("display", "flex")
-        $("#select_all").css("display", "flex")
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
         $(".popup-with-move-anim").css("display", "none");
         $(".choose_model_img").css("display", "block").css("border", "0.25rem dashed #d7d2cc");
         $(".download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
-        cnt = 0;
-        $("#select_img_cnt").val(cnt.toString());
-    } else if ($(this).val() === "view") {// 退出选择
-        $(".upload_btn").css("display", "flex");
-        if (current_page === 1) {
-            $("#next").css("display", "inline-block");
-        } else if ((pics_count - current_page * 25) < 0) {
-            $("#back").css("display", "inline-block");
-        } else {
-            $("#next").css("display", "inline-block");
-            $("#back").css("display", "inline-block");
-        }
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $("#next").css("display", "none");
+        $("#back").css("display", "none");
 
-        $(this).val("select");
+    } else if ($(this).val() === "view") {// 退出选择
+        $(".upload_btn").fadeIn(500);
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $(this).val("select").attr("title", "Select");
         $(".select_text").css("display", "");
         $(".view_text").css("display", "none");
-        $("#download_few").css("display", "none")
-        $("#select_all").css("display", "none")
+        $("#select_all").val("zero").attr("title", "Select All");
+        $(".select_all_text").css("display", "");
+        $(".cancel_text").css("display", "none");
         $(".choose_model_img").css("display", "none");
         $(".popup-with-move-anim").css("display", "block");
-        cnt = 0;
+        $(".download_select").prop("checked", false);
+
+        if ((count - current_page * page_num_img) > 0 && current_page === 1) {
+            $("#next").css("display", "inline-block");
+        } else if ((count - current_page * page_num_img) > 0 && current_page > 1) {
+            $("#next").css("display", "inline-block");
+            $("#back").css("display", "inline-block");
+        } else if ((count - current_page * page_num_img) <= 0 && current_page > 1) {
+            $("#back").css("display", "inline-block");
+        }
     }
 });
 
@@ -247,14 +257,16 @@ $(".choose_model_img").click(function () {
         $(this).find(".download_select").prop("checked", false);
         $(this).find(".choose_zoomImage11").css("opacity", 0.5);
         $(this).css("border", "0.25rem dashed #d7d2cc")
-        cnt -= 1;
-        $("#select_img_cnt").val(cnt.toString());
-        if (cnt < $(this).length) {
-            $("#select_all").val("zero");
+        img_cnt -= 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $(".choose_model_img").length) {
+            $("#select_all").val("zero").attr("title", "Select All");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt == $(this).length) {
-            $("#select_all").val("all");
+        } else if (img_cnt === $(".choose_model_img").length) {
+            $("#select_all").val("all").attr("title", "Cnacel");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
         }
@@ -262,14 +274,16 @@ $(".choose_model_img").click(function () {
         $(this).find(".download_select").prop("checked", true);
         $(this).find(".choose_zoomImage11").css("opacity", 1);
         $(this).css("border", "0.25rem solid #00C9FF");
-        cnt += 1;
-        $("#select_img_cnt").val(cnt.toString());
-        if (cnt < $(".choose_model_img").length) {
-            $("#select_all").val("zero");
+        img_cnt += 1;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        if (img_cnt < $(".choose_model_img").length) {
+            $("#select_all").val("zero").attr("title", "Select All");
             $(".select_all_text").css("display", "");
             $(".cancel_text").css("display", "none");
-        } else if (cnt == $(".choose_model_img").length) {
-            $("#select_all").val("all");
+        } else if (img_cnt === $(".choose_model_img").length) {
+            $("#select_all").val("all").attr("title", "Cancel");
             $(".select_all_text").css("display", "none");
             $(".cancel_text").css("display", "");
         }
@@ -277,22 +291,26 @@ $(".choose_model_img").click(function () {
 });
 
 $("#select_all").click(function () {
-    if ($(this).val() == "zero" && cnt < $(".choose_model_img").length) {
-        $(".download_select").prop("checked", true);
+    if ($(this).val() === "zero" && img_cnt < $(".choose_model_img").length) {
+        $(".choose_model_img .download_select").prop("checked", true);
         $(".choose_zoomImage11").css("opacity", 1);
         $(".choose_model_img").css("border", "0.25rem solid #00C9FF");
-        cnt = $(".choose_model_img").length;
-        $("#select_img_cnt").val(cnt.toString());
-        $(this).val("all");
+        img_cnt = $(".choose_model_img").length;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("all").attr("title", "Cancel");
         $(".select_all_text").css("display", "none");
         $(".cancel_text").css("display", "");
-    } else if ($(this).val() == "all" && cnt == $(".choose_model_img").length) {
-        $(".download_select").prop("checked", false);
+    } else if ($(this).val() === "all" && img_cnt === $(".choose_model_img").length) {
+        $(".choose_model_img .download_select").prop("checked", false);
         $(".choose_zoomImage11").css("opacity", 0.5);
         $(".choose_model_img").css("border", "0.25rem dashed #d7d2cc");
-        cnt = 0;
-        $("#select_img_cnt").val(cnt.toString());
-        $(this).val("zero");
+        img_cnt = 0;
+        $("#select_img_cnt").val(img_cnt.toString());
+        $("#imgs_download_few").attr("title", "Download " + img_cnt.toString() + " Image(s)")
+        $("#imgs_delete_few").attr("title", "Delete " + img_cnt.toString() + " Image(s)")
+        $(this).val("zero").attr("title", "Select All");
         $(".select_all_text").css("display", "");
         $(".cancel_text").css("display", "none");
     }

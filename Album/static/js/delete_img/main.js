@@ -43,7 +43,7 @@ $(".delete_one").click(function () {
                                         $("#delete-img-process").modal("hide");
                                     }, 500);
                                     setTimeout(function () {
-                                        $("#delete_img_process_bar").css("width", "0%").text("0%");
+                                        $("#delete_img_process_bar").css("width", "0.1%").text("0.1%");
                                     }, 600);
                                 }
                             })
@@ -70,7 +70,7 @@ $(".delete_one").click(function () {
                             error: function () {
                                 clearInterval(delete_img_process);
                                 $("#delete-img-process").modal("hide");
-                                $("#delete_img_process_bar").css("width", "0%").text("0%");
+                                $("#delete_img_process_bar").css("width", "0.1%").text("0.1%");
                                 toastr.error("Error , Please Try again !");
                             }
                         });
@@ -116,7 +116,7 @@ $("#imgs_delete_few").click(function () {
                                             $("#delete-img-process").modal("hide");
                                         }, 500);
                                         setTimeout(function () {
-                                            $("#delete_img_process_bar").css("width", "0%").text("0%");
+                                            $("#delete_img_process_bar").css("width", "0.1%").text("0.1%");
                                         }, 600);
                                     }
                                 })
@@ -147,7 +147,7 @@ $("#imgs_delete_few").click(function () {
                                 error: function () {
                                     clearInterval(delete_img_process);
                                     $("#delete-img-process").modal("hide");
-                                    $("#delete_img_process_bar").css("width", "0%").text("0%");
+                                    $("#delete_img_process_bar").css("width", "0.1%").text("0.1%");
                                     toastr.error("Error , Please Try again !");
                                 }
                             });

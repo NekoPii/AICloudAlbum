@@ -43,35 +43,37 @@
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
 
-
-            <div class="row">
-                <div style="display: flex;flex-wrap: wrap;align-items: center;">
-                    <a type="button" class="upload_btn btn-solid-reg" href="/mypics/"
-                       style="display: flex;margin: 0.5rem 1rem;">
-                        <span> <i class="uil uil-image-upload"></i>&nbsp;Go To UPLOAD</span>
-                    </a>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="grid" style="text-align: center;background:transparent;">
-                        <form id="folderFewForm">
-                            {% for f in Faces %}
-                                <div class="element-item development"
-                                     id="faces_{{ f.id }}"
-                                     style="text-align: center;background:transparent;">
-                                    <a href={{ f.href }}>
-                                        <div class="element-item-overlay">
+                    {% ifequal Faces None %}
+                        <div class="none_pics mx-auto">
+                            <h4>No Faces yet ~</h4>
+                            <h4>Click Here to Mypics</h4>
+                            <a href="/mypics/" type="button" class="btn-solid-lg small blue" title="Mypics">
+                                Mypics
+                            </a>
+                        </div>
+                    {% endifequal %}
+                    {% ifnotequal Faces None %}
+                        <div class="grid" style="text-align: center;background:transparent;">
+                            <form id="folderFewForm">
+                                {% for f in Faces %}
+                                    <div class="element-item development"
+                                         id="faces_{{ f.id }}"
+                                         style="text-align: center;background:transparent;">
+                                        <a href={{ f.href }}>
+                                            <div class="element-item-overlay">
                                                 <span class="element_1"
                                                       style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">See&nbsp;Images</span>
-                                        </div>
-                                        <div class="zoomImage11 element_2"
-                                             style="background-image: url({{ f.cover_path }});border-radius: 50%;"></div>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        </form>
-                    </div> <!-- end of grid -->
+                                            </div>
+                                            <div class="zoomImage11 element_2"
+                                                 style="background-image: url({{ f.cover_path }});border-radius: 50%;"></div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </form>
+                        </div> <!-- end of grid -->
+                    {% endifnotequal %}
                     <!-- end of filter -->
                 </div> <!-- end of col -->
             </div> <!-- end of row -->

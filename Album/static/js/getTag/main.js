@@ -12,7 +12,7 @@ $("#getTag").click(function () {
                     $("#tag-process").modal("hide");
                 }, 500);
                 setTimeout(function () {
-                    $("#tag_process_bar").css("width", "0%").text("0%");
+                    $("#tag_process_bar").css("width", "0.1%").text("0.1%");
                 }, 600);
             }
         })
@@ -91,7 +91,7 @@ $("#getTag").click(function () {
         error: function () {
             clearInterval(tag_process);
             $("#tag-process").modal("hide");
-            $("#tag_process_bar").css("width", "0%").text("0%");
+            $("#tag_process_bar").css("width", "0.1%").text("0.1%");
             toastr.clear()
             toastr.error("Error , Please Try again !")
             $(this).attr("disabled", false)

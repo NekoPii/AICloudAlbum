@@ -43,6 +43,7 @@ body {
     padding-top: 10rem;
     text-align: center;
     font-family: 'Ink Free';
+    border-radius: 1rem;
 }
 
 .btn-solid-lg {
@@ -304,6 +305,25 @@ body {
 .btn-small:hover {
     background-color: transparent;
     color: #64b3f4;
+    text-decoration: none;
+}
+
+.yellow-btn-small {
+    z-index: 1;
+    display: inline-block;
+    padding: 1rem 1.2rem 1rem 1.2rem;
+    border: 0.125rem solid #ffa000;
+    border-radius: 0.25rem;
+    background-color: #ffa000;
+    color: #fff;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.yellow-btn-small:hover {
+    background-color: transparent;
+    color: #ffa000;
     text-decoration: none;
 }
 

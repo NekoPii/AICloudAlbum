@@ -28,7 +28,7 @@
         <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 50%;margin-top: 15rem;">
             <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Add Folder</h5>
+                    <h5 class="modal-title" id="addModalLabel">New Folder</h5>
                 </div>
                 <div class="modal-body">
                     <form id="addFolderForm">
@@ -57,7 +57,7 @@
 
     <div class="modal fade" id="launch-mod" tabindex="-1" role="dialog" aria-labelledby="modModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
-        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 40%;margin-top: 10rem;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top: 10rem;">
             <div class="modal-content" style="background: rgb(245,245,245);border-radius: 1rem;">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modModalLabel">Modify Folder Name</h5>
@@ -143,8 +143,8 @@
                         <div id="face_process_bar"
                              class="progress-bar bg-success progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">0%
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
                         </div>
                     </div>
                 </div>
@@ -165,8 +165,8 @@
                         <div id="tag_process_bar"
                              class="progress-bar bg-success progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">0%
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
                         </div>
                     </div>
                 </div>
@@ -187,8 +187,8 @@
                         <div id="delete_img_process_bar"
                              class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">0%
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
                         </div>
                     </div>
                 </div>
@@ -209,8 +209,8 @@
                         <div id="delete_folder_process_bar"
                              class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">0%
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
                         </div>
                     </div>
                 </div>
@@ -280,41 +280,52 @@
                         <input id="select_folder_cnt" type="hidden" style="display: none;">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="grid" style="text-align: center;background:transparent;">
-                                    <form id="imageFewForm">
-                                        {% for p in ALL_imgs %}
-                                            <div class="element-item development"
-                                                 id="img_{{ p.id }}"
-                                                 style="text-align: center;background:transparent;">
-                                                <div>
-                                                    <a title="{{ p.name }}" class="popup-with-move-anim"
-                                                       href='#box_{{ p.id }}'>
-                                                        <div class="element-item-overlay"><span class="element_1"
-                                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
-                                                        </div>
-                                                        <div class="zoomImage11 element_2"
-                                                             style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
-                                                    </a>
-                                                    <a id="img_model_{{ p.id }}" class="choose_model_img"
-                                                       style="border-radius: 0.5rem;cursor: pointer;"
-                                                       title="{{ p.name }}">
-                                                        <div class="element-item-overlay"><span class="element_3"
-                                                                                                style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
-                                                        </div>
-                                                        <div class="zoomImage11 choose_zoomImage11 element_4"
-                                                             style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
-                                                        <input class="img_select element_5" type="checkbox"
-                                                               style="display: none"
-                                                               value={{ p.fake_name }} name="img_name">
-                                                    </a>
+                                {% ifequal ALL_imgs None %}
+                                    <div class="none_pics mx-auto">
+                                        <h4>No Images yet ~</h4>
+                                        <h4>Click Here to Upload</h4>
+                                        <button type="button" class="btn-solid-lg small blue" data-toggle="modal"
+                                                data-target="#launch-upload" title="Upload">UPLOAD
+                                        </button>
+                                    </div>
+                                {% endifequal %}
+                                {% ifnotequal ALL_imgs None %}
+                                    <div class="grid" style="text-align: center;background:transparent;">
+                                        <form id="imageFewForm">
+                                            {% for p in ALL_imgs %}
+                                                <div class="element-item development"
+                                                     id="img_{{ p.id }}"
+                                                     style="text-align: center;background:transparent;">
+                                                    <div>
+                                                        <a title="{{ p.name }}" class="popup-with-move-anim"
+                                                           href='#box_{{ p.id }}'>
+                                                            <div class="element-item-overlay"><span class="element_1"
+                                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
+                                                            </div>
+                                                            <div class="zoomImage11 element_2"
+                                                                 style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
+                                                        </a>
+                                                        <a id="img_model_{{ p.id }}" class="choose_model_img"
+                                                           style="border-radius: 0.5rem;cursor: pointer;"
+                                                           title="{{ p.name }}">
+                                                            <div class="element-item-overlay"><span class="element_3"
+                                                                                                    style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                                            </div>
+                                                            <div class="zoomImage11 choose_zoomImage11 element_4"
+                                                                 style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
+                                                            <input class="img_select element_5" type="checkbox"
+                                                                   style="display: none"
+                                                                   value={{ p.fake_name }} name="img_name">
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
+                                            {% endfor %}
 
-                                    </form>
+                                        </form>
 
-                                </div> <!-- end of grid -->
-                                <!-- end of filter -->
+                                    </div> <!-- end of grid -->
+                                    <!-- end of filter -->
+                                {% endifnotequal %}
 
                             </div> <!-- end of col -->
                         </div> <!-- end of row -->
@@ -325,7 +336,8 @@
                                     <div class="col-lg-8" style="text-align:center;margin:auto 0;">
                                         <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
                                     </div> <!-- end of col -->
-                                    <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147);font-family: 'Arial'">
+                                    <div class="col-lg-4 btn-local0"
+                                         style="color: rgb(147,147,147);font-family: 'Arial'">
                                         <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
                                             class="element_7" title="{{ p.name }}">{{ p.name }}</h3>
                                         <hr class="line-heading">
@@ -350,17 +362,25 @@
                                             <h6 style="float: left;margin-bottom: 1rem">Tag:</h6>
                                             <b style="float: right" class="element_12">{{ p.nowtag }}</b>
                                         </div>
-                                        <div class="btn-local1" style="margin-top: 3rem;">
+                                        <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
                                             <form class="downloadOneForm">
                                                 <input class="download_input element_13"
                                                        value={{ p.fake_name }} type="hidden"
                                                        name="img_name">
-                                                <button class="download_one btn-small" type="button"><i
-                                                        class="uil uil-image-download"></i>&nbsp;DownLoad
+                                                <button class="download_one btn-small mx-auto" type="button"
+                                                        title="Download"
+                                                        style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                                    <i class="uil uil-image-download" style="font-size: 1.5rem;"></i>
                                                 </button>
-                                                <button class="delete_one rm-btn-small" type="button"
-                                                        style="margin-left:0.5rem;"><i
-                                                        class="uil uil-image-times"></i>&nbsp;Delete
+                                                <button class="getFaceRec yellow-btn-small mx-auto" type="button"
+                                                        title="Get Face Recogntion"
+                                                        style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                                    <i class="uil uil-smile-wink-alt" style="font-size: 1.5rem;"></i>
+                                                </button>
+                                                <button class="delete_one rm-btn-small mx-auto" title="Delete"
+                                                        type="button"
+                                                        style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                                    <i class="uil uil-image-times" style="font-size: 1.5rem;"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -375,42 +395,53 @@
                          aria-labelledby="folder-tab-tabs-above">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="grid folder" style="text-align: center;background:transparent;">
-                                    <form id="folderFewForm">
-                                        {% for p in Folders %}
-                                            <div class="element-item development"
-                                                 id="folder_{{ p.id }}"
-                                                 style="text-align: center;background:transparent;">
-                                                <a title="{{ p.name }}" class="popup-with-move-anim"
-                                                   href={{ p.href }} name="{{ p.name }}">
-                                                    <div class="element-item-dirlay">
+                                {% ifequal Folders None %}
+                                    <div class="none_pics mx-auto">
+                                        <h4>No Folders yet ~</h4>
+                                        <h4>Click Here to New Folder</h4>
+                                        <button type="button" class="btn-solid-lg small blue" data-toggle="modal"
+                                                data-target="#launch-add" title="New Folder">
+                                            New Folder
+                                        </button>
+                                    </div>
+                                {% endifequal %}
+                                {% ifnotequal Folders None %}
+                                    <div class="grid folder" style="text-align: center;background:transparent;">
+                                        <form id="folderFewForm">
+                                            {% for p in Folders %}
+                                                <div class="element-item development"
+                                                     id="folder_{{ p.id }}"
+                                                     style="text-align: center;background:transparent;">
+                                                    <a title="{{ p.name }}" class="popup-with-move-anim"
+                                                       href={{ p.href }} name="{{ p.name }}">
+                                                        <div class="element-item-dirlay">
                                                 <span class="element_1"
                                                       style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1.5rem;border-radius: 1rem;">{{ p.name }} </span>
-                                                    </div>
-                                                    <div class="zoomImage11 element_2"
-                                                         style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
-                                                </a>
-                                                <a id="folder_model_{{ p.id }}" class="choose_model_img"
-                                                   style="border-radius: 0.5rem;cursor: pointer;"
-                                                   title="{{ p.name }}" name="{{ p.name }}">
-                                                    <div class="element-item-dirlay">
+                                                        </div>
+                                                        <div class="zoomImage11 element_2"
+                                                             style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
+                                                    </a>
+                                                    <a id="folder_model_{{ p.id }}" class="choose_model_img"
+                                                       style="border-radius: 0.5rem;cursor: pointer;"
+                                                       title="{{ p.name }}" name="{{ p.name }}">
+                                                        <div class="element-item-dirlay">
                                                         <span class="element_3"
                                                               style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1.5rem;border-radius: 1rem;">{{ p.name }} </span>
-                                                    </div>
-                                                    <div class="zoomImage11 choose_zoomImage11 element_4"
-                                                         style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
-                                                    <input class="folder_select element_5" type="checkbox"
-                                                           style="display: none"
-                                                           value={{ p.fake_name }} name="folder_name">
-                                                </a>
-                                            </div>
-                                        {% endfor %}
+                                                        </div>
+                                                        <div class="zoomImage11 choose_zoomImage11 element_4"
+                                                             style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
+                                                        <input class="folder_select element_5" type="checkbox"
+                                                               style="display: none"
+                                                               value={{ p.fake_name }} name="folder_name">
+                                                    </a>
+                                                </div>
+                                            {% endfor %}
 
-                                    </form>
+                                        </form>
 
-                                </div> <!-- end of grid -->
-                                <!-- end of filter -->
-
+                                    </div> <!-- end of grid -->
+                                    <!-- end of filter -->
+                                {% endifnotequal %}
                             </div> <!-- end of col -->
                         </div> <!-- end of row -->
                     </div>
@@ -436,7 +467,6 @@
             <i class="fas fa-angle-down"></i>
         </button>
     </div>
-
     <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
         <button id="folder_back" class="btn-small" type="button" value="zero"
                 style="display: none;margin-bottom: 0.5rem">
@@ -457,6 +487,13 @@
                 </button>
             </div>
         </div>
+        <div class="container popbtn float-btn-group">
+            <div class="float-btn-group" style="bottom:24.5rem;">
+                <button id="getTag" class="btn-float yellow" type="button" title="Get All Tags">
+                    <i class="uil uil-tag-alt"></i>
+                </button>
+            </div>
+        </div>
         <div class="container popbtn">
             <div class="float-btn-group">
                 <button id="imgs_change_model" class="btn-float btn-triger blue" type="button" value="select"
@@ -465,9 +502,6 @@
                     <i class="view_text uil uil-left-arrow-from-left" style="display: none"></i>
                 </button>
                 <div class="btn-list">
-                    <button id="getTag" class="btn-float yellow" type="button" title="Get All Tags">
-                        <i class="uil uil-tag-alt"></i>
-                    </button>
                     <button id="getFewFaceRec" class="btn-float yellow" type="button" title="Get Face Recognition">
                         <i class="uil uil-smile-squint-wink-alt"></i>
                     </button>
@@ -496,7 +530,7 @@
             </div>
             <div class="float-btn-group" style="bottom:26rem;">
                 <button type="button" class="btn-float blue" data-toggle="modal"
-                        data-target="#launch-add" title="Add Folder">
+                        data-target="#launch-add" title="New Folder">
                     <i class="uil uil-folder-plus"></i>
                 </button>
             </div>

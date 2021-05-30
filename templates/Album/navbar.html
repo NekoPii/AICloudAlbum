@@ -7,6 +7,7 @@
     <link href="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css" rel="stylesheet">
     {% block css %}{% endblock %}
     <link href="/static/vendor/toastr/toastr.min.css" rel="stylesheet">
+    <link href="/static/vendor/pace-1.2.4/themes/blue/pace-theme-flash.css" rel="stylesheet">
     <link href="/static/css/scrollbar.css" rel="stylesheet">
     <link href="/static/css/unicons.css" rel="stylesheet">
     <link href="/static/css/navbar.css" rel="stylesheet">
@@ -17,10 +18,11 @@
 <body id="alpha">
 
 <!--sidebar-->
+<!--
 <nav id="sidebar-wrapper" style="box-shadow:0px 0px 10px #000;width:251px">
     <ul class="sidebar-nav">
         <li class="sidebar-brand" style="padding-top: 10px">
-            <a class="js-scroll-trigger" href="#" >
+            <a class="js-scroll-trigger" href="#">
                 <i class="fa fa-bars" style="color:rgb(187,187,187) ;width: 12.25px;height: 14px"></i>
             </a>
             <img src="/static/image/AIAlbum.svg" alt="alternative"
@@ -47,6 +49,7 @@
         </li>
     </ul>
 </nav>
+-->
 <!--end sidebar-->
 
 
@@ -59,10 +62,11 @@
         <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
     {% endifequal %}
     {% ifequal request.session.is_login True %}
-
+        <!--
         <a class="menu-toggle rounded" href="#">
             <i class="fa fa-bars" style="color:rgb(187,187,187)"></i>
         </a>
+        -->
         <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
 
         <div class="modal-body" style="padding: 0">
@@ -90,10 +94,13 @@
                     <a class="nav-link page-scroll" href="/">HOME <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#intro">INTRO</a>
+                    <a class="nav-link page-scroll" href="/mypics">MYPICS</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                    <a class="nav-link page-scroll" href="/tags/">TAGS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="/face/">FACE</a>
                 <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
 
             {% endifequal %}
@@ -118,7 +125,6 @@
 <script src="/static/js/navbar.js"></script>
 
 <script src="/static/js/sidebar/stylish-portfolio.min.js"></script>
-
 
 
 </body>

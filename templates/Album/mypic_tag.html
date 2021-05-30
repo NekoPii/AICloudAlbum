@@ -1,7 +1,7 @@
 {% extends "Album/navbar.html" %}
 
 {% block title %}
-    <title>My Pics / {{ now_folder_name }}</title>
+    <title>Tags / {{ tag }}</title>
 {% endblock %}
 
 {% block css %}
@@ -37,8 +37,8 @@
                         <div id="delete_img_process_bar"
                              class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
                              role="progressbar"
-                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                             style="width: 0;">0%
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
                         </div>
                     </div>
                 </div>

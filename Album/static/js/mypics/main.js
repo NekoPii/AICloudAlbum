@@ -528,7 +528,7 @@ $("#folders_change_model").click(function () {
         folder_cnt = 0;
         $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
         $("#select_folder_cnt").val(folder_cnt.toString());
-        $(this).val("select");
+        $(this).val("select").attr("title","Select");
         $("#folders_change_model .select_text").css("display", "");
         $("#folders_change_model .view_text").css("display", "none");
         $("#folders_select_all").val("zero").attr("title", "Select All")
