@@ -235,7 +235,7 @@ def ajax_pics_tag(request, tag):
         phone = request.session['phone']
         user = models.User.objects.get(phone=phone)
         tag_id = models.Tag.objects.get(tag=tag).id
-        pics = models.Picture.objects.filter(user_id=user.phone,tag=tag_id)
+        pics = models.Picture.objects.filter(user_id=user.phone, tag=tag_id)
         all_tag = models.Tag.objects.all()
         json_data = {}
         json_data["pics"] = []
@@ -401,7 +401,7 @@ def mypics_pics(request, folder_fake_name):
             else:
                 pics = models.Picture.objects.filter(user_id=phone, folder_id=now_folder[0].id)
             cnt = 1
-            Pics=[]
+            Pics = []
             for p in pics:
                 p.size = format(p.size, '.2f')
                 p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
@@ -443,17 +443,11 @@ def tags(request):
             Tags.append(str1[:-1])
         for tag in Tags:
             pic_tag_id = all_tag.get(tag=tag).id
-            pic_tag = pic.filter(tag_id=pic_tag_id)
             tag_message = {}
             tag_message["img_path"] = os.path.join('/static/image/tags/', tag + ".jpg")
             tag_message["href"] = "/tags/" + tag + "/"
-            tag_message["tag_pic_count"] = pic_tag.count()
             tag_message["tag_name_h"] = tag.upper()
             tag_message["tag_name_t"] = tag.title()
-            if pic_tag.count()==0:
-                tag_message["is_none"] = True
-            else:
-                tag_message["is_none"] = False
             ALL_tag_message.append(tag_message)
 
         return render(request, "Album/tags.html", locals())
@@ -463,7 +457,7 @@ def tags(request):
 
 def tags_pics(request, tag):
     if request.session.get("is_login"):
-        tag_t=tag.title()
+        tag_t = tag.title()
         name = request.session['name']
         phone = request.session['phone']
         all_tag = models.Tag.objects.all()
@@ -471,23 +465,25 @@ def tags_pics(request, tag):
         tag_id = models.Tag.objects.get(tag=tag).id
         pics = models.Picture.objects.filter(user_id=phone, tag=tag_id)
 
-        if pics:
-            cnt = 1
-            Pics=[]
-            for p in pics:
-                p.size = format(p.size, '.2f')
-                p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
-                p.id = cnt
-                p.upload_time = p.upload_time.strftime('%Y-%m-%d')
-                p.nowtag = all_tag.get(id=p.tag_id).tag
-                cnt += 1
-                Pics.append(p)
-                if cnt > page_num_img:
-                    break
-            count = pics.count()
-            return render(request, "Album/mypic_tag.html", locals())
-        else:
-            return render(request, "Album/tags.html", locals())
+        cnt = 1
+        Pics = []
+        for p in pics:
+            p.size = format(p.size, '.2f')
+            p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+            p.id = cnt
+            p.upload_time = p.upload_time.strftime('%Y-%m-%d')
+            p.nowtag = all_tag.get(id=p.tag_id).tag
+            cnt += 1
+            Pics.append(p)
+            if cnt > page_num_img:
+                break
+        count = pics.count()
+        is_null =False
+        if count==0:
+            is_null=True
+        capacity_now = format(user.now_capacity, '.2f')
+        return render(request, "Album/mypic_tag.html", locals())
+
     else:
         return redirect("/login/")
 

@@ -4,7 +4,7 @@ body {
 
 #myTab-tabs-above a {
     color: rgb(133, 133, 133);
-    background-color: rgba(247,247,247,0.9);
+    background-color: rgba(247, 247, 247, 0.9);
     font-weight: bold;
     border: none;
     border-top: 3px solid transparent;
@@ -34,6 +34,34 @@ body {
     margin-bottom: 0;
     padding-left: 17.7px;
     padding-right: 17.7px
+}
+
+.none_pics {
+    background: rgba(255, 255, 255, 1);
+    height: 30rem;
+    margin: 2rem 4rem 2rem 2rem;
+    padding-top: 10rem;
+    text-align: center;
+    font-family: 'Ink Free';
+}
+
+.btn-solid-lg {
+	display: inline-block;
+    margin-top: 1rem;
+	padding: 1.375rem 2.125rem 1.375rem 2.125rem;
+	border: 0.125rem solid #64b3f4;
+	border-radius: 0.25rem;
+	background-color: #64b3f4;
+	color: #fff;
+	font: 700 0.75rem/0 "Montserrat", sans-serif;
+	text-decoration: none;
+	transition: all 0.2s;
+}
+
+.btn-solid-lg:hover {
+	background-color: transparent;
+	color: #64b3f4;
+	text-decoration: none;
 }
 
 .scroll-to-top {
