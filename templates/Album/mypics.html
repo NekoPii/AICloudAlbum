@@ -5,17 +5,18 @@
 {% endblock %}
 
 {% block css %}
-    <link href="/static/vendor/bootstrap-fileinput-5.1.5/css/fileinput.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-select-1.13.14/dist/css/bootstrap-select.css" rel="stylesheet">
-    <link href="/static/vendor/bootstrap-tabs-x/css/bootstrap-tabs-x.min.css" rel="stylesheet">
-    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="/static/css/preload/main.css" rel="stylesheet">
-    <link href="/static/css/popbtn/main.css" rel="stylesheet">
-    <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
-    <link href="/static/css/mypics/styles.css" rel="stylesheet">
-    <link href="/static/css/upload/main.css" rel="stylesheet">
-    <link href="/static/css/download/main.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-fileinput-5.1.5/css/fileinput.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-select-1.13.14/css/bootstrap-select.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-tabs-x/css/bootstrap-tabs-x.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fontawesome-5.15.3/css/all.min.css' %}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/popbtn/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/upload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/download/main.css' %}">
 {% endblock %}
 
 {% block main %}
@@ -566,25 +567,24 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/fileinput.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/piexif.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/js/plugins/sortable.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js"></script>
-    <script src="/static/vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js"></script>
-    <script src="/static/vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="/static/vendor/bootstrap-tabs-x/js/bootstrap-tabs-x.min.js"></script>
-    <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
-    <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
-    <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
-    <script src="/static/js/popbtn/main.js"></script>
-    <script src="/static/js/mypics/main.js"></script>
-    <script src="/static/js/upload/main.js"></script>
-    <script src="/static/js/download/main.js"></script>
-    <script src="/static/js/delete_folder/main.js"></script>
-    <script src="/static/js/delete_img/main.js"></script>
-    <script src="/static/js/modify_folder/main.js"></script>
-    <script src="/static/js/getTag/main.js"></script>
-    <script src="/static/js/getFaceRec/main.js"></script>
-    <script src="/static/js/preload/main.js"></script>
-
+    <script src="{% static 'vendor/bootstrap-fileinput-5.1.5/js/fileinput.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-fileinput-5.1.5/js/plugins/piexif.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-fileinput-5.1.5/js/plugins/sortable.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-fileinput-5.1.5/themes/fas/theme.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-fileinput-5.1.5/themes/explorer-fas/theme.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-select-1.13.14/js/bootstrap-select.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-tabs-x/js/bootstrap-tabs-x.min.js' %}"></script>
+    <script src="{% static 'vendor/popper/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static 'js/popbtn/main.js' %}"></script>
+    <script src="{% static 'js/mypics/main.js' %}"></script>
+    <script src="{% static 'js/upload/main.js' %}"></script>
+    <script src="{% static 'js/download/main.js' %}"></script>
+    <script src="{% static 'js/delete_folder/main.js' %}"></script>
+    <script src="{% static 'js/delete_img/main.js' %}"></script>
+    <script src="{% static 'js/modify_folder/main.js' %}"></script>
+    <script src="{% static 'js/getTag/main.js' %}"></script>
+    <script src="{% static 'js/getFaceRec/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
 {% endblock %}

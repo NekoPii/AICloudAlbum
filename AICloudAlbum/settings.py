@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -133,10 +134,17 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "upload_imgs"),
-    os.path.join(os.path.join(BASE_DIR,"upload_imgs"),"compress_imgs")
+    os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs"),
 ]
 
 # Captcha验证码设置
@@ -146,5 +154,9 @@ CAPTCHA_LENGTH = 4
 # 上传文件路径
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
+
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+COMPRESS_URL = "/static/"
+COMPRESS_ENABLED = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

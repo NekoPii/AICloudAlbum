@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     {% block title %}{% endblock %}
-    <link href="/static/vendor/bootstrap-4.6.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-4.6.0/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css' %}">
     {% block css %}{% endblock %}
-    <link href="/static/vendor/toastr/toastr.min.css" rel="stylesheet">
-    <link href="/static/vendor/pace-1.2.4/themes/blue/pace-theme-flash.css" rel="stylesheet">
-    <link href="/static/css/scrollbar.css" rel="stylesheet">
-    <link href="/static/css/unicons.css" rel="stylesheet">
-    <link href="/static/css/navbar.css" rel="stylesheet">
-    <link href="/static/css/sidebar/style.css" rel="stylesheet">
-
-
+    <link rel="stylesheet" href="{% static 'vendor/toastr/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/pace-1.2.4/themes/blue/pace-theme-flash.css' %}">
+    <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/unicons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar/style.css' %}">
 </head>
 <body id="alpha">
 
@@ -112,20 +111,15 @@
 <!-- end of navbar -->
 {% block main %}{% endblock %}
 
-
-<script src="/static/vendor/jquery/jquery.min.js"></script>
-<script src="/static/vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.js"></script>
-<script src="/static/vendor/bootstrap-4.6.0/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-<script src="/static/vendor/sketch.min.js"></script>
-
+<script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+<script src="{% static "vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.js" %}"></script>
+<script src="{% static "vendor/bootstrap-4.6.0/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "vendor/sketch.min.js" %}"></script>
+<script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
 {% block js %}{% endblock %}
-<script src="/static/vendor/toastr/toastr.min.js"></script>
-<script src="/static/vendor/pace-1.2.4/pace.min.js"></script>
-<script src="/static/js/navbar.js"></script>
-
-<script src="/static/js/sidebar/stylish-portfolio.min.js"></script>
-
-
+<script src="{% static "vendor/toastr/toastr.min.js" %}"></script>
+<script src="{% static "vendor/pace-1.2.4/pace.min.js" %}"></script>
+<script src="{% static "js/navbar.js" %}"></script>
+<script src="{% static "js/sidebar/stylish-portfolio.min.js" %}"></script>
 </body>
 </html>
