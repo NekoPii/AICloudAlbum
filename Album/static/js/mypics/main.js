@@ -1,11 +1,11 @@
 var current_page_folder = 1;
 var current_page_imgs = 1;
-var faces;
-var count;
+var folders;
+var folder_count;
 var imgs;
 var img_count;
 var currentPage = 0;
-var page_num_face = 5;
+var page_num_folder = 5;
 var page_num_img = 10;
 var img_cnt = 0,
     folder_cnt = 0;
@@ -145,6 +145,7 @@ var img_cnt = 0,
 
     $("#folder_next")
         .click(function () {
+            console.log("success");
             if ((folder_count - current_page_folder * page_num_folder) > 0) {
                 $("#folder_next").css("display", "inline-block")
                 $("#folder_back").css("display", "inline-block")
@@ -527,7 +528,7 @@ $("#folders_change_model").click(function () {
         folder_cnt = 0;
         $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
         $("#select_folder_cnt").val(folder_cnt.toString());
-        $(this).val("select").attr("title", "Select");
+        $(this).val("select");
         $("#folders_change_model .select_text").css("display", "");
         $("#folders_change_model .view_text").css("display", "none");
         $("#folders_select_all").val("zero").attr("title", "Select All")

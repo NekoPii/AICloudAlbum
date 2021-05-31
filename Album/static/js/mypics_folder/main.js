@@ -85,8 +85,9 @@ var img_cnt = 0;
                     $(element14).text(pics[pic_number]["tag"]);
                     $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
-                    $("#img_" + i).css("display", "block")
-                    $("#box_" + i).css("display", "block")
+                    $("#img_" + i).css("display", "block");
+                    $("#box_" + i).css("display", "block");
+                    $("#img_model_" + i).addClass("choose_model_img");
 
                 }
             }
@@ -144,8 +145,8 @@ var img_cnt = 0;
 
                     } else {
 
-                        $("#img_" + i).css("display", "none")
-                        $("#box_" + i).css("display", "none")
+                        $("#img_" + i).css("display", "none");
+                        $("#box_" + i).css("display", "none");
                         $("#img_model_"+i).removeClass("choose_model_img");
                     }
 

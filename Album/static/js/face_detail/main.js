@@ -5,7 +5,7 @@ var page_num_img=10;
 var img_cnt = 0;
 (function ($) {
     "use strict";
-    var now_folder_fake_name = $("#now_folder_fake_name").val()
+    var face_cover_fake_name = $("#face_cover_fake_name").val()
 
 
     $("#change_model").val("select");
@@ -14,8 +14,8 @@ var img_cnt = 0;
     $("#select_img_cnt").val("0");
 
 
-    $.getJSON("/ajax_pics/" + now_folder_fake_name + "/", function (data) {
-        pics = data["pics"];
+    $.getJSON("/ajax_faces_detail/" + face_cover_fake_name + "/", function (data) {
+        pics = data["faces_pics"];
         count = data["count"];
         if (count > page_num_img) {
             $("#next").css("display", "inline-block");
@@ -85,8 +85,9 @@ var img_cnt = 0;
                     $(element14).text(pics[pic_number]["tag"]);
                     $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
-                    $("#img_" + i).css("display", "block")
-                    $("#box_" + i).css("display", "block")
+                    $("#img_" + i).css("display", "block");
+                    $("#box_" + i).css("display", "block");
+                    $("#img_model_" + i).addClass("choose_model_img");
 
                 }
             }
