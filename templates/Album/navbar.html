@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     {% block title %}{% endblock %}
     {% load static compress %}
+    <link rel="icon" href="{% static 'image/logo.ico' %}" sizes="128x128">
     {% compress css %}
         <link rel="stylesheet" href="{% static 'vendor/bootstrap-4.6.0/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css' %}">
@@ -17,42 +18,6 @@
     {% endcompress %}
 </head>
 <body id="alpha">
-
-<!--sidebar-->
-<!--
-<nav id="sidebar-wrapper" style="box-shadow:0px 0px 10px #000;width:251px">
-    <ul class="sidebar-nav">
-        <li class="sidebar-brand" style="padding-top: 10px">
-            <a class="js-scroll-trigger" href="#">
-                <i class="fa fa-bars" style="color:rgb(187,187,187) ;width: 12.25px;height: 14px"></i>
-            </a>
-            <img src="/static/image/AIAlbum.svg" alt="alternative"
-                 style="width: 5.5rem;margin-top: 0;margin-left: 0.5rem">
-        </li>
-
-        <li class="sidebar-nav-item">
-            <a href="/mypics/?t=f" style="color: rgb(187, 187, 187)">
-                <i class="fas fa-folder-open" style="color:rgb(187,187,187);margin-left:1rem;margin-right: 2px"></i>
-                <b>Folders</b>
-            </a>
-        </li>
-        <li class="sidebar-nav-item">
-            <a href="/tags/" style="color: rgb(187, 187, 187)">
-                <i class="fas fa-tags" style="color:rgb(187,187,187);margin-left:1rem;margin-right: 2px"></i>
-                <b>Tags</b>
-            </a>
-        </li>
-        <li class="sidebar-nav-item">
-            <a href="/face/" style="color: rgb(187, 187, 187)">
-                <i class="fas fa-smile-wink" style="color:rgb(187,187,187);margin-left:1rem;margin-right: 2px"></i>
-                <b>Faces</b>
-            </a>
-        </li>
-    </ul>
-</nav>
--->
-<!--end sidebar-->
-
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top ">
