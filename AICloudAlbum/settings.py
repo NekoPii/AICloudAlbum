@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -136,8 +137,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "upload_imgs"),
-    os.path.join(os.path.join(BASE_DIR,"upload_imgs"),"compress_imgs")
+    os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs"),
 ]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 # Captcha验证码设置
 CAPTCHA_IMAGE_SIZE = (85, 55)
@@ -146,5 +154,20 @@ CAPTCHA_LENGTH = 4
 # 上传文件路径
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_CSS_FILTERS = [
+    # creates absolute urls from relative ones
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    # css minimizer
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
+]
+
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+COMPRESS_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

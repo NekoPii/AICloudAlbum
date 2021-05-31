@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block css %}
-    <link href="/static/css/preload/main.css" rel="stylesheet">
-    <link href="/static/css/mypics/styles.css" rel="stylesheet">
-    <link href="/static/css/upload/main.css" rel="stylesheet">
-    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/upload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/fontawesome-5.15.3/css/all.min.css' %}" crossorigin="anonymous">
 {% endblock %}
 
 {% block main %}
@@ -100,8 +101,6 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/vendor/bootstrap-select-1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="/static/js/face/main.js"></script>
-    <script src="/static/js/preload/main.js"></script>
-
+    <script src="{% static 'js/face/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
 {% endblock %}

@@ -301,6 +301,81 @@
     transition: 0.1s 0.2s ease-out;
 }
 
+
+#face_detail_pop .popbtn .float-btn-group .btn-list .btn-float {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    -ms-transform: scale(0, 0);
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+}
+
+#face_detail_pop .popbtn .float-btn-group .btn-list .btn-float:nth-child(1) {
+    -moz-transition: 0.1s 0.2s ease-in;
+    -o-transition: 0.1s 0.2s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-in;
+    transition: 0.1s 0.2s ease-in;
+}
+
+#face_detail_pop .popbtn .float-btn-group .btn-list .btn-float:nth-child(2) {
+    -moz-transition: 0.1s 0.3s ease-in;
+    -o-transition: 0.1s 0.3s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-in;
+    transition: 0.1s 0.3s ease-in;
+}
+
+#face_detail_pop .popbtn .float-btn-group .btn-list .btn-float:nth-child(3) {
+    -moz-transition: 0.1s 0.4s ease-in;
+    -o-transition: 0.1s 0.4s ease-in;
+    -webkit-transition: 0.1s ease-in;
+    -webkit-transition-delay: 0.4s;
+    -webkit-transition: 0.1s 0.4s ease-in;
+    transition: 0.1s 0.4s ease-in;
+}
+
+#face_detail_pop .popbtn .float-btn-group.open .btn-list .btn-float {
+    opacity: 1;
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+}
+
+#face_detail_pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(1) {
+    top: -15rem;
+    -moz-transition: 0.1s 0.4s ease-out;
+    -o-transition: 0.1s 0.4s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.4s;
+    -webkit-transition: 0.1s 0.4s ease-out;
+    transition: 0.1s 0.4s ease-out;
+}
+
+#face_detail_pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(2) {
+    top: -10rem;
+    -moz-transition: 0.1s 0.3s ease-out;
+    -o-transition: 0.1s 0.3s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.3s;
+    -webkit-transition: 0.1s 0.3s ease-out;
+    transition: 0.1s 0.3s ease-out;
+}
+
+#face_detail_pop .popbtn .float-btn-group.open .btn-list .btn-float:nth-child(3) {
+    top: -5rem;
+    -moz-transition: 0.1s 0.2s ease-out;
+    -o-transition: 0.1s 0.2s ease-out;
+    -webkit-transition: 0.1s ease-out;
+    -webkit-transition-delay: 0.2s;
+    -webkit-transition: 0.1s 0.2s ease-out;
+    transition: 0.1s 0.2s ease-out;
+}
+
 .btn-float:hover {
     animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
 }

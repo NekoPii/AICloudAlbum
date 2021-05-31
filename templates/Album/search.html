@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block css %}
-    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="/static/css/preload/main.css" rel="stylesheet">
-    <link href="/static/css/popbtn/main.css" rel="stylesheet">
-    <link href="/static/css/upload/main.css" rel="stylesheet">
-    <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
-    <link href="/static/css/mypics/styles.css" rel="stylesheet">
-    <link href="/static/css/download/main.css" rel="stylesheet">
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendor/fontawesome-5.15.3/css/all.min.css' %}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/popbtn/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/upload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/download/main.css' %}">
 {% endblock %}
 
 <!--文件夹点击进入页，即文件夹内容详情页-->
@@ -290,14 +290,14 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
-    <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
-    <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
-    <script src="/static/js/popbtn/main.js"></script>
-    <script src="/static/js/mypics_folder/main.js"></script>
-    <script src="/static/js/download/main.js"></script>
-    <script src="/static/js/delete_img/main.js"></script>
-    <script src="/static/js/getTag/main.js"></script>
-    <script src="/static/js/getFaceRec/main.js"></script>
-    <script src="/static/js/preload/main.js"></script>
+    <script src="{% static 'vendor/popper/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.magnific-popup.js' %}"></script>
+    <script src="{% static 'js/popbtn/main.js' %}"></script>
+    <script src="{% static 'js/mypics_folder/main.js' %}"></script>
+    <script src="{% static 'js/download/main.js' %}"></script>
+    <script src="{% static 'js/delete_img/main.js' %}"></script>
+    <script src="{% static 'js/getTag/main.js' %}"></script>
+    <script src="{% static 'js/getFaceRec/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
 {% endblock %}

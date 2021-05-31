@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block css %}
-    <link href="/static/css/login/styles.css" rel="stylesheet">
-    <link href="/static/css/preload/main.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
 {% endblock %}
 
 {% block main %}
@@ -15,11 +16,13 @@
         <div id="loader"></div>
     </div>
 
+    <div id="mousemove" style="position:fixed;top:0;z-index:0;"></div>
+
     <div id="content" class="container" style="padding-top: 7rem;">
         <div id="signup" class="signup-form" style="padding-bottom: 1rem;">
             <div class="col-md-12 col-lg-12" style="padding: 0;">
                 <div style="text-align: center;margin-bottom: 1.2rem">
-                    <img src="/static/image/AIAlbum.svg" width="200" height="70">
+                    <img src="{% static 'image/AIAlbum.svg' %}" width="200" height="70">
                     <h5 style="font-family:'SimHei';font-weight: 700;font-size: 12px;color:#757c80; ">让收藏变得更有乐趣</h5>
                 </div>
                 <form id="signupForm" data-focus="false">
@@ -35,14 +38,16 @@
                     </div>
                     <div class="form-group">
                         {{ signup_form.pwd }}
-                        <label class="label-control" for="signup_pwd"><i class="uil uil-padlock"></i>&nbsp;Password</label>
+                        <label class="label-control" for="signup_pwd"><i
+                                class="uil uil-padlock"></i>&nbsp;Password</label>
                     </div>
                     <div class="form-group" style="margin-bottom: 1.5rem">
                         {{ signup_form.re_pwd }}
                         <label class="label-control" for="re_signup_pwd"><i class="uil uil-padlock"></i>&nbsp;Re-Password</label>
                     </div>
                     <div class="form-group">
-                        <button type="button" id="signup_btn" class="form-control-submit-button" tabindex="5">Signup</button>
+                        <button type="button" id="signup_btn" class="form-control-submit-button" tabindex="5">Signup
+                        </button>
                     </div>
                     <div class="form-group">
                         <button type="button" class="form-control-signup-button"
@@ -60,7 +65,8 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/js/signup/main.js"></script>
-    <script src="/static/js/preload/main.js"></script>
-    <script src="/static/js/changebackground.js"></script>
+    <script src="{% static 'js/signup/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
+    <script src="{% static 'js/changebackground.js' %}"></script>
+    <script src="{% static 'js/mousemove.js' %}"></script>
 {% endblock %}

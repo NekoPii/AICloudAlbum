@@ -182,6 +182,7 @@ $(".getOneTag").click(function () {
                                     action: function () {
                                         $(".getOneTag").removeAttr("disabled");
                                         resolve();
+                                        window.location.reload();
                                     }
                                 }
                             }

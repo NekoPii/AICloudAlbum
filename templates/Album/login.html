@@ -3,8 +3,9 @@
 {% block title %}<title>Login</title>{% endblock %}
 
 {% block css %}
-    <link href="/static/css/login/styles.css" rel="stylesheet">
-    <link href="/static/css/preload/main.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
 {% endblock %}
 
 {% block main %}
@@ -59,8 +60,8 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/js/login/main.js"></script>
-    <script src="/static/js/preload/main.js"></script>
-    <script src="/static/js/changebackground.js"></script>
-    <script src="/static/js/mousemove.js"></script>
+    <script src="{% static 'js/login/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
+    <script src="{% static 'js/changebackground.js' %}"></script>
+    <script src="{% static 'js/mousemove.js' %}"></script>
 {% endblock %}
