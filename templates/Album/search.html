@@ -1,0 +1,308 @@
+{% extends "Album/navbar.html" %}
+
+{% block title %}
+    <title> Search / {{ search_content }}</title>
+{% endblock %}
+
+{% block css %}
+    <link href="/static/vendor/fontawesome-5.15.3/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/static/css/preload/main.css" rel="stylesheet">
+    <link href="/static/css/popbtn/main.css" rel="stylesheet">
+    <link href="/static/css/upload/main.css" rel="stylesheet">
+    <link href="/static/css/mypics/magnific-popup.css" rel="stylesheet">
+    <link href="/static/css/mypics/styles.css" rel="stylesheet">
+    <link href="/static/css/download/main.css" rel="stylesheet">
+
+{% endblock %}
+
+<!--文件夹点击进入页，即文件夹内容详情页-->
+
+{% block main %}
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+
+    <div class="modal fade" id="face-process" tabindex="-1" role="dialog"
+         aria-labelledby="faceProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="faceProcessModalLabel">Face Recognition Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="face_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tag-process" tabindex="-1" role="dialog"
+         aria-labelledby="tagProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tagProcessModalLabel">Tag Recognition Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="tag_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
+         aria-labelledby="deleteimgProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteimgProcessModalLabel">Deleting Image(s) ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="delete_img_process_bar"
+                             class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Counter -->
+    <div id="counter" class="container" style="padding: 0 ;margin-top: 5rem">
+        <div class="cell">
+            <div class="counter-value number-count" data-count={{ count }}>1</div>
+            <div class="counter-info">Images<br>In Total</div>
+        </div>
+        <div class="cell" style="width: 180px">
+            <div class="counter-value number-count" data-count={{ capacity_now }}>1</div>
+            <div class="counter-info">MB<br>Used</div>
+        </div>
+        <div class="cell">
+            <div class="counter-value number-count" data-count="5">1</div>
+            <div class="counter-info">GB<br>In Total</div>
+        </div>
+        <input id="now_folder_fake_name" type="hidden" style="display: none;" value={{ now_folder_fake_name }}>
+    </div>
+    <!-- end of counter -->
+
+    <!-- Projects -->
+    <div id="projects" class="filter" style="padding-top: 1rem;padding-bottom: 1rem">
+        <div class="container" style="padding: 0;">
+            <div class="row">
+                <div class="col-lg-12" style="padding: 0;height: 6rem">
+                    <div class="section-title" style="font-family: 'MV Boli'">Search For Pictures</div>
+                    <h2 style="font-family: 'Ink Free'">Search Results For <b>{{ search_content }}</b></h2>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+            <input id="select_img_cnt" type="hidden" style="display: none;">
+            <div class="row col-lg-12 col-md-12 col-sm-12" style="padding: 0 2rem;">
+                <nav class="breadcrumb mx-auto"
+                     style="margin:0;background:rgba(242,242,242,0.8);width: 100%;border-radius: 1rem;border-bottom: 2px solid #40c4ff;box-sizing: border-box;font-weight: bold;color: #64b3f4;">
+                    <a class="breadcrumb-item" href="/search" style="color: #64b3f4;">Search</a>
+                    <a class="breadcrumb-item" href="/search?content={{ search_content }}"
+                       style="color: #64b3f4;">{{ search_content }}</a>
+                </nav>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    {% ifequal ALL_search None %}
+                        <div class="none_pics mx-auto">
+                            <h4>No Relevant Pictures Found yet ~</h4>
+                            <h4>Click Here to Search</h4>
+                            <button type="button" class="btn-solid-lg small blue" data-toggle="modal"
+                                    data-target="#launch-upload" title="Upload">UPLOAD
+                            </button>
+                        </div>
+                    {% endifequal %}
+                    {% ifnotequal ALL_search None %}
+                        <div class="grid" style="text-align: center;background-color: rgb(250,250,250)">
+                            <form id="imageFewForm">
+                                {% for p in ALL_search %}
+                                    <div class="element-item development"
+                                         id="img_{{ p.id }}"
+                                         style="text-align: center;background-color: rgb(250,250,250)">
+                                        <div>
+                                            <a title="{{ p.name }}" class="popup-with-move-anim" href='#box_{{ p.id }}'>
+                                                <div class="element-item-overlay"><span class="element_1"
+                                                                                        style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">{{ p.name }} </span>
+                                                </div>
+                                                <div class="zoomImage11 element_2"
+                                                     style="background-image: url({{ p.path }});border-radius: 0.5rem;"></div>
+                                            </a>
+                                            <a id="img_model_{{ p.id }}" class="choose_model_img"
+                                               style="border-radius: 0.5rem;cursor: pointer;" title="{{ p.name }}">
+                                                <div class="element-item-overlay"><span class="element_3"
+                                                                                        style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;">{{ p.name }}</span>
+                                                </div>
+                                                <div class="zoomImage11 choose_zoomImage11 element_4"
+                                                     style="background-image: url({{ p.path }});border-radius: 0.25rem;"></div>
+                                                <input class="download_select element_5" type="checkbox"
+                                                       style="display: none" value={{ p.fake_name }} name="img_name">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </form>
+
+                        </div> <!-- end of grid -->
+                    {% endifnotequal %}
+
+                    <!-- end of filter -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of filter -->
+    <!-- end of projects -->
+
+    <!-- pages-->
+    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 10rem">
+        <button id="top" class="btn-small" type="button" value="zero">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
+        <button id="back" class="btn-small" type="button" value="zero"
+                style="display: none;margin-bottom: 0.5rem">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <button id="next" class="btn-small" type="button" value="zero"
+                style="display: none;margin: 0 auto;">
+            <i class="fas fa-angle-down"></i>
+        </button>
+    </div>
+    <!--end of pages-->
+
+
+
+    <!-- Lightbox -->
+    {% for p in ALL_search %}
+        <div id='box_{{ p.id }}' class="lightbox-basic zoom-anim-dialog mfp-hide">
+            <div class="row">
+                <button title="Close (Esc)" type="button" class="mfp-close x-button">×</button>
+                <div class="col-lg-8" style="text-align:center;margin:auto 0;">
+                    <img class="img-fluid element_6" src={{ p.path }} alt={{ p.name }}>
+                </div> <!-- end of col -->
+                <div class="col-lg-4 btn-local0" style="color: rgb(147,147,147);font-family: 'Arial'">
+                    <h3 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color: black"
+                        class="element_7" title="{{ p.name }}">{{ p.name }}</h3>
+                    <hr class="line-heading">
+                    <div style="margin-bottom: 0">
+                        <h6 style="float: left;margin-bottom: 1rem">Upload time:</h6>
+                        <b style="float: right" class="element_8">{{ p.upload_time }}</b>
+                    </div>
+                    <div style="margin-top: 0;margin-bottom: 0">
+                        <h6 style="float: left;margin-bottom: 1rem">Size:</h6>
+                        <b style="float: right" class="element_9">{{ p.size }}&nbsp;MB</b>
+                    </div>
+                    <div style="margin-top: 0;margin-bottom: 0">
+                        <h6 style="float: left;margin-bottom: 1rem">Width:</h6>
+                        <b style="float: right" class="element_10">{{ p.height }}&nbsp;px</b>
+                    </div>
+                    <div style="margin-top: 0;margin-bottom: 0">
+                        <h6 style="float: left;margin-bottom: 1rem">Height:</h6>
+                        <b style="float: right" class="element_11">{{ p.width }}&nbsp;px</b>
+                    </div>
+                    <div style="margin-top: 0;margin-bottom: 0">
+                        <h6 style="float: left;margin-bottom: 1rem">Tag:</h6>
+                        <b style="float: right" class="element_12">{{ p.nowtag }}</b>
+                    </div>
+                    <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
+                        <form class="downloadOneForm">
+                            <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
+                                   name="img_name">
+                            <button class="download_one btn-small mx-auto" type="button" title="Download"
+                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                <i class="uil uil-image-download" style="font-size: 1.5rem;"></i>
+                            </button>
+                            <button class="getFaceRec yellow-btn-small mx-auto" type="button"
+                                    title="Get Face Recogntion"
+                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                <i class="uil uil-smile-wink-alt" style="font-size: 1.5rem;"></i>
+                            </button>
+                            <button class="delete_one rm-btn-small mx-auto" title="Delete" type="button"
+                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                <i class="uil uil-image-times" style="font-size: 1.5rem;"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of lightbox-basic -->
+    {% endfor %}
+    <!-- end of lightbox -->
+
+
+    <div id="image-pop">
+        <div class="container popbtn float-btn-group">
+            <div class="float-btn-group" style="bottom:24.5rem;">
+                <button id="getTag" class="btn-float yellow" type="button" title="Get All Tags">
+                    <i class="uil uil-tag-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="container popbtn">
+            <div class="float-btn-group">
+                <button id="change_model" class="btn-float btn-triger blue" type="button" value="select"
+                        title="Select">
+                    <i class="select_text uil uil-list-ul"></i>
+                    <i class="view_text uil uil-left-arrow-from-left" style="display: none"></i>
+                </button>
+                <div class="btn-list">
+                    <button id="getFewFaceRec" class="btn-float yellow" type="button" title="Get Face Recognition">
+                        <i class="uil uil-smile-squint-wink-alt"></i>
+                    </button>
+                    <button id="imgs_delete_few" class="btn-float pink" type="button">
+                        <i class="uil uil-image-times"></i>
+                    </button>
+                    <button id="imgs_download_few" class="btn-float green" type="button">
+                        <i class="uil uil-image-download"></i>
+                    </button>
+                    <button id="select_all" class="btn-float blue" type="button" value="zero" title="Select All">
+                        <i class="select_all_text uil uil-book-medical"></i>
+                        <i class="cancel_text uil uil-times-circle" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/vendor/popper/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
+    <script src="/static/vendor/jquery/jquery.easing.min.js"></script>
+    <script src="/static/vendor/jquery/jquery.magnific-popup.js"></script><!-- Magnific Popup for lightboxes -->
+    <script src="/static/js/popbtn/main.js"></script>
+    <script src="/static/js/mypics_folder/main.js"></script>
+    <script src="/static/js/download/main.js"></script>
+    <script src="/static/js/delete_img/main.js"></script>
+    <script src="/static/js/getTag/main.js"></script>
+    <script src="/static/js/getFaceRec/main.js"></script>
+    <script src="/static/js/preload/main.js"></script>
+{% endblock %}
