@@ -290,7 +290,7 @@ body {
 }
 
 .btn-small {
-    z-index: 1;
+    z-index: 1000;
     display: inline-block;
     padding: 1rem 1.2rem 1rem 1.2rem;
     border: 0.125rem solid #64b3f4;

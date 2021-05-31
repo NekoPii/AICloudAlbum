@@ -30,7 +30,7 @@ mimetypes.add_type('application/javascript', '.js')
 SECRET_KEY = '#pbk6n0rcclnxtctv%#)wb&gujayk!+d@peo0c-)7fdaz0)=oo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -155,7 +155,7 @@ CAPTCHA_LENGTH = 4
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
 
-
+COMPRESS_ENABLED=True
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
     # creates absolute urls from relative ones
