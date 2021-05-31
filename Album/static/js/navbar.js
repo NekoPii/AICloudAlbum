@@ -4,6 +4,8 @@
    Description: Custom JS file
 */
 
+var max_search_len = 25;
+
 (function ($) {
     "use strict";
 
@@ -46,34 +48,22 @@
         if (event.keyCode === 13) {
             var search_tag = $(this).val();
             search_tag = search_tag.trim();
-            if (search_tag !== "" && search_tag) {
-                $.ajax({
-                    url: "/search_tag/",
-                    type: "POST",
-                    data: $("#search_tag").serialize(),
-                    dataType: "json",
-                    success: function (data) {
-                        var search_status = data["search_status"];
-                        if (search_status === "false") {
-                            $("#input_search_tag").val(null);
-                            toastr.warning("Tag doesn't exist !");
-                            $("#input_search_tag").focus();
-                        } else if (search_status === "true") {
-                            toastr.success("\"" + search_tag + "\" Images Find Successfully ~");
-                        }
-                    },
-                    error: function () {
-                        toastr.error("Error , Please Try again !");
-                    }
-                });
-
-            } else {
-                $(this).blur();
-                $(this).val(null);
-                toastr.error("Search Tag can't be empty !");
-
+            if (search_tag && search_tag != "") {
+                var search_form = $("#search_tag");
+                search_form.attr("method", "get");
+                search_form.attr("action", "/search/");
+                if (search_tag.length > max_search_len) {
+                    $(this).val(search_tag.substr(0, max_search_len));
+                }
+                search_form.submit();
+            } else if (search_tag.length < 50) {
+                toastr.error("Search content can't be empty !")
             }
         }
+    });
+
+    $("#search_btn").click(function () {
+        $("#input_search_tag").focus();
     });
 
 

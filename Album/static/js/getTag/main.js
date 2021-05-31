@@ -4,7 +4,6 @@ $("#getTag").click(function () {
     $("#tag-process").modal("show");
     var tag_process = setInterval(function () {
         $.getJSON("/show_tagprocess/", function (res) {
-            console.log(res)
             $("#tag_process_bar").css("width", res["now_tag_process"]).text(res["now_tag_process"]);
             if (res["tag_process_val"] === 1) {
                 clearInterval(tag_process);
@@ -95,6 +94,128 @@ $("#getTag").click(function () {
             toastr.clear()
             toastr.error("Error , Please Try again !")
             $(this).attr("disabled", false)
+        }
+    });
+});
+
+
+$(".getOneTag").click(function () {
+    $(this).attr("disabled", true);
+
+    $("#tag-process").modal("show");
+    var tag_process = setInterval(function () {
+        $.getJSON("/show_tagprocess/", function (res) {
+            $("#tag_process_bar").css("width", res["now_tag_process"]).text(res["now_tag_process"]);
+            if (res["tag_process_val"] === 1) {
+                clearInterval(tag_process);
+                setTimeout(function () {
+                    $("#tag-process").modal("hide");
+                }, 500);
+                setTimeout(function () {
+                    $("#tag_process_bar").css("width", "0.1%").text("0.1%");
+                }, 600);
+            }
+        })
+    }, 100);
+    toastr.options = {
+        "closeButton": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "showDuration": "100",
+        "hideDuration": "1000",
+        "timeOut": "0",
+        "extendedTimeOut": "0",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "onclick": null,
+    };
+    toastr.info("Get Tag ...");
+    var downloadOneForm = $(this).closest('.downloadOneForm');
+    $.ajax({
+        url: "/get_ongtag/",
+        type: "POST",
+        data: downloadOneForm.serialize(),
+        dataType: "json",
+        success: function (data) {
+            setTimeout(function () {
+                toastr.clear()
+                if (data["getTag_status"] === "true") {
+                    toastr.options = {
+                        "closeButton": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": true,
+                        "showDuration": "100",
+                        "hideDuration": "1000",
+                        "timeOut": "1000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "onclick": null,
+                    };
+                    $(".getOneTag").removeAttr("disabled");
+                    toastr.success("Get Tag Success !")
+                    return new Promise(function (resolve, reject) {
+                        $.confirm({
+                            title: 'Click to Tag Now',
+                            content: "Are you want to go to tag page right now ?",
+                            type: 'green',
+                            buttons: {
+                                Yes: {
+                                    btnClass: 'btn-success text-white',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        resolve();
+                                        window.location.href = "/tags/";
+                                    }
+                                },
+                                No: {
+                                    btnClass: 'btn-default text-black',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        $(".getOneTag").removeAttr("disabled");
+                                        resolve();
+                                    }
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    $(".getOneTag").removeAttr("disabled");
+                    toastr.options = {
+                        "closeButton": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": true,
+                        "showDuration": "100",
+                        "hideDuration": "1000",
+                        "timeOut": "1000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut",
+                        "onclick": null,
+                    };
+                    toastr.info("Tag has been obtained !")
+                }
+            }, 500)
+        },
+        error: function () {
+            toastr.clear()
+            toastr.error("Error , Please Try again !")
+            clearInterval(tag_process);
+            $("#tag-process").modal("hide");
+            $("#tag_process_bar").css("width", "0.1%").text("0.1%");
+            $(".getOneTag").removeAttr("disabled");
         }
     });
 });

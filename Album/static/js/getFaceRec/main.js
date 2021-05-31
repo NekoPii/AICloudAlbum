@@ -189,7 +189,7 @@ $(".getFaceRec").click(function () {
         "hideMethod": "fadeOut",
         "onclick": null,
     };
-    toastr.info("Get Select Images' Face Recognition ...");
+    toastr.info("Get Image Face Recognition ...");
     var downloadOneForm = $(this).closest('.downloadOneForm');
     $.ajax({
         url: "/one_faceRec/",
@@ -236,7 +236,7 @@ $(".getFaceRec").click(function () {
                                     btnClass: 'btn-default text-black',
                                     keys: ['enter'],
                                     action: function () {
-                                        $(this).removeAttr("disabled");
+                                        $(".getFaceRec").removeAttr("disabled");
                                         resolve();
                                     }
                                 }

@@ -29,13 +29,13 @@ urlpatterns = [
     path("delete_select_folder/", views.delete_select_folder, name="delete_select_folder"),
     path("add_folder/", views.add_folder, name="add_folder"),
     path("modify_folder/<str:now_folder_name>/", views.modify_folder, name="modify_folder"),
+    path("get_ongtag/", views.get_oneTag, name="getOneTag"),
     path("get_tag/<str:folder_fake_name>/", views.getTag, name="getTag"),
-    path("search_tag/", views.search_tag, name="searchTag"),  # 导航栏按照标签搜索图片
     path("face/", views.faceMainPage, name="face"),
     path("face/<str:face_cover_fake_name>/", views.faceDetailPage, name="faceDetail"),
     path("select_faceRec/", views.get_select_faceDetect, name="select_faceRec"),
     path("one_faceRec/", views.get_one_faceDetect, name="one_faceRec"),
-    path("search/",views.search,name="search"),
+    path("search/", views.search, name="search"),
     ## Progress
     path("show_faceprocess/", views.show_face_process, name="face_process"),
     path("show_tagprocess/", views.show_tag_process, name="tag_process"),

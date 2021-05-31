@@ -482,13 +482,12 @@ def search(request):
 
         all_tag = models.Tag.objects.all()
         global all_search_imgs
-        all_search_imgs = None
         ALL_search = []
         try:
             search_content = request.GET["content"]
             if search_content:
                 search_pics_byname = models.Picture.objects.filter(user_id=user.phone, name__contains=search_content)
-                all_search_imgs = all_search_imgs.union(search_pics_byname)
+                all_search_imgs = search_pics_byname
                 search_bytag = all_tag.filter(tag__contains=search_content)
                 if search_bytag:
                     for now_tag in search_bytag:
@@ -498,6 +497,11 @@ def search(request):
                     for index, now_img in enumerate(all_search_imgs):
                         if index >= page_num_img:
                             break
+                        now_img.size=format(now_img.size,'.2f')
+                        now_img.path = os.path.join('/upload_imgs/compress_imgs/', now_img.fake_name + '.' + now_img.type)
+                        now_img.id = index+1
+                        now_img.upload_time = now_img.upload_time.strftime('%Y-%m-%d')
+                        now_img.nowtag = all_tag.get(id=now_img.tag_id).tag
                         ALL_search.append(now_img)
         except:
             pass
@@ -1512,42 +1516,59 @@ def getTag(request, folder_fake_name):
             response = HttpResponse(json.dumps(res))
 
             return response
-        return render(request, "Album/mypics_folder.html", locals())
+        return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
 
 
 @csrf_exempt
-def search_tag(request):
+def get_oneTag(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global tag_process
+            tag_process = 0.001
 
             phone = request.session["phone"]
-            search_tag = request.POST["search_tag"]
-            res = {"search_status": None}
+
+            NoneTag = models.Tag.objects.get(tag="None")
+
+            now_imgs_fakename = request.POST["img_name"]
 
             now_user = models.User.objects.get(phone=phone)
 
-            search_tag_exist = models.Tag.objects.filter(tag=search_tag)
+            now_pics = models.Picture.objects.filter(user_id=now_user.phone, fake_name=now_imgs_fakename,
+                                                     tag_id=NoneTag.id)
 
-            if search_tag_exist:
-                search_tag_user = models.UserTag.objects.filter(tag=search_tag_exist.id, user=now_user)
-                if search_tag_user:
-                    tag_id = search_tag_user.tag
-                    cnt = search_tag_user.cnt
-                    pics_tag = models.Picture.objects.filter(tag=tag_id, user=now_user)
+            all_tag = models.Tag.objects.all()
 
-                    '''Here add Search Tag Page Content  '''
+            res = {"getTag_status": None}
 
-                    res["search_status"] = "true"
-                else:
-                    res["search_status"] = "false"
+            if now_pics:
+                try:
+                    now_pic = now_pics[0]
+                    now_path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
+                    if not os.path.exists(now_path):
+                        res["getTag_status"] = "false"
+                        raise Exception("Path not exist")
+
+                    else:
+                        now_res = type_sever.pd(now_path)
+                        now_pic.tag_id = all_tag.get(tag=now_res[0]).id
+                        now_pic.is_tag = 1
+                        now_pic.save()
+                        tag_process = 1
+                        res["getTag_status"] = "true"
+                except:
+                    pass
+                    tag_process = 1
+                    res["getTag_status"] = "false"
             else:
-                res["search_status"] = "false"
+                tag_process = 1
+                res["getTag_status"] = "false"
+
             response = HttpResponse(json.dumps(res))
+
             return response
-
-        return render(request, "Album/welcome.html", locals())
-
+        return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
 
 
@@ -1572,7 +1593,6 @@ def faceMainPage(request):
                     f.fake_name = now_cover_fakename
                     Faces.append(f)
                     cnt += 1
-
 
         count = valid_cnt
         capacity_now = format(user.now_capacity, '.2f')
