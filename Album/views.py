@@ -33,6 +33,7 @@ global type_sever
 type_sever = typeSever()
 page_num_folder = 5
 page_num_img = 10
+page_num_face = 5
 zeroid = 1
 threshold = 1080
 face_process = 0.001
@@ -231,6 +232,35 @@ def ajax_val(request):
             json_data = {'status': 1}
         else:
             json_data = {'status': 0}
+        return JsonResponse(json_data)
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+
+def ajax_faces(request):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        faces = models.Face.objects.filter(user_id=user.phone)
+        json_data = {}
+        json_data["faces"] = []
+        cnt = 0
+        for f in faces:
+            if f.cnt > 0:
+                cnt += 1
+                now_cover_fakename = f.face_cover.split(".")[0]
+                f.href = "/face/" + now_cover_fakename + "/"
+                f.cover_path = "/upload_imgs/ExistingFace/" + user.phone + "/" + f.face_cover
+                f.id = cnt
+                f.fake_name = now_cover_fakename
+                F = {"id": f.id, "href": f.href, "path": f.cover_path, "fake_name": f.fake_name}
+                json_data["faces"].append(F)
+
+        json_data["count"] = cnt
+        json_data["status"] = 1
+
         return JsonResponse(json_data)
     else:
         # raise Http404
@@ -1491,15 +1521,15 @@ def faceMainPage(request):
         for f in faces:
             if f.cnt > 0:
                 valid_cnt += 1
-                now_cover_fakename = f.face_cover.split(".")[0]
-                f.href = "/face/" + now_cover_fakename + "/"
-                f.cover_path = "/upload_imgs/ExistingFace/" + user.phone + "/" + f.face_cover
-                f.id = cnt
-                f.fake_name = now_cover_fakename
-                Faces.append(f)
-                cnt += 1
-                if cnt == 26:
-                    break
+                if cnt <= page_num_face:
+                    now_cover_fakename = f.face_cover.split(".")[0]
+                    f.href = "/face/" + now_cover_fakename + "/"
+                    f.cover_path = "/upload_imgs/ExistingFace/" + user.phone + "/" + f.face_cover
+                    f.id = cnt
+                    f.fake_name = now_cover_fakename
+                    Faces.append(f)
+                    cnt += 1
+
 
         count = valid_cnt
         capacity_now = format(user.now_capacity, '.2f')
@@ -1520,7 +1550,7 @@ def faceDetailPage(request, face_cover_fake_name):
         FaceDetails = []
         cnt = 1
         total_cnt = 0
-        all_tag=models.Tag.objects.all()
+        all_tag = models.Tag.objects.all()
         now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
         if now_Face:
             now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)

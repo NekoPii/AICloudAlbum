@@ -1,11 +1,11 @@
 var current_page_folder = 1;
 var current_page_imgs = 1;
-var folders;
-var folder_count;
+var faces;
+var count;
 var imgs;
 var img_count;
 var currentPage = 0;
-var page_num_folder = 5;
+var page_num_face = 5;
 var page_num_img = 10;
 var img_cnt = 0,
     folder_cnt = 0;
@@ -90,16 +90,16 @@ var img_cnt = 0,
         $("#folder_back").css("display", "none");
         $("#image-pop").css("display", "none");
         $("#folder-pop").css("display", "");
+
         if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
-            if ((folder_count - current_page_folder * 25) > 0 && current_page_folder === 1) {
-                $("#folder_next").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
-                $("#folder_next").css("display", "inline-block");
-                $("#folder_back").css("display", "inline-block");
-            } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
-                $("#folder_back").css("display", "inline-block");
-            }
+            $("#folder_next").css("display", "inline-block");
+        } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
+            $("#folder_next").css("display", "inline-block");
+            $("#folder_back").css("display", "inline-block");
+        } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
+            $("#folder_back").css("display", "inline-block");
         }
+
     });
 
     $("#folder_back")
@@ -134,7 +134,7 @@ var img_cnt = 0,
 
                     pic_number++;
                     $("#folder_" + i).css("display", "block")
-                    $("#folder_model_"+i).addClass("choose_model_img");
+                    $("#folder_model_" + i).addClass("choose_model_img");
 
                 }
 
@@ -145,7 +145,6 @@ var img_cnt = 0,
 
     $("#folder_next")
         .click(function () {
-            console.log("success");
             if ((folder_count - current_page_folder * page_num_folder) > 0) {
                 $("#folder_next").css("display", "inline-block")
                 $("#folder_back").css("display", "inline-block")
@@ -177,9 +176,9 @@ var img_cnt = 0,
 
                         pic_number++;
                         $("#folder_" + i).css("display", "block");
-                        $("#folder_model_"+i).addClass("choose_model_img");
+                        $("#folder_model_" + i).addClass("choose_model_img");
                     } else {
-                        $("#folder_model_"+i).removeClass("choose_model_img");
+                        $("#folder_model_" + i).removeClass("choose_model_img");
                         $("#folder_" + i).css("display", "none");
                     }
 
@@ -229,15 +228,15 @@ var img_cnt = 0,
                     $(element8).attr("alt", imgs[img_number]["name"]);
                     $(element9).text(imgs[img_number]["name"]);
                     $(element10).text(imgs[img_number]["upload_time"]);
-                    $(element11).text(imgs[img_number]["size"]+ " MB");
-                    $(element12).text(imgs[img_number]["height"]+ " px");
-                    $(element13).text(imgs[img_number]["width"]+ " px");
+                    $(element11).text(imgs[img_number]["size"] + " MB");
+                    $(element12).text(imgs[img_number]["height"] + " px");
+                    $(element13).text(imgs[img_number]["width"] + " px");
                     $(element14).text(imgs[img_number]["tag"]);
                     $(element15).val(imgs[img_number]["fake_name"]);
                     img_number++;
                     $("#img_" + i).css("display", "block")
                     $("#box_" + i).css("display", "block")
-                    $("#img_model_"+i).addClass("choose_model_img");
+                    $("#img_model_" + i).addClass("choose_model_img");
 
                 }
             }
@@ -291,10 +290,10 @@ var img_cnt = 0,
                         img_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
-                        $("#img_model_"+i).addClass("choose_model_img");
+                        $("#img_model_" + i).addClass("choose_model_img");
 
                     } else {
-                        $("#img_model_"+i).removeClass("choose_model_img");
+                        $("#img_model_" + i).removeClass("choose_model_img");
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
                     }
@@ -528,7 +527,7 @@ $("#folders_change_model").click(function () {
         folder_cnt = 0;
         $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
         $("#select_folder_cnt").val(folder_cnt.toString());
-        $(this).val("select").attr("title","Select");
+        $(this).val("select").attr("title", "Select");
         $("#folders_change_model .select_text").css("display", "");
         $("#folders_change_model .view_text").css("display", "none");
         $("#folders_select_all").val("zero").attr("title", "Select All")

@@ -61,10 +61,9 @@
                                     <div class="element-item development"
                                          id="faces_{{ f.id }}"
                                          style="text-align: center;background:transparent;">
-                                        <a href={{ f.href }}>
+                                        <a class="element_1" href={{ f.href }}>
                                             <div class="element-item-overlay">
-                                                <span class="element_1"
-                                                      style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">See&nbsp;Images</span>
+                                                <span style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 1rem;background-color: rgba(0,0,0,0.1);">See&nbsp;Images</span>
                                             </div>
                                             <div class="zoomImage11 element_2"
                                                  style="background-image: url({{ f.cover_path }});border-radius: 50%;"></div>
@@ -89,11 +88,11 @@
     </div>
     <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
         <button id="back" class="btn-small" type="button" value="zero"
-                style="display: inline;margin-bottom: 0.5rem">
+                style="display: none;margin-bottom: 0.5rem">
             <i class="fas fa-angle-up"></i>
         </button>
         <button id="next" class="btn-small" type="button" value="zero"
-                style="display: inline;margin: 0 auto;">
+                style="display: none;margin: 0 auto;">
             <i class="fas fa-angle-down"></i>
         </button>
     </div>
