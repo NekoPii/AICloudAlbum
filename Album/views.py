@@ -269,6 +269,37 @@ def ajax_faces(request):
         return JsonResponse(json_data)
 
 
+def ajax_faces_detail(request, face_cover_fake_name):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        all_tag = models.Tag.objects.all()
+        now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
+        now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
+        json_data = {}
+        json_data["faces_pics"] = []
+        cnt = 1
+        for facepic in now_FacePic:
+            p = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
+            p.size = format(p.size, '.2f')
+            p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+            p.id = cnt
+            pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                   "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
+                   "tag": all_tag.get(id=p.tag_id).tag}
+            json_data["faces_pics"].append(pic)
+            cnt+=1
+
+        json_data["count"] = cnt-1
+        json_data["status"] = 1
+        return JsonResponse(json_data)
+
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+
 def ajax_pics_tag(request, tag):
     if request.is_ajax():
         phone = request.session['phone']
@@ -497,9 +528,10 @@ def search(request):
                     for index, now_img in enumerate(all_search_imgs):
                         if index >= page_num_img:
                             break
-                        now_img.size=format(now_img.size,'.2f')
-                        now_img.path = os.path.join('/upload_imgs/compress_imgs/', now_img.fake_name + '.' + now_img.type)
-                        now_img.id = index+1
+                        now_img.size = format(now_img.size, '.2f')
+                        now_img.path = os.path.join('/upload_imgs/compress_imgs/',
+                                                    now_img.fake_name + '.' + now_img.type)
+                        now_img.id = index + 1
                         now_img.upload_time = now_img.upload_time.strftime('%Y-%m-%d')
                         now_img.nowtag = all_tag.get(id=now_img.tag_id).tag
                         ALL_search.append(now_img)
@@ -1618,7 +1650,7 @@ def faceDetailPage(request, face_cover_fake_name):
         if now_Face:
             now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
             for facepic in now_FacePic:
-                if cnt < 26:
+                if cnt <= page_num_img:
                     now_img = models.Picture.objects.get(user_id=user.phone, id=facepic.pic_id)
                     now_img.size = format(now_img.size, '.2f')
                     now_img.path = os.path.join('/upload_imgs/compress_imgs/',
