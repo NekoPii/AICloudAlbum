@@ -43,18 +43,18 @@
         </div>
     </div>
 
-    <div class="modal fade" id="delete-img-process" tabindex="-1" role="dialog"
-         aria-labelledby="deleteimgProcessModalLabel"
+    <div class="modal fade" id="tag-process" tabindex="-1" role="dialog"
+         aria-labelledby="tagProcessModalLabel"
          aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
         <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteimgProcessModalLabel">Deleting Image(s) ... </h5>
+                    <h5 class="modal-title" id="tagProcessModalLabel">Tag Recognition Processing ... </h5>
                 </div>
                 <div class="modal-body">
                     <div class="progress">
-                        <div id="delete_img_process_bar"
-                             class="progress-bar bg-danger progress-bar-striped progress-bar-animated"
+                        <div id="tag_process_bar"
+                             class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
                              role="progressbar"
                              aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
                              style="width: 0.1%;">0.1%
@@ -209,14 +209,14 @@
                             {% csrf_token %}
                             <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
                                    name="img_name">
-                            <button class="download_one btn-small mx-auto" title="Download" type="button"
-                                    style="padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;">
-                                <i class="uil uil-image-download"></i>
-                            </button>
-                            <button class="delete_one rm-btn-small mx-auto" title="Delete"
-                                    type="button"
+                            <button class="getOneTag yellow-btn-small mx-auto" type="button"
+                                    title="Get Tag"
                                     style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
-                                <i class="uil uil-image-times" style="font-size: 1.5rem;"></i>
+                                <i class="uil uil-tag-alt" style="font-size: 1.5rem;"></i>
+                            </button>
+                            <button class="download_one btn-small mx-auto" title="Download" type="button"
+                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                <i class="uil uil-image-download"></i>
                             </button>
                         </form>
                     </div>
@@ -227,7 +227,14 @@
     <!-- end of lightbox -->
 
 
-    <div id="face_detail_pop">
+    <div id="folder-pop">
+        <div class="container popbtn float-btn-group">
+            <div class="float-btn-group" style="bottom:24.5rem;">
+                <button id="getTag" class="btn-float yellow" type="button" title="Get All Tags">
+                    <i class="uil uil-tag-alt"></i>
+                </button>
+            </div>
+        </div>
         <div class="container popbtn">
             <div class="float-btn-group">
                 <button id="change_model" class="btn-float btn-triger blue" type="button" value="select"
@@ -238,9 +245,6 @@
                 <div class="btn-list">
                     <button id="imgs_download_few" class="btn-float green" type="button">
                         <i class="uil uil-image-download"></i>
-                    </button>
-                    <button id="imgs_delete_few" class="btn-float pink" type="button">
-                        <i class="uil uil-image-times"></i>
                     </button>
                     <button id="select_all" class="btn-float blue" type="button" value="zero" title="Select All">
                         <i class="select_all_text uil uil-book-medical"></i>
@@ -268,7 +272,6 @@
     <script src="{% static 'js/popbtn/main.js' %}"></script>
     <script src="{% static 'js/mypics_folder/main.js' %}"></script>
     <script src="{% static 'js/download/main.js' %}"></script>
-    <script src="{% static 'js/delete_img/main.js' %}"></script>
     <script src="{% static 'js/getTag/main.js' %}"></script>
     <script src="{% static 'js/getFaceRec/main.js' %}"></script>
     <script src="{% static 'js/preload/main.js' %}"></script>
