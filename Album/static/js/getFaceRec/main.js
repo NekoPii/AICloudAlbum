@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+    }
+});
+
 $("#getFewFaceRec").click(function () {
     if ($("#select_img_cnt").val() === "0") {
         toastr.info("No Images Selected !")

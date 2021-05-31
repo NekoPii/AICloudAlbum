@@ -34,6 +34,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="file-loading">
+                        {% csrf_token %}
                         <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
                                accept="image/*" data-browse-on-zone-click="true">
                     </div>
@@ -207,15 +208,15 @@
     <!-- pages-->
     <div class="container" style="width:4rem;position: fixed ;right: 1rem;bottom: 10rem">
         <button id="top" type="button" class="btn-float blue"
-                title="Up"style="margin-bottom: 2rem">
+                title="Up" style="margin-bottom: 2rem">
             <i class="fas fa-arrow-up"></i>
         </button>
         <button id="back" type="button" class="btn-float"
-                title="Back"style="margin-left:0;margin-bottom: 2rem;display: none;background: rgb(187, 187, 187)">
+                title="Back" style="margin-left:0;margin-bottom: 2rem;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-left"></i>
         </button>
         <button id="next" type="button" class="btn-float"
-                title="Next"style="margin: 0;display: none;background: rgb(187, 187, 187)">
+                title="Next" style="margin: 0;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-right"></i>
         </button>
     </div>
@@ -258,6 +259,7 @@
                     </div>
                     <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
+                            {% csrf_token %}
                             <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
                                    name="img_name">
                             <button class="download_one btn-small mx-auto" type="button" title="Download"

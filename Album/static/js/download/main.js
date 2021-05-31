@@ -13,8 +13,13 @@ $(document).ready(function () {
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut",
-        "onclick":null,
+        "onclick": null,
     };
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
 });
 
 $(".download_one").click(function () {

@@ -124,10 +124,8 @@ def show_delete_folder_process(request):
 
 
 # ==================================== views
-
 def index(request):
-    pass
-    return render(request, "index.html")
+    return redirect("/welcome/")
 
 
 def login(request):
@@ -288,9 +286,9 @@ def ajax_faces_detail(request, face_cover_fake_name):
                    "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
                    "tag": all_tag.get(id=p.tag_id).tag}
             json_data["faces_pics"].append(pic)
-            cnt+=1
+            cnt += 1
 
-        json_data["count"] = cnt-1
+        json_data["count"] = cnt - 1
         json_data["status"] = 1
         return JsonResponse(json_data)
 
@@ -611,7 +609,6 @@ def tags_pics(request, tag):
     else:
         return redirect("/login/")
 
-
 @csrf_exempt
 def upload_upload_syn(request, folder_fake_name):
     if request.session.get("is_login"):
@@ -669,7 +666,10 @@ def upload_upload_syn(request, folder_fake_name):
                     nowFolder.cnt += 1
                     nowFolder.total_size += new_img.size
                     nowFolder.modify_time = datetime.datetime.now()
-                    nowFolder.save(force_update=True)
+                    nowFolder.save()
+
+                    now_user.now_capacity = nowFolder.total_size
+                    now_user.save()
 
                     if nowFolder.id != ALL_folder.id:
                         ALL_folder_cover.pic_id = new_img.pk
@@ -680,8 +680,8 @@ def upload_upload_syn(request, folder_fake_name):
                         ALL_folder.modify_time = datetime.datetime.now()
                         ALL_folder.save()
 
-                    now_user.now_capacity = ALL_folder.total_size
-                    now_user.save()
+                        now_user.now_capacity = ALL_folder.total_size
+                        now_user.save()
 
                     # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -750,7 +750,6 @@ def upload_upload_syn(request, folder_fake_name):
 
 mutex_x = Lock()
 
-
 @csrf_exempt
 def upload_upload_asyn(request, folder_fake_name):
     if request.session.get("is_login"):
@@ -804,7 +803,10 @@ def upload_upload_asyn(request, folder_fake_name):
                 nowFolder.cnt += 1
                 nowFolder.total_size += new_img.size
                 nowFolder.modify_time = datetime.datetime.now()
-                nowFolder.save(force_update=True)
+                nowFolder.save()
+
+                now_user.now_capacity = nowFolder.total_size
+                now_user.save()
 
                 if nowFolder.id != ALL_folder.id:
                     ALL_folder_cover.pic_id = new_img.pk
@@ -815,8 +817,8 @@ def upload_upload_asyn(request, folder_fake_name):
                     ALL_folder.modify_time = datetime.datetime.now()
                     ALL_folder.save()
 
-                now_user.now_capacity = ALL_folder.total_size
-                now_user.save()
+                    now_user.now_capacity = ALL_folder.total_size
+                    now_user.save()
 
                 # print("1:" + str(ALLFolder.cnt) + str(datetime.datetime.now()))
 
@@ -889,7 +891,6 @@ def upload_upload_asyn(request, folder_fake_name):
         return redirect("/login/")
 
 
-@csrf_exempt
 def download(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -913,7 +914,6 @@ def download(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def download_select(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -962,7 +962,6 @@ def download_select(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def delete_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1092,7 +1091,6 @@ def delete_img(request, folder_fake_name):
     return redirect("/login/")
 
 
-@csrf_exempt
 def delete_select_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1239,7 +1237,6 @@ def delete_select_img(request, folder_fake_name):
     return redirect("/login/")
 
 
-@csrf_exempt
 def delete_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1311,7 +1308,6 @@ def delete_folder(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def delete_select_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1399,7 +1395,6 @@ def delete_select_folder(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def add_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1445,7 +1440,6 @@ def add_folder(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def modify_folder(request, now_folder_name):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1493,7 +1487,6 @@ def runImgClass(p, all_tag, now_path):
 '''
 
 
-@csrf_exempt
 def getTag(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1552,7 +1545,6 @@ def getTag(request, folder_fake_name):
     return redirect("/login/")
 
 
-@csrf_exempt
 def get_oneTag(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1676,7 +1668,6 @@ def faceDetailPage(request, face_cover_fake_name):
         return redirect("/login/")
 
 
-@csrf_exempt
 def get_one_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
@@ -1733,7 +1724,6 @@ def get_one_faceDetect(request):
     return redirect("/login/")
 
 
-@csrf_exempt
 def get_select_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":

@@ -33,7 +33,9 @@
                 </div>
                 <div class="modal-body">
                     <form id="addFolderForm">
+                        {% csrf_token %}
                         <div class="form-group">
+                            {% csrf_token %}
                             <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
                             <input value="" class="form-control-input" id="input_folder_name" tabindex="1"
                                    name="folder_name"
@@ -65,6 +67,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="modifyFolderForm">
+                        {% csrf_token %}
                         <div class="form-group">
                             <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
                             <div class="form-group"
@@ -117,6 +120,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="file-loading">
+                        {% csrf_token %}
                         <input id="upload-input" class="file-loading" type="file" name="upload_img" multiple
                                accept="image/*" data-browse-on-zone-click="true">
                     </div>
@@ -293,6 +297,7 @@
                                 {% ifnotequal ALL_imgs None %}
                                     <div class="grid" style="text-align: center;background:transparent;">
                                         <form id="imageFewForm">
+                                            {% csrf_token %}
                                             {% for p in ALL_imgs %}
                                                 <div class="element-item development"
                                                      id="img_{{ p.id }}"
@@ -365,6 +370,7 @@
                                         </div>
                                         <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
                                             <form class="downloadOneForm">
+                                                {% csrf_token %}
                                                 <input class="download_input element_13"
                                                        value="{{ p.fake_name }}" type="hidden"
                                                        name="img_name">
@@ -414,6 +420,7 @@
                                 {% ifnotequal Folders None %}
                                     <div class="grid folder" style="text-align: center;background:transparent;">
                                         <form id="folderFewForm">
+                                        {% csrf_token %}
                                             {% for p in Folders %}
                                                 <div class="element-item development"
                                                      id="folder_{{ p.id }}"
@@ -466,21 +473,21 @@
     </div>
     <div class="container" style="width:5rem;position: fixed ;right: 1rem;bottom: 3rem">
         <button id="img_back" type="button" class="btn-float"
-                title="Back"style="margin-left:0;margin-bottom: 1.5rem;display: none;background: rgb(187, 187, 187)">
+                title="Back" style="margin-left:0;margin-bottom: 1.5rem;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-left"></i>
         </button>
         <button id="img_next" type="button" class="btn-float"
-                title="Next"style="margin: 0;display: none;background: rgb(187, 187, 187)">
+                title="Next" style="margin: 0;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-right"></i>
         </button>
     </div>
     <div class="container" style="width:5rem;position: fixed ;right: 1rem;bottom: 3rem">
         <button id="folder_back" type="button" class="btn-float"
-                title="Back"style="margin-left:0;margin-bottom: 1.5rem;display: none;background: rgb(187, 187, 187)">
+                title="Back" style="margin-left:0;margin-bottom: 1.5rem;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-left"></i>
         </button>
         <button id="folder_next" type="button" class="btn-float"
-                title="Next"style="margin: 0;display: none;background: rgb(187, 187, 187)">
+                title="Next" style="margin: 0;display: none;background: rgb(187, 187, 187)">
             <i class="fas fa-angle-double-right"></i>
         </button>
     </div>

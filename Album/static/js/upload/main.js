@@ -1,7 +1,15 @@
 var asyn_cnt = 0;
 var syn_cnt = 0;
 
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+    }
+});
+
+
 $(document).ready(function () {
+
     var folder_fake_name = $("#now_folder_fake_name").val()
     toastr.options = {
         "closeButton": false,
@@ -150,7 +158,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.href="?t=i";
+                                window.location.href = "?t=i";
                                 asyn_cnt = 0;
                             }
                         }
@@ -178,7 +186,7 @@ $(document).ready(function () {
                             keys: ['enter'],
                             action: function () {
                                 resolve();
-                                window.location.href="?t=i";
+                                window.location.href = "?t=i";
                                 syn_cnt = 0;
                             }
                         }

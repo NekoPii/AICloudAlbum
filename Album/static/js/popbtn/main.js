@@ -1,4 +1,9 @@
 jQuery(document).ready(function () {
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
     if ($('.cd-stretchy-nav').length > 0) {
         var stretchyNavs = $('.cd-stretchy-nav');
 

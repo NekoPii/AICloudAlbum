@@ -58,6 +58,7 @@
                     {% ifnotequal Faces None %}
                         <div class="grid" style="text-align: center;background:transparent;">
                             <form id="folderFewForm">
+                            {% csrf_token %}
                                 {% for f in Faces %}
                                     <div class="element-item development"
                                          id="faces_{{ f.id }}"

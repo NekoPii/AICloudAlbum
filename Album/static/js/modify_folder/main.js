@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+    }
+});
+
 $("#input_folder_mod_name").on("keypress", function (event) {
     if (event.keyCode == 13) {
         $(this).focus();
@@ -24,7 +30,7 @@ $("#input_folder_mod_name").on("keypress", function (event) {
                         } else if (mod_status == "true") {
                             toastr.success("\"" + now_select + "\" Folder Modify Successfully ~");
                             setTimeout(function () {
-                                window.location.href="?t=f";
+                                window.location.href = "?t=f";
                                 //$("#folder-tab-tabs-above").click();
                             }, 400);
                         }
@@ -68,7 +74,7 @@ $("#modal_modify_ok").click(function () {
                     } else if (mod_status == "true") {
                         toastr.success("\"" + now_select + "\" Folder Modify Successfully ~");
                         setTimeout(function () {
-                            window.location.href="?t=f";
+                            window.location.href = "?t=f";
                             //$("#folder-tab-tabs-above").click();
                         }, 400);
                     }

@@ -14,6 +14,11 @@ $(document).ready(function () {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
 });
 
 $("#folders_delete_few").click(function () {

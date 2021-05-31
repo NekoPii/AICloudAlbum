@@ -4,6 +4,12 @@ var count;
 var page_num_face = 5;
 (function ($) {
 
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
+
     $.getJSON("/ajax_faces/", function (data) {
         faces = data["faces"];
         count = data["count"];

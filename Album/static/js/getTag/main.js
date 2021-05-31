@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+    }
+});
+
 $("#getTag").click(function () {
     $(this).attr("disabled", true);
 

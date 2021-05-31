@@ -1,5 +1,11 @@
 (function ($) {
 
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
+
     document.onreadystatechange = show;
 
     function show() {

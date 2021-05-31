@@ -1,10 +1,17 @@
 var current_page = 1;
 var pics;
 var count;
-var page_num_img=10;
+var page_num_img = 10;
 var img_cnt = 0;
 (function ($) {
     "use strict";
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
+
     var now_tag = $("#now_tag").val()
 
 
@@ -78,9 +85,9 @@ var img_cnt = 0;
                     $(element8).attr("alt", pics[pic_number]["name"]);
                     $(element9).text(pics[pic_number]["name"]);
                     $(element10).text(pics[pic_number]["upload_time"]);
-                    $(element11).text(pics[pic_number]["size"]+ " MB");
-                    $(element12).text(pics[pic_number]["height"]+ " px");
-                    $(element13).text(pics[pic_number]["width"]+ " px");
+                    $(element11).text(pics[pic_number]["size"] + " MB");
+                    $(element12).text(pics[pic_number]["height"] + " px");
+                    $(element13).text(pics[pic_number]["width"] + " px");
                     $(element14).text(pics[pic_number]["tag"]);
                     $(element15).val(pics[pic_number]["fake_name"]);
                     pic_number++;
@@ -140,13 +147,13 @@ var img_cnt = 0;
                         pic_number++;
                         $("#img_" + i).css("display", "block")
                         $("#box_" + i).css("display", "block")
-                        $("#img_model_"+i).addClass("choose_model_img");
+                        $("#img_model_" + i).addClass("choose_model_img");
 
                     } else {
 
                         $("#img_" + i).css("display", "none")
                         $("#box_" + i).css("display", "none")
-                        $("#img_model_"+i).removeClass("choose_model_img");
+                        $("#img_model_" + i).removeClass("choose_model_img");
                     }
 
                 }
@@ -202,7 +209,6 @@ var img_cnt = 0;
         removalDelay: 300,
         mainClass: 'my-mfp-slide-bottom'
     });
-
 
 
 })(jQuery);

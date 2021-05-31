@@ -4,9 +4,10 @@
     <title>Welcome</title>
 {% endblock %}
 
-{% block css %}
-    <link href="/static/css/welcome/styles.css" rel="stylesheet">
-    <link href="/static/css/preload/main.css" rel="stylesheet">
+{% block css %}s
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/welcome/styles.css" %}">
+    <link rel="stylesheet" href="{% static "css/preload/main.css" %}">
 {% endblock %}
 
 {% block main %}
@@ -55,9 +56,8 @@
 {% endblock %}
 
 {% block js %}
-    <script src="/static/js/preload/main.js"></script>
-    <script src="/static/js/changebackground.js"></script>
-    <script src="/static/js/mousemove.js"></script>
-    <script src="/static/js/welcome/morphext.min.js"></script>
-
+    <script src="{% static "js/preload/main.js" %}"></script>
+    <script src="{% static "js/changebackground.js" %}"></script>
+    <script src="{% static "js/mousemove.js" %}"></script>
+    <script src="{% static "js/welcome/morphext.min.js" %}"></script>
 {% endblock %}

@@ -137,6 +137,7 @@
                     {% ifnotequal ALL_search None %}
                         <div class="grid" style="text-align: center;background-color: rgb(250,250,250)">
                             <form id="imageFewForm">
+                            {% csrf_token %}
                                 {% for p in ALL_search %}
                                     <div class="element-item development"
                                          id="img_{{ p.id }}"
@@ -230,6 +231,7 @@
                     </div>
                     <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
+                            {% csrf_token %}
                             <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
                                    name="img_name">
                             <button class="download_one btn-small mx-auto" type="button" title="Download"

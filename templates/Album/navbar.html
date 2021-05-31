@@ -72,6 +72,7 @@
 
         <div class="modal-body" style="padding: 0">
             <form id="search_tag" class="search_form">
+                {% csrf_token %}
                 <div class="form-group" style="margin-bottom: 0">
                     <input type="text" style="display:none">{# 防止只有一个input框时提交刷新页面 #}
                     <input value="" class="form-control-input" id="input_search_tag"
@@ -115,6 +116,7 @@
 
 {% compress js %}
     <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "vendor/jquery/jquery.cookie.js" %}"></script>
     <script src="{% static "vendor/bootstrap-4.6.0/js/bootstrap.bundle.min.js" %}"></script>
     <script src="{% static "vendor/jquery-confirm-v3.3.4/dist/jquery-confirm.min.js" %}"></script>
     <script src="{% static "vendor/sketch.min.js" %}"></script>

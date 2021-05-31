@@ -3,6 +3,12 @@
     $("#login").focus();
     $(function () {
 
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+            }
+        });
+
         toastr.options = {
             "closeButton": false,
             "newestOnTop": true,
@@ -37,7 +43,6 @@
         $('#login_pwd').focus(function () {
             $("#login_msg").text("");
         });
-
 
 
         //验证码
@@ -261,8 +266,6 @@
             }
         }
     );
-
-
 
 
     /* Move Form Fields Label When User Types */

@@ -12,6 +12,12 @@ var img_cnt = 0,
 (function ($) {
     "use strict";
 
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFtoken", $.cookie("csrftoken"))
+        }
+    });
+
     /*
     $(".choose_model_img").each(function () {
         if ($(this).attr("name") == "ALL") {
