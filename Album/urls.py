@@ -21,7 +21,8 @@ urlpatterns = [
     path("ajax_pics/<str:folder_fake_name>/", views.ajax_pics, name="ajax_pics"),  # 文件夹图片信息Ajax获取
     path("ajax_folders/", views.ajax_folders, name="ajax_folders"),  # 主页文件夹信息Ajax获取
     path("ajax_faces/", views.ajax_faces, name="ajax_faces"),  # 人脸主页信息Ajax获取
-    path("ajax_faces_detail/<str:face_cover_fake_name>/", views.ajax_faces_detail, name="ajax_faces_detail"), # 人脸图片信息Ajax获取
+    path("ajax_faces_detail/<str:face_cover_fake_name>/", views.ajax_faces_detail, name="ajax_faces_detail"),
+    # 人脸图片信息Ajax获取
     path("download/", views.download, name="download"),
     path("download_select/", views.download_select, name="download_select"),
     path("delete_img/<str:folder_fake_name>/", views.delete_img, name="delete_img"),
