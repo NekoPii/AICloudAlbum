@@ -23,6 +23,22 @@ $(document).ready(function () {
 });
 
 $(".download_one").click(function () {
+    $(this).attr("disabled", true);
+    $("#download-process").modal("show");
+    var download_process = setInterval(function () {
+        $.getJSON("/show_downloadprocess/", function (res) {
+            $("#download_process_bar").css("width", res["now_download_process"]).text(res["now_download_process"]);
+            if (res["download_process_val"] === 1) {
+                clearInterval(download_process);
+                setTimeout(function () {
+                    $("#download-process").modal("hide");
+                }, 500);
+                setTimeout(function () {
+                    $("#download_process_bar").css("width", "0.1%").text("0.1%");
+                }, 600);
+            }
+        })
+    }, 100);
     toastr.info("Downloading ...");
     var downloadOneForm = $(this).closest('.downloadOneForm');
     $.ajax({
@@ -43,9 +59,15 @@ $(".download_one").click(function () {
                     form.submit();
                 }
             }
+            $(".download_one").removeAttr("disabled");
         },
         error: function () {
-            toastr.error("Error , Please Try again !")
+            toastr.clear()
+            toastr.error("Error , Please Try again !");
+            clearInterval(download_process);
+            $("#download-process").modal("hide");
+            $("#download_process_bar").css("width", "0.1%").text("0.1%");
+            $(".download_one").removeAttr("disabled");
         }
     });
 });
@@ -54,6 +76,22 @@ $("#imgs_download_few").click(function () {
     if ($("#select_img_cnt").val() === "0") {
         toastr.info("No Images Selected !")
     } else {
+        $(this).attr("disabled", true);
+        $("#download-process").modal("show");
+        var download_process = setInterval(function () {
+            $.getJSON("/show_downloadprocess/", function (res) {
+                $("#download_process_bar").css("width", res["now_download_process"]).text(res["now_download_process"]);
+                if (res["download_process_val"] === 1) {
+                    clearInterval(download_process);
+                    setTimeout(function () {
+                        $("#download-process").modal("hide");
+                    }, 500);
+                    setTimeout(function () {
+                        $("#download_process_bar").css("width", "0.1%").text("0.1%");
+                    }, 600);
+                }
+            })
+        }, 100);
         toastr.info("Downloading ...");
         $.ajax({
             url: "/download_select/",
@@ -84,9 +122,15 @@ $("#imgs_download_few").click(function () {
                         form.submit();
                     }
                 }
+                $("#imgs_download_few").removeAttr("disabled");
             },
             error: function () {
-                toastr.error("Error , Please Try again !")
+                toastr.clear()
+                toastr.error("Error , Please Try again !");
+                clearInterval(download_process);
+                $("#download-process").modal("hide");
+                $("#download_process_bar").css("width", "0.1%").text("0.1%");
+                $(".download_one").removeAttr("disabled");
             }
         });
     }

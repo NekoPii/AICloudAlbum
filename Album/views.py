@@ -41,6 +41,7 @@ face_process = 0.001
 tag_process = 0.001
 delete_img_process = 0.001
 delete_folder_process = 0.001
+download_img_process = 0.001
 eps = 1e-5
 
 # Create your views here.
@@ -98,6 +99,17 @@ def show_tag_process(request):
         tag_process = 1
     now_tag_process = str(format(tag_process * 100, '.2f')) + "%"
     res = {"now_tag_process": now_tag_process, "tag_process_val": tag_process}
+    return JsonResponse(res, safe=False)
+
+
+def show_download_process(request):
+    global download_img_process
+    if download_img_process > 1:
+        download_img_process = 1
+    if abs(download_img_process - 1) < eps:
+        download_img_process = 1
+    now_download_preocess = str(format(download_img_process * 100, '.2f')) + "%"
+    res = {"now_download_process": now_download_preocess, "download_process_val": download_img_process}
     return JsonResponse(res, safe=False)
 
 
@@ -609,6 +621,7 @@ def tags_pics(request, tag):
     else:
         return redirect("/login/")
 
+
 @csrf_exempt
 def upload_upload_syn(request, folder_fake_name):
     if request.session.get("is_login"):
@@ -749,6 +762,7 @@ def upload_upload_syn(request, folder_fake_name):
 
 
 mutex_x = Lock()
+
 
 @csrf_exempt
 def upload_upload_asyn(request, folder_fake_name):
@@ -894,8 +908,11 @@ def upload_upload_asyn(request, folder_fake_name):
 def download(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global download_img_process
+            download_img_process = 0.001
             fake_name = request.POST["img_name"]
             try:
+                download_img_process = 0.33
                 now_pic = models.Picture.objects.get(fake_name=fake_name)
                 path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                 with open(path, "rb") as f:
@@ -905,10 +922,12 @@ def download(request):
                 response["Content-Type"] = "application/octet-stream"
                 response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
                 response["download_status"] = "true"
+                download_img_process = 1
                 return response
             except:
                 response = HttpResponse()
                 response["download_status"] = "false"
+                download_img_process = 1
                 return response
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
@@ -917,6 +936,8 @@ def download(request):
 def download_select(request):
     if request.session.get("is_login"):
         if request.method == "POST":
+            global download_img_process
+            download_img_process = 0.001
             chunk_size = 8192
             check_list = request.POST.getlist("img_name")
             total_cnt = len(check_list)
@@ -924,19 +945,23 @@ def download_select(request):
                 cnt = 0
                 temp = tempfile.TemporaryFile()
                 img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
-                for now in check_list:
+                for index, now in enumerate(check_list):
                     try:
+                        download_img_process = (index + 0.33) / total_cnt
                         now_pic = models.Picture.objects.get(fake_name=now)
                         path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                         img_name = now_pic.name + "." + now_pic.type
                         img_zip.write(path, img_name)
                         cnt += 1
+                        download_img_process = (index + 0.66) / total_cnt
                     except:
+                        download_img_process = (index + 0.66) / total_cnt
                         continue
                 img_zip.close()
                 wrapper = FileWrapper(temp, chunk_size)
                 size = temp.tell()
                 temp.seek(0)
+                download_img_process = (total_cnt - 0.88) / total_cnt
                 if cnt > 0:
                     response = HttpResponse(wrapper, content_type="application/zip")
                     response["Content-Disposition"] = "attachment;filename={}".format(
@@ -945,18 +970,21 @@ def download_select(request):
                     response["download_status"] = "true"
                     response["download_cnt"] = cnt
                     response["select_cnt"] = total_cnt
+                    download_img_process = 1
                     return response
                 else:
                     response = HttpResponse()
                     response["download_status"] = "false"
                     response["download_cnt"] = 0
                     response["select_cnt"] = total_cnt
+                    download_img_process = 1
                     return response
             else:
                 response = HttpResponse()
                 response["download_status"] = "false"
                 response["download_cnt"] = 0
                 response["select_cnt"] = total_cnt
+                download_img_process = 1
                 return response
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
