@@ -9,6 +9,7 @@ import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from wsgiref.util import FileWrapper
 
+import requests
 from captcha.models import CaptchaStore
 from django.db import connections
 from django.db.models import Max
@@ -438,6 +439,48 @@ def mypics_pics(request, folder_fake_name):
             return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
+
+
+def search(request):
+    if request.session.get("is_login"):
+        phone = request.session["phone"]
+        try:
+            user = models.User.objects.get(phone=phone)
+        except:
+            request.session.flush()
+            return redirect("/login/")
+
+        all_tag = models.Tag.objects.all()
+        global all_search_imgs
+        all_search_imgs = None
+        ALL_search = []
+        try:
+            search_content = request.GET["content"]
+            if search_content:
+                search_pics_byname = models.Picture.objects.filter(user_id=user.phone, name__contains=search_content)
+                all_search_imgs = all_search_imgs.union(search_pics_byname)
+                search_bytag = all_tag.filter(tag__contains=search_content)
+                if search_bytag:
+                    for now_tag in search_bytag:
+                        search_pics_bytag = models.Picture.objects.filter(user_id=user.phone, tag_id=now_tag.id)
+                        all_search_imgs = all_search_imgs.union(search_pics_bytag)
+                if all_search_imgs:
+                    for index, now_img in enumerate(all_search_imgs):
+                        if index >= page_num_img:
+                            break
+                        ALL_search.append(now_img)
+        except:
+            pass
+        if not all_search_imgs:
+            count = 0
+        else:
+            count = len(all_search_imgs)
+        capacity_now = format(user.now_capacity, '.2f')
+        if not ALL_search:
+            ALL_search = None
+
+        return render(request, "Album/search.html", locals())
+    return redirect("/login/")
 
 
 def tags(request):
@@ -1520,7 +1563,7 @@ def faceDetailPage(request, face_cover_fake_name):
         FaceDetails = []
         cnt = 1
         total_cnt = 0
-        all_tag=models.Tag.objects.all()
+        all_tag = models.Tag.objects.all()
         now_Face = models.Face.objects.filter(user_id=user.phone, face_cover=face_cover_fake_name + ".jpg")
         if now_Face:
             now_FacePic = models.FacePic.objects.filter(face_id=now_Face[0].id)
