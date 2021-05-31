@@ -847,17 +847,6 @@ body {
         width: 55%;
     }
 
-    /* end of general styles */
-    /* Navigation */
-    .navbar-custom {
-        padding-right: 5rem;
-        padding-left: 5rem;
-    }
-
-    .navbar-custom.top-nav-collapse {
-        padding-right: 5rem;
-        padding-left: 5rem;
-    }
 
     /* end of navigation */
     /* Header */
@@ -1011,16 +1000,7 @@ body {
 /* Min-width width 1600px */
 @media (min-width: 1600px) {
 
-    /* Navigation */
-    .navbar-custom {
-        padding-right: 12rem;
-        padding-left: 12rem;
-    }
 
-    .navbar-custom.top-nav-collapse {
-        padding-right: 12rem;
-        padding-left: 12rem;
-    }
 
     /* end of navigation */
 }
