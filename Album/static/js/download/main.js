@@ -28,14 +28,8 @@ $(".download_one").click(function () {
     var download_process = setInterval(function () {
         $.getJSON("/show_downloadprocess/", function (res) {
             $("#download_process_bar").css("width", res["now_download_process"]).text(res["now_download_process"]);
-            if (res["download_process_val"] === 1) {
-                clearInterval(download_process);
-                setTimeout(function () {
-                    $("#download-process").modal("hide");
-                }, 500);
-                setTimeout(function () {
-                    $("#download_process_bar").css("width", "0.1%").text("0.1%");
-                }, 600);
+            if (res["download_process_val"] >= 1) {
+                $("#download_process_bar").css("width", "99.99%").text("99.99%");
             }
         })
     }, 100);
@@ -47,6 +41,13 @@ $(".download_one").click(function () {
         data: downloadOneForm.serialize(),
         success: function (response, status, request) {
             var download_status = request.getResponseHeader("download_status");
+            clearInterval(download_process);
+            setTimeout(function () {
+                $("#download-process").modal("hide");
+            }, 500);
+            setTimeout(function () {
+                $("#download_process_bar").css("width", "0.1%").text("0.1%");
+            }, 600);
             if (download_status == "false") {
                 toastr.warning("Image Download Failed !");
             } else if (download_status == "true") {
@@ -81,14 +82,8 @@ $("#imgs_download_few").click(function () {
         var download_process = setInterval(function () {
             $.getJSON("/show_downloadprocess/", function (res) {
                 $("#download_process_bar").css("width", res["now_download_process"]).text(res["now_download_process"]);
-                if (res["download_process_val"] === 1) {
-                    clearInterval(download_process);
-                    setTimeout(function () {
-                        $("#download-process").modal("hide");
-                    }, 500);
-                    setTimeout(function () {
-                        $("#download_process_bar").css("width", "0.1%").text("0.1%");
-                    }, 600);
+                if (res["download_process_val"] >= 1) {
+                    $("#download_process_bar").css("width", "99.99%").text("99.99%");
                 }
             })
         }, 100);
@@ -101,6 +96,13 @@ $("#imgs_download_few").click(function () {
                 var download_cnt = request.getResponseHeader("download_cnt"),
                     download_status = request.getResponseHeader("download_status"),
                     select_cnt = request.getResponseHeader("select_cnt");
+                clearInterval(download_process);
+                setTimeout(function () {
+                    $("#download-process").modal("hide");
+                }, 500);
+                setTimeout(function () {
+                    $("#download_process_bar").css("width", "0.1%").text("0.1%");
+                }, 600);
                 if (download_status == "false") {
                     if (select_cnt == 0) {
                         toastr.info("No Images Selected !")
