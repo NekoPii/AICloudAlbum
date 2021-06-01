@@ -125,6 +125,7 @@
             <div class="counter-value number-count" data-count="5">1</div>
             <div class="counter-info">GB<br>In Total</div>
         </div>
+        <input id="now_search" type="hidden" style="display: none;" value={{ search_content }}>
     </div>
     <!-- end of counter -->
 
@@ -138,14 +139,6 @@
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
             <input id="select_img_cnt" type="hidden" style="display: none;">
-            <div class="row col-lg-12 col-md-12 col-sm-12" style="padding: 0 2rem;">
-                <nav class="breadcrumb mx-auto"
-                     style="margin:0;background:rgba(242,242,242,0.8);width: 100%;border-radius: 1rem;border-bottom: 2px solid #40c4ff;box-sizing: border-box;font-weight: bold;color: #64b3f4;">
-                    <a class="breadcrumb-item" href="/search" style="color: #64b3f4;">Search</a>
-                    <a class="breadcrumb-item" href="/search?content={{ search_content }}"
-                       style="color: #64b3f4;">{{ search_content }}</a>
-                </nav>
-            </div>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     {% ifequal ALL_search None %}
@@ -200,19 +193,18 @@
     <!-- end of projects -->
 
     <!-- pages-->
-    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 10rem">
-        <button id="top" class="btn-small" type="button" value="zero">
+    <div class="container" style="width:4rem;position: fixed ;right: 1rem;bottom: 10rem">
+        <button id="top" type="button" class="btn-float blue"
+                title="Up" style="margin-bottom: 2rem">
             <i class="fas fa-arrow-up"></i>
         </button>
-    </div>
-    <div class="container" style="width:5rem;position: fixed ;right: 0;bottom: 3rem">
-        <button id="back" class="btn-small" type="button" value="zero"
-                style="display: none;margin-bottom: 0.5rem">
-            <i class="fas fa-angle-up"></i>
+        <button id="back" type="button" class="btn-float"
+                title="Back" style="margin-left:0;margin-bottom: 2rem;display: none;background: rgb(187, 187, 187)">
+            <i class="fas fa-angle-double-left"></i>
         </button>
-        <button id="next" class="btn-small" type="button" value="zero"
-                style="display: none;margin: 0 auto;">
-            <i class="fas fa-angle-down"></i>
+        <button id="next" type="button" class="btn-float"
+                title="Next" style="margin: 0;display: none;background: rgb(187, 187, 187)">
+            <i class="fas fa-angle-double-right"></i>
         </button>
     </div>
     <!--end of pages-->
@@ -318,7 +310,7 @@
     <script src="{% static 'vendor/jquery/jquery.easing.min.js' %}"></script>
     <script src="{% static 'vendor/jquery/jquery.magnific-popup.js' %}"></script>
     <script src="{% static 'js/popbtn/main.js' %}"></script>
-    <script src="{% static 'js/mypics_folder/main.js' %}"></script>
+    <script src="{% static 'js/search/main.js' %}"></script>
     <script src="{% static 'js/download/main.js' %}"></script>
     <script src="{% static 'js/delete_img/main.js' %}"></script>
     <script src="{% static 'js/getTag/main.js' %}"></script>

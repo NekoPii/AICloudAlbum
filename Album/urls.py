@@ -17,6 +17,7 @@ urlpatterns = [
     path("tags/", views.tags, name="tags"),
     path("tags/<str:tag>/", views.tags_pics, name="tags_pics"),
     path("mypics/<str:folder_fake_name>/", views.mypics_pics, name="mypics_folder"),
+    path("ajax_search/<str:search_content>/", views.ajax_search, name="ajax_search"),  # 搜索信息Ajax获取
     path("ajax_pics_tag/<str:tag>/", views.ajax_pics_tag, name="ajax_pics_tag"),  # 分类图片信息Ajax获取
     path("ajax_pics/<str:folder_fake_name>/", views.ajax_pics, name="ajax_pics"),  # 文件夹图片信息Ajax获取
     path("ajax_folders/", views.ajax_folders, name="ajax_folders"),  # 主页文件夹信息Ajax获取

@@ -32,6 +32,8 @@ import time
 
 global type_sever
 type_sever = typeSever()
+global test_count
+test_count = 0
 page_num_folder = 5
 page_num_img = 10
 page_num_face = 5
@@ -141,6 +143,7 @@ def index(request):
 
 
 def login(request):
+    global test_count
     if request.session.get("is_login", None):
         return redirect("/")
 
@@ -160,7 +163,8 @@ def login(request):
                     request.session["name"] = user.name
                     request.session.set_expiry(0)
                     res["loginIn"] = "true"
-                    res["message"] = "Login Successfully 🌸 ~"
+                    res["message"] = "Login Successfully 🌸 ~" + "You are the No." + str(test_count) + "User Login"
+                    test_count += 1
                     return HttpResponse(json.dumps(res))
                 else:
                     res["loginIn"] = "false"
@@ -245,6 +249,47 @@ def ajax_val(request):
             json_data = {'status': 1}
         else:
             json_data = {'status': 0}
+        return JsonResponse(json_data)
+    else:
+        # raise Http404
+        json_data = {'status': 0}
+        return JsonResponse(json_data)
+
+
+def ajax_search(request, search_content):
+    if request.is_ajax():
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        all_tag = models.Tag.objects.all()
+        json_data = {}
+        json_data["pics"] = []
+
+        if search_content:
+            search_pics_byname = models.Picture.objects.filter(user_id=user.phone, name__contains=search_content)
+            all_search_imgs = search_pics_byname
+            search_bytag = all_tag.filter(tag__contains=search_content)
+            if search_bytag:
+                for now_tag in search_bytag:
+                    search_pics_bytag = models.Picture.objects.filter(user_id=user.phone, tag_id=now_tag.id)
+                    all_search_imgs = all_search_imgs.union(search_pics_bytag)
+            if all_search_imgs:
+                cnt = 1
+                for p in all_search_imgs:
+                    p.size = format(p.size, '.2f')
+                    p.path = os.path.join('/upload_imgs/compress_imgs/', p.fake_name + '.' + p.type)
+                    p.id = cnt
+                    pic = {"size": p.size, "path": p.path, "id": p.id, "name": p.name, "fake_name": p.fake_name,
+                           "height": p.height, "width": p.width, "upload_time": p.upload_time.strftime('%Y-%m-%d'),
+                           "tag": all_tag.get(id=p.tag_id).tag}
+                    json_data["pics"].append(pic)
+                    cnt += 1
+                count = all_search_imgs.count()
+                json_data["count"] = count
+                json_data["status"] = 1
+            else:
+                json_data["count"] = 0
+                json_data["status"] = 1
+
         return JsonResponse(json_data)
     else:
         # raise Http404
