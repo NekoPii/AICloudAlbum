@@ -17,6 +17,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.staticfiles.views import serve
+from Album import views
 
 from AICloudAlbum import settings
 
@@ -24,6 +25,11 @@ from AICloudAlbum import settings
 def return_static(request, path, insecure=True, **kwargs):
     return serve(request, path, insecure, **kwargs)
 
+
+handler400 = views.error_400
+handler403 = views.error_403
+handler404 = views.error_404
+handler500 = views.error_500
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),

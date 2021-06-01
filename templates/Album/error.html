@@ -1,0 +1,43 @@
+{% extends "Album/navbar_welcome.html" %}
+
+{% block title %}
+    <title>Errors</title>
+{% endblock %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/styles.css' %}">
+{% endblock %}
+
+{% block main %}
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+
+    <!-- Projects -->
+    <div id="projects" class="filter" style="padding-top: 1rem;padding-bottom: 1rem">
+        <div class="container" style="padding: 0;">
+            <div class="row" style="margin-top: 5rem;">
+                <div class="col-lg-12">
+                    <div class="none_pics mx-auto">
+                        <h2>Page Not Found {{ error_info }} </h2>
+                        <br>
+                        <h4>Something error ~</h4>
+                        <h4>Click Here to Mypics</h4>
+                        <a href="/mypics/" type="button" class="btn-solid-lg small blue" title="Mypics">
+                            Mypics
+                        </a>
+                    </div>
+                    <!-- end of filter -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of filter -->
+    <!-- end of projects -->
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/preload/main.js' %}"></script>
+{% endblock %}

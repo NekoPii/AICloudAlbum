@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 app_name = "Album"  # 为app设置命名空间，方便{% url "Album:..."}区分
@@ -45,5 +45,5 @@ urlpatterns = [
     path("show_downloadprocess/", views.show_download_process, name="download_process"),
     path("show_delete_img_process/", views.show_delete_img_process, name="delete_img_process"),
     path("show_delete_folder_process/", views.show_delete_folder_process, name="delete_folder_process"),
-
 ]
+

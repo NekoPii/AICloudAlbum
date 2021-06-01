@@ -90,7 +90,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="/face/">FACE</a>
-                <li class="nav-item"><a class="nav-link page-scroll">{{ request.session.phone }}</a></li>
+                <li class="nav-item"><a class="nav-link page-scroll"
+                                        style="max-width:6rem; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                                        title="{{ request.session.name }}">{{ request.session.name }}</a></li>
 
             {% endifequal %}
 

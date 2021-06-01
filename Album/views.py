@@ -554,7 +554,7 @@ def mypics_pics(request, folder_fake_name):
 
             return render(request, "Album/mypics_folder.html", locals())
         else:
-            return render(request, "Album/mypics.html", locals())
+            return error_404(request,"404")
     else:
         return redirect("/login/")
 
@@ -1744,7 +1744,7 @@ def faceDetailPage(request, face_cover_fake_name):
             return render(request, "Album/face_detail.html", locals())
 
         else:
-            return redirect("/face/")
+            return error_404(request,"404")
     else:
         return redirect("/login/")
 
@@ -1875,3 +1875,21 @@ def get_select_faceDetect(request):
 
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
+
+
+def error_400(request, exception):
+    error_info = 400
+    return render(request, "Album/error.html", locals())
+
+def error_403(request, exception):
+    error_info = 403
+    return render(request, "Album/error.html", locals())
+
+def error_404(request, exception):
+    error_info = 404
+    return render(request, "Album/error.html", locals())
+
+
+def error_500(request):
+    error_info = 500
+    return render(request, "Album/error.html", locals())
