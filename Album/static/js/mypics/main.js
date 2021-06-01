@@ -9,6 +9,8 @@ var page_num_folder = 5;
 var page_num_img = 10;
 var img_cnt = 0,
     folder_cnt = 0;
+var is_folder_select=0,
+    is_img_select=0;
 (function ($) {
     "use strict";
 
@@ -78,6 +80,7 @@ var img_cnt = 0,
         $("#img_back").css("display", "none");
         $("#image-pop").css("display", "");
         $("#folder-pop").css("display", "none");
+        if(!is_img_select){
         if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs === 1) {
             $("#img_next").css("display", "inline-block");
         } else if ((img_count - current_page_imgs * page_num_img) > 0 && current_page_imgs > 1) {
@@ -85,6 +88,7 @@ var img_cnt = 0,
             $("#img_back").css("display", "inline-block");
         } else if ((img_count - current_page_imgs * page_num_img) <= 0 && current_page_imgs > 1) {
             $("#img_back").css("display", "inline-block");
+        }
         }
     })
 
@@ -96,7 +100,7 @@ var img_cnt = 0,
         $("#folder_back").css("display", "none");
         $("#image-pop").css("display", "none");
         $("#folder-pop").css("display", "");
-
+        if(!is_folder_select){
         if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder === 1) {
             $("#folder_next").css("display", "inline-block");
         } else if ((folder_count - current_page_folder * page_num_folder) > 0 && current_page_folder > 1) {
@@ -104,6 +108,7 @@ var img_cnt = 0,
             $("#folder_back").css("display", "inline-block");
         } else if ((folder_count - current_page_folder * page_num_folder) <= 0 && current_page_folder > 1) {
             $("#folder_back").css("display", "inline-block");
+        }
         }
 
     });
@@ -387,6 +392,7 @@ $('.nav-item [data-toggle="tab"]').on('click', function (event) {
 
 $("#imgs_change_model").click(function () {
     if ($(this).val() === "select") {//进行选择
+        is_img_select=true;
         img_cnt = 0;
         $("#select_img_cnt").val(img_cnt.toString());
         $(".upload_btn").fadeOut(500);
@@ -408,6 +414,7 @@ $("#imgs_change_model").click(function () {
         $("#folder_back").css("display", "none");
 
     } else if ($(this).val() === "view") {// 退出选择
+        is_img_select=false;
         $(".upload_btn").fadeIn(500);
         img_cnt = 0;
         $("#select_img_cnt").val(img_cnt.toString());
@@ -511,6 +518,7 @@ $("#imgs_select_all").click(function () {
 
 $("#folders_change_model").click(function () {
     if ($(this).val() == "select") {//进行选择
+        is_folder_select=true;
         folder_cnt = 0;
         $(".folder_func1").fadeOut(500);
         $("#select_folder_cnt").val(folder_cnt.toString());
@@ -530,6 +538,7 @@ $("#folders_change_model").click(function () {
         $("#folder_next").css("display", "none");
         $("#folder_back").css("display", "none");
     } else if ($(this).val() == "view") {// 退出选择
+        is_folder_select=false;
         $(".folder_func1").fadeIn(500);
         folder_cnt = 0;
         $("#folders_delete_few").attr("title", "Delete " + folder_cnt.toString() + " Folder(s)")
