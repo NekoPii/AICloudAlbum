@@ -178,9 +178,6 @@ def signup(request):
 
 
 def loginout(request):
-    now_user_fake_id = request.session["fake_id"]
-    global user_process_global
-    del user_process_global[now_user_fake_id]
     request.session.flush()
     return redirect("/")
 
