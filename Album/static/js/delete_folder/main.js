@@ -21,6 +21,10 @@ $(document).ready(function () {
     });
 });
 
+var max_proc = Math.random() * 9 + 90
+var base_time = 50
+var gap_time = 50
+
 $("#folders_delete_few").click(function () {
     console.log($("#select_folder_cnt").val())
     if ($("#select_folder_cnt").val() === "0") {
@@ -40,20 +44,20 @@ $("#folders_delete_few").click(function () {
                             resolve();
 
                             $("#delete-folder-process").modal("show");
+
+                            var is_complete = false
+                            var now_time = Math.random() * gap_time + base_time
+                            var index = 1
                             var delete_folder_process = setInterval(function () {
-                                $.getJSON("/show_delete_folder_process/", function (res) {
-                                    $("#delete_folder_process_bar").css("width", res["now_delete_folder_process"]).text(res["now_delete_folder_process"]);
-                                    if (res["delete_folder_process_val"] === 1) {
-                                        clearInterval(delete_folder_process);
-                                        setTimeout(function () {
-                                            $("#delete-folder-process").modal("hide");
-                                        }, 500);
-                                        setTimeout(function () {
-                                            $("#delete_folder_process_bar").css("width", "0%").text("0%");
-                                        }, 600);
-                                    }
-                                })
-                            }, 100);
+                                now_time = Math.random() * gap_time + base_time
+                                if (is_complete || index > max_proc) {
+                                    clearInterval(delete_folder_process)
+                                } else {
+                                    let now = index.toString() + "%"
+                                    $("#delete_folder_process_bar").css("width", now).text(now)
+                                    index++
+                                }
+                            }, now_time);
 
                             $.ajax({
                                 url: "/delete_select_folder/",
@@ -61,6 +65,14 @@ $("#folders_delete_few").click(function () {
                                 data: $("#folderFewForm").serialize(),
                                 dataType: "json",
                                 success: function (data) {
+                                    is_complete = true
+                                    $("#delete_folder_process_bar").css("width", "100%").text("100%");
+                                    setTimeout(function () {
+                                        $("#delete-folder-process").modal("hide");
+                                    }, 500);
+                                    setTimeout(function () {
+                                        $("#delete_folder_process_bar").css("width", "0%").text("0%");
+                                    }, 600);
                                     setTimeout(function () {
                                         var delete_cnt = data["delete_cnt"],
                                             delete_status = data["delete_status"],
@@ -78,7 +90,7 @@ $("#folders_delete_few").click(function () {
                                     }, 500);
                                 },
                                 error: function () {
-                                    clearInterval(delete_folder_process);
+                                    is_complete = true
                                     $("#delete-folder-process").modal("hide");
                                     $("#delete_folder_process_bar").css("width", "0%").text("0%");
                                     toastr.error("Error , Please Try again !")

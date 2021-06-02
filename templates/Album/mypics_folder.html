@@ -188,8 +188,9 @@
                     {% ifnotequal Pics None %}
                         <div class="grid" style="text-align: center;background-color: rgb(250,250,250)">
                             <form id="imageFewForm">
+                            {% csrf_token %}
                                 {% for p in Pics %}
-                                    <div class="element-item development"
+                                    <div class="element-item development just-image"
                                          id="img_{{ p.id }}"
                                          style="text-align: center;background-color: rgb(250,250,250)">
                                         <div>

@@ -40,10 +40,4 @@ urlpatterns = [
     path("one_faceRec/", views.get_one_faceDetect, name="one_faceRec"),
     path("search/", views.search, name="search"),
     ## Progress
-    path("show_faceprocess/", views.show_face_process, name="face_process"),
-    path("show_tagprocess/", views.show_tag_process, name="tag_process"),
-    path("show_downloadprocess/", views.show_download_process, name="download_process"),
-    path("show_delete_img_process/", views.show_delete_img_process, name="delete_img_process"),
-    path("show_delete_folder_process/", views.show_delete_folder_process, name="delete_folder_process"),
 ]
-

@@ -115,7 +115,7 @@
                             <form id="imageFewForm">
                                 {% csrf_token %}
                                 {% for p in FaceDetails %}
-                                    <div class="element-item development"
+                                    <div class="element-item development just-image"
                                          id="img_{{ p.id }}"
                                          style="text-align: center;background-color: rgb(250,250,250)">
                                         <div>
@@ -209,13 +209,8 @@
                             {% csrf_token %}
                             <input class="download_input element_13" value={{ p.fake_name }} type="hidden"
                                    name="img_name">
-                            <button class="getOneTag yellow-btn-small mx-auto" type="button"
-                                    title="Get Tag"
-                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
-                                <i class="uil uil-tag-alt" style="font-size: 1.5rem;"></i>
-                            </button>
                             <button class="download_one btn-small mx-auto" title="Download" type="button"
-                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 0.5rem;outline: none;">
+                                    style="display: block;padding:1rem 4rem;border-radius: 2rem;font-size: 1.5rem;margin-top: 1.5rem;outline: none;">
                                 <i class="uil uil-image-download"></i>
                             </button>
                         </form>
@@ -228,13 +223,6 @@
 
 
     <div id="folder-pop">
-        <div class="container popbtn float-btn-group">
-            <div class="float-btn-group" style="bottom:24.5rem;">
-                <button id="getTag" class="btn-float yellow" type="button" title="Get All Tags">
-                    <i class="uil uil-tag-alt"></i>
-                </button>
-            </div>
-        </div>
         <div class="container popbtn">
             <div class="float-btn-group">
                 <button id="change_model" class="btn-float btn-triger blue" type="button" value="select"
@@ -272,7 +260,6 @@
     <script src="{% static 'js/popbtn/main.js' %}"></script>
     <script src="{% static 'js/mypics_folder/main.js' %}"></script>
     <script src="{% static 'js/download/main.js' %}"></script>
-    <script src="{% static 'js/getTag/main.js' %}"></script>
     <script src="{% static 'js/getFaceRec/main.js' %}"></script>
     <script src="{% static 'js/preload/main.js' %}"></script>
 {% endblock %}

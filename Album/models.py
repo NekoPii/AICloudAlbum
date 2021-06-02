@@ -48,7 +48,7 @@ class Folder(models.Model):
     name = models.CharField(max_length=200, default='')
     cnt = models.IntegerField(default=0)
     total_size = models.FloatField(default=0)
-    fake_name=models.CharField(max_length=200,default="")
+    fake_name = models.CharField(max_length=200, default="")
     create_time = models.DateTimeField()
     modify_time = models.DateTimeField()
 
@@ -68,17 +68,19 @@ class Picture(models.Model):
     tag = models.ForeignKey("Tag", on_delete=models.CASCADE)
     folder = models.ForeignKey("Folder", on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default='')
-    fake_name=models.CharField(max_length=200,default="")
+    fake_name = models.CharField(max_length=200, default="")
     type = models.CharField(max_length=200, default='')
     upload_time = models.DateTimeField(auto_now_add=True)
     size = models.FloatField(default=0)
     height = models.IntegerField(default=0)
     width = models.IntegerField(default=0)
     is_tag = models.BooleanField(default=False)
+    is_detect_face = models.BooleanField(default=False)
     is_face = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
 
 class UserTag(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
@@ -111,4 +113,3 @@ class FacePic(models.Model):
 
     class Meta:
         unique_together = ['pic', 'face']
-

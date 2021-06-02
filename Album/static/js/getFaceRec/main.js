@@ -4,7 +4,12 @@ $.ajaxSetup({
     }
 });
 
+var max_proc = Math.random() * 9 + 90
+var base_time = 50
+var gap_time = 500
+
 $("#getFewFaceRec").click(function () {
+    var is_complete = false
     if ($("#select_img_cnt").val() === "0") {
         toastr.info("No Images Selected !")
     } else {
@@ -30,22 +35,18 @@ $("#getFewFaceRec").click(function () {
         $("#face-process").modal("show");
         //$("#face-process-btn").click();
 
+        var now_time = Math.random() * gap_time + base_time
+        var index = 1
         var face_process = setInterval(function () {
-            $.getJSON("/show_faceprocess/", function (res) {
-                $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"])
-                if (res["face_process_val"] === 1) {
-                    clearInterval(face_process);
-                    setTimeout(function () {
-                        $("#face-process").modal("hide");
-                    }, 500);
-                    setTimeout(function () {
-                        $("#face_process_bar").css("width", "0.1%").text("0.1%");
-                    }, 600);
-                    //$("#faceprocess_modal_close").click();
-                }
-            })
-        }, 100);
-
+            now_time = Math.random() * gap_time + base_time
+            if (is_complete || index > max_proc) {
+                clearInterval(face_process)
+            } else {
+                let now = index.toString() + "%"
+                $("#face_process_bar").css("width", now).text(now)
+                index++
+            }
+        }, now_time);
 
         $.ajax({
             url: "/select_faceRec/",
@@ -53,8 +54,16 @@ $("#getFewFaceRec").click(function () {
             data: $("#imageFewForm").serialize(),
             dataType: "json",
             success: function (data) {
+                is_complete = true
+                $("#face_process_bar").css("width", "100%").text("100%");
                 setTimeout(function () {
-                    toastr.clear()
+                    $("#face-process").modal("hide");
+                }, 500);
+                setTimeout(function () {
+                    $("#face_process_bar").css("width", "0.1%").text("0.1%");
+                }, 600);
+                setTimeout(function () {
+                    toastr.clear();
                     if (data["faceRec_status"] === "true") {
                         toastr.options = {
                             "closeButton": false,
@@ -73,7 +82,7 @@ $("#getFewFaceRec").click(function () {
                             "onclick": null,
                         };
                         $("#getFewFaceRec").attr("disabled", false);
-                        toastr.success("Get Face Recognition Success !");
+                        toastr.success("Get " + data["faceRec_cnt"].toString() + " Pictures Face Recognition Success !");
                         return new Promise(function (resolve, reject) {
                             $.confirm({
                                 title: 'Click to Face Right Now',
@@ -149,6 +158,7 @@ $("#getFewFaceRec").click(function () {
                 }, 500);
             },
             error: function () {
+                is_complete = true
                 toastr.clear()
                 toastr.options = {
                     "closeButton": false,
@@ -167,7 +177,6 @@ $("#getFewFaceRec").click(function () {
                     "onclick": null,
                 };
                 toastr.error("Error , Please Try again !")
-                clearInterval(face_process);
                 $("#face-process").modal("hide");
                 $("#face_process_bar").css("width", "0.1%").text("0.1%");
                 $("#getFewFaceRec").attr("disabled", false)
@@ -179,22 +188,22 @@ $("#getFewFaceRec").click(function () {
 
 $(".getFaceRec").click(function () {
     $(this).attr("disabled", true);
-
     $("#face-process").modal("show");
+
+    var is_complete = false
+    var now_time = Math.random() * gap_time + base_time
+    var index = Math.round(Math.random() * 10 + 29)
     var face_process = setInterval(function () {
-        $.getJSON("/show_faceprocess/", function (res) {
-            $("#face_process_bar").css("width", res["now_face_process"]).text(res["now_face_process"]);
-            if (res["face_process_val"] === 1) {
-                clearInterval(face_process);
-                setTimeout(function () {
-                    $("#face-process").modal("hide");
-                }, 500);
-                setTimeout(function () {
-                    $("#face_process_bar").css("width", "0.1%").text("0.1%");
-                }, 600);
-            }
-        })
-    }, 100);
+        now_time = Math.random() * gap_time + base_time
+        if (is_complete || index > max_proc) {
+            clearInterval(face_process)
+        } else {
+            let now = index.toString() + "%"
+            $("#face_process_bar").css("width", now).text(now)
+            index++
+        }
+    }, now_time);
+
     toastr.options = {
         "closeButton": false,
         "newestOnTop": true,
@@ -219,6 +228,14 @@ $(".getFaceRec").click(function () {
         data: downloadOneForm.serialize(),
         dataType: "json",
         success: function (data) {
+            is_complete = true
+            $("#face_process_bar").css("width", "100%").text("100%");
+            setTimeout(function () {
+                $("#face-process").modal("hide");
+            }, 500);
+            setTimeout(function () {
+                $("#face_process_bar").css("width", "0.1%").text("0.1%");
+            }, 600);
             setTimeout(function () {
                 toastr.clear()
                 if (data["faceRec_status"] === "true") {
@@ -284,7 +301,7 @@ $(".getFaceRec").click(function () {
                         "onclick": null,
                     };
                     if (data["isnotFace"] === "true") {
-                        toastr.warning("Unable to recognize that the current picture contains a face !")
+                        toastr.info("Unable to recognize that the current picture contains a face !")
                     } else {
                         toastr.warning("Get Face Recognition Failed !")
                     }
@@ -292,6 +309,7 @@ $(".getFaceRec").click(function () {
             }, 500)
         },
         error: function () {
+            is_complete = true
             toastr.clear();
             toastr.options = {
                 "closeButton": false,
@@ -309,8 +327,7 @@ $(".getFaceRec").click(function () {
                 "hideMethod": "fadeOut",
                 "onclick": null,
             };
-            toastr.error("Error , Please Try again !")
-            clearInterval(face_process);
+            toastr.error("Error , Please Try again !");
             $("#face-process").modal("hide");
             $("#face_process_bar").css("width", "0.1%").text("0.1%");
             $(".getFaceRec").removeAttr("disabled");
