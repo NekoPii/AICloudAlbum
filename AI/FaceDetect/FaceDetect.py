@@ -8,6 +8,11 @@ face_data_path = os.path.join(upload_imgs_dir, "ExistingFace")
 face_code_path = os.path.join(upload_imgs_dir, "ExistingFaceCode")
 pad_ratio = 0.4
 
+if not os.path.exists(face_data_path):
+    os.mkdir(face_data_path)
+if not os.path.exists(face_code_path):
+    os.mkdir(face_code_path)
+
 
 # 定位面部框
 # 返回一个数组[(y1,x2,y2,x1),....],(x1,y1)，(x2,y2)为其左上，右下点

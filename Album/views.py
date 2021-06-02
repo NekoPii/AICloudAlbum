@@ -32,18 +32,13 @@ import time
 
 global type_sever
 type_sever = typeSever()
-global test_count
-test_count = 0
 page_num_folder = 5
 page_num_img = 10
 page_num_face = 5
 zeroid = 1
 threshold = 1080
-face_process = 0.001
-tag_process = 0.001
-delete_img_process = 0.001
-delete_folder_process = 0.001
-download_img_process = 0.001
+
+user_process_global = {}
 eps = 1e-5
 
 # Create your views here.
@@ -83,7 +78,8 @@ def getFreeDiskSize():  # MB
 
 
 def show_face_process(request):
-    global face_process
+    global user_process_global
+    face_process = user_process_global[request.session["fake_id"]]["face"]
     if face_process > 1:
         face_process = 1
     if abs(face_process - 1) < eps:
@@ -94,7 +90,8 @@ def show_face_process(request):
 
 
 def show_tag_process(request):
-    global tag_process
+    global user_process_global
+    tag_process = user_process_global[request.session["fake_id"]]["tag"]
     if tag_process > 1:
         tag_process = 1
     if abs(tag_process - 1) < eps:
@@ -105,7 +102,8 @@ def show_tag_process(request):
 
 
 def show_download_process(request):
-    global download_img_process
+    global user_process_global
+    download_img_process = user_process_global[request.session["fake_id"]]["download"]
     if download_img_process > 1:
         download_img_process = 1
     if abs(download_img_process - 1) < eps:
@@ -116,7 +114,8 @@ def show_download_process(request):
 
 
 def show_delete_img_process(request):
-    global delete_img_process
+    global user_process_global
+    delete_img_process = user_process_global[request.session["fake_id"]]["delete_img"]
     if delete_img_process > 1:
         delete_img_process = 1
     if abs(delete_img_process - 1) < eps:
@@ -127,7 +126,8 @@ def show_delete_img_process(request):
 
 
 def show_delete_folder_process(request):
-    global delete_folder_process
+    global user_process_global
+    delete_folder_process = user_process_global[request.session["fake_id"]]["delete_folder"]
     if delete_folder_process > 1:
         delete_folder_process = 1
     if abs(delete_folder_process - 1) < eps:
@@ -161,10 +161,13 @@ def login(request):
                     request.session["is_login"] = True
                     request.session["phone"] = user.phone
                     request.session["name"] = user.name
+                    request.session["fake_id"] = user.fake_id
                     request.session.set_expiry(0)
+                    global user_process_global
+                    user_process_global[user.fake_id] = {"face": 0, "tag": 0, "download": 0, "delete_img": 0,
+                                                         "delete_folder": 0}
                     res["loginIn"] = "true"
-                    res["message"] = "Login Successfully 🌸 ~" + "You are the No." + str(test_count) + "User Login"
-                    test_count += 1
+                    res["message"] = "Login Successfully 🌸 ~"
                     return HttpResponse(json.dumps(res))
                 else:
                     res["loginIn"] = "false"
@@ -205,8 +208,10 @@ def signup(request):
                     res["message"] = "Two passwords are Inconsistent !"
                     return HttpResponse(json.dumps(res))
 
+                fake_id = hash_code(str(phone), salt="user")
+
                 new_user = models.User(name=name, phone=phone, pwd=hash_code(pwd) + "-" + pwd,
-                                       max_capacity=getFreeDiskSize())
+                                       max_capacity=getFreeDiskSize(), fake_id=fake_id)
                 new_user.save()
 
                 new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
@@ -226,6 +231,10 @@ def signup(request):
                 request.session["is_login"] = True
                 request.session["phone"] = new_user.phone
                 request.session["name"] = new_user.name
+                request.session["fake_id"] = new_user.fake_id
+                global user_process_global
+                user_process_global[new_user.fake_id] = {"face": 0, "tag": 0, "download": 0, "delete_img": 0,
+                                                         "delete_folder": 0}
                 request.session.set_expiry(0)
 
                 res["signup"] = "true"
@@ -237,6 +246,9 @@ def signup(request):
 
 
 def loginout(request):
+    now_user_fake_id = request.session["fake_id"]
+    global user_process_global
+    del user_process_global[now_user_fake_id]
     request.session.flush()
     return redirect("/")
 
@@ -554,7 +566,7 @@ def mypics_pics(request, folder_fake_name):
 
             return render(request, "Album/mypics_folder.html", locals())
         else:
-            return error_404(request,"404")
+            return error_404(request, "404")
     else:
         return redirect("/login/")
 
@@ -954,11 +966,13 @@ def upload_upload_asyn(request, folder_fake_name):
 def download(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global download_img_process
-            download_img_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"download": 0}
+            user_process_global[request.session["fake_id"]]["download"] = 0.001
             fake_name = request.POST["img_name"]
             try:
-                download_img_process = 0.33
+                user_process_global[request.session["fake_id"]]["download"] = 0.33
                 now_pic = models.Picture.objects.get(fake_name=fake_name)
                 path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                 with open(path, "rb") as f:
@@ -968,12 +982,12 @@ def download(request):
                 response["Content-Type"] = "application/octet-stream"
                 response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(img_name))
                 response["download_status"] = "true"
-                download_img_process = 1
+                user_process_global[request.session["fake_id"]]["download"] = 1
                 return response
             except:
                 response = HttpResponse()
                 response["download_status"] = "false"
-                download_img_process = 1
+                user_process_global[request.session["fake_id"]]["download"] = 1
                 return response
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
@@ -982,8 +996,10 @@ def download(request):
 def download_select(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global download_img_process
-            download_img_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"download": 0}
+            user_process_global[request.session["fake_id"]]["download"] = 0.001
             chunk_size = 8192
             check_list = request.POST.getlist("img_name")
             total_cnt = len(check_list)
@@ -993,21 +1009,21 @@ def download_select(request):
                 img_zip = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
                 for index, now in enumerate(check_list):
                     try:
-                        download_img_process = (index + 0.33) / total_cnt
+                        user_process_global[request.session["fake_id"]]["download"] = (index + 0.33) / total_cnt
                         now_pic = models.Picture.objects.get(fake_name=now)
                         path = os.path.join(store_dir, now_pic.fake_name + "." + now_pic.type)
                         img_name = now_pic.name + "." + now_pic.type
                         img_zip.write(path, img_name)
                         cnt += 1
-                        download_img_process = (index + 0.66) / total_cnt
+                        user_process_global[request.session["fake_id"]]["download"] = (index + 0.66) / total_cnt
                     except:
-                        download_img_process = (index + 0.66) / total_cnt
+                        user_process_global[request.session["fake_id"]]["download"] = (index + 0.66) / total_cnt
                         continue
                 img_zip.close()
                 wrapper = FileWrapper(temp, chunk_size)
                 size = temp.tell()
                 temp.seek(0)
-                download_img_process = (total_cnt - 0.88) / total_cnt
+                user_process_global[request.session["fake_id"]]["download"] = (total_cnt - 0.88) / total_cnt
                 if cnt > 0:
                     response = HttpResponse(wrapper, content_type="application/zip")
                     response["Content-Disposition"] = "attachment;filename={}".format(
@@ -1016,21 +1032,21 @@ def download_select(request):
                     response["download_status"] = "true"
                     response["download_cnt"] = cnt
                     response["select_cnt"] = total_cnt
-                    download_img_process = 1
+                    user_process_global[request.session["fake_id"]]["download"] = 1
                     return response
                 else:
                     response = HttpResponse()
                     response["download_status"] = "false"
                     response["download_cnt"] = 0
                     response["select_cnt"] = total_cnt
-                    download_img_process = 1
+                    user_process_global[request.session["fake_id"]]["download"] = 1
                     return response
             else:
                 response = HttpResponse()
                 response["download_status"] = "false"
                 response["download_cnt"] = 0
                 response["select_cnt"] = total_cnt
-                download_img_process = 1
+                user_process_global[request.session["fake_id"]]["download"] = 1
                 return response
         return render(request, "Album/mypics.html", locals())
     return redirect("/login/")
@@ -1039,8 +1055,10 @@ def download_select(request):
 def delete_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global delete_img_process
-            delete_img_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"delete_img": 0, }
+            user_process_global[request.session["fake_id"]]["delete_img"] = 0.001
             phone = request.session["phone"]
 
             fake_name = request.POST["img_name"]
@@ -1158,7 +1176,7 @@ def delete_img(request, folder_fake_name):
                 res["delete_status"] = "true"
             except:
                 res["delete_status"] = "false"
-            delete_img_process = 1
+            user_process_global[request.session["fake_id"]]["delete_img"] = 1
             response = HttpResponse(json.dumps(res))
             return response
         return mypics_pics(request, folder_fake_name)
@@ -1168,8 +1186,10 @@ def delete_img(request, folder_fake_name):
 def delete_select_img(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global delete_img_process
-            delete_img_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"delete_img": 0, }
+            user_process_global[request.session["fake_id"]]["delete_img"] = 0.001
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("img_name")
@@ -1294,7 +1314,7 @@ def delete_select_img(request, folder_fake_name):
                         cnt += 1
                     except:
                         pass
-                    delete_img_process = (index + 1) / total_cnt
+                    user_process_global[request.session["fake_id"]]["delete_img"] = (index + 1) / total_cnt
                 res["delete_cnt"] = cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
@@ -1314,8 +1334,10 @@ def delete_select_img(request, folder_fake_name):
 def delete_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global delete_folder_process
-            delete_folder_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"delete_folder": 0}
+            user_process_global[request.session["fake_id"]]["delete_folder"] = 0.001
 
             phone = request.session["phone"]
 
@@ -1375,7 +1397,7 @@ def delete_folder(request):
                 ALL_foldercover.save()
 
             res["delete_status"] = "true"
-            delete_folder_process = 1
+            user_process_global[request.session["fake_id"]]["delete_folder"] = 1
             response = HttpResponse(json.dumps(res))
             return response
         return render(request, "Album/mypics.html", locals())
@@ -1385,8 +1407,10 @@ def delete_folder(request):
 def delete_select_folder(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global delete_folder_process
-            delete_folder_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"delete_folder": 0}
+            user_process_global[request.session["fake_id"]]["delete_folder"] = 0.001
             phone = request.session["phone"]
 
             check_list = request.POST.getlist("folder_name")
@@ -1437,7 +1461,8 @@ def delete_select_folder(request):
 
                         except:
                             pass
-                        delete_folder_process = (index + (img_index / now_imgs_cnt)) / total_cnt
+                        user_process_global[request.session["fake_id"]]["delete_folder"] = (index + (
+                                img_index / now_imgs_cnt)) / total_cnt
 
                     now_folder.delete()
                     cnt += 1
@@ -1453,7 +1478,7 @@ def delete_select_folder(request):
                     ALL_foldercover.save()
 
                 res["delete_cnt"] = cnt
-                delete_folder_process = (index + 1) / total_cnt
+                user_process_global[request.session["fake_id"]]["delete_folder"] = (index + 1) / total_cnt
                 if cnt > 0:
                     res["delete_status"] = "true"
                     response = HttpResponse(json.dumps(res))
@@ -1564,8 +1589,10 @@ def runImgClass(p, all_tag, now_path):
 def getTag(request, folder_fake_name):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global tag_process
-            tag_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"tag": 0}
+            user_process_global[request.session["fake_id"]]["tag"] = 0.001
 
             phone = request.session["phone"]
 
@@ -1591,7 +1618,7 @@ def getTag(request, folder_fake_name):
                     if not os.path.exists(now_path):
                         raise Exception("Path not exist")
                     if p.is_tag:
-                        tag_process = (index + 1) / total_cnt
+                        user_process_global[request.session["fake_id"]]["tag"] = (index + 1) / total_cnt
                         continue
                     else:
                         now_res = type_sever.pd(now_path)
@@ -1599,12 +1626,12 @@ def getTag(request, folder_fake_name):
                         p.is_tag = 1
                         p.save()
                         cnt += 1
-                        tag_process = (index + 1) / total_cnt
+                        user_process_global[request.session["fake_id"]]["tag"] = (index + 1) / total_cnt
                 except:
                     pass
-                    tag_process = (index + 1) / total_cnt
+                    user_process_global[request.session["fake_id"]]["tag"] = (index + 1) / total_cnt
 
-            tag_process = 1
+            user_process_global[request.session["fake_id"]]["tag"] = 1
 
             res["getTag_status"] = "true"
             res["getTag_cnt"] = cnt
@@ -1622,8 +1649,10 @@ def getTag(request, folder_fake_name):
 def get_oneTag(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global tag_process
-            tag_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"tag": 0}
+            user_process_global[request.session["fake_id"]]["tag"] = 0.001
 
             phone = request.session["phone"]
 
@@ -1638,7 +1667,7 @@ def get_oneTag(request):
 
             all_tag = models.Tag.objects.all()
 
-            res = {"getTag_status": None}
+            res = {"getTag_status": None, "now_tag": None}
 
             if now_pics:
                 try:
@@ -1650,17 +1679,19 @@ def get_oneTag(request):
 
                     else:
                         now_res = type_sever.pd(now_path)
-                        now_pic.tag_id = all_tag.get(tag=now_res[0]).id
+                        now_tag = now_res[0]
+                        now_pic.tag_id = all_tag.get(tag=now_tag).id
                         now_pic.is_tag = 1
                         now_pic.save()
-                        tag_process = 1
+                        user_process_global[request.session["fake_id"]]["tag"] = 1
                         res["getTag_status"] = "true"
+                        res["now_tag"] = now_tag
                 except:
                     pass
-                    tag_process = 1
+                    user_process_global[request.session["fake_id"]]["tag"] = 1
                     res["getTag_status"] = "false"
             else:
-                tag_process = 1
+                user_process_global[request.session["fake_id"]]["tag"] = 1
                 res["getTag_status"] = "false"
 
             response = HttpResponse(json.dumps(res))
@@ -1744,7 +1775,7 @@ def faceDetailPage(request, face_cover_fake_name):
             return render(request, "Album/face_detail.html", locals())
 
         else:
-            return error_404(request,"404")
+            return error_404(request, "404")
     else:
         return redirect("/login/")
 
@@ -1752,8 +1783,10 @@ def faceDetailPage(request, face_cover_fake_name):
 def get_one_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global face_process
-            face_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"face": 0}
+            user_process_global[request.session["fake_id"]]["face"] = 0.001
             phone = request.session["phone"]
             now_imgs_fakename = request.POST["img_name"]
             nowUser = models.User.objects.get(phone=phone)
@@ -1762,11 +1795,11 @@ def get_one_faceDetect(request):
                 pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=now_imgs_fakename)
                 if pic.is_face:
                     res["faceRec_status"] = "true"
-                    face_process = 1
+                    user_process_global[request.session["fake_id"]]["face"] = 1
                     return HttpResponse(json.dumps(res))
                 else:
                     try:
-                        face_process = 0.33
+                        user_process_global[request.session["fake_id"]]["face"] = 0.33
                         pic_path = os.path.join(store_dir, now_imgs_fakename) + "." + pic.type
                         isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
                                                                                                           nowUser.phone)
@@ -1801,9 +1834,10 @@ def get_one_faceDetect(request):
                             res["faceRec_status"] = "true"
                         else:
                             res["isnotFace"] = "true"
+                            res["faceRec_status"] = "false"
                     except:
                         res["faceRec_status"] = "false"
-                    face_process = 1
+                    user_process_global[request.session["fake_id"]]["face"] = 1
 
                 return HttpResponse(json.dumps(res))
 
@@ -1814,8 +1848,10 @@ def get_one_faceDetect(request):
 def get_select_faceDetect(request):
     if request.session.get("is_login"):
         if request.method == "POST":
-            global face_process
-            face_process = 0.001
+            global user_process_global
+            if request.session["fake_id"] not in user_process_global.keys():
+                user_process_global[request.session["fake_id"]] = {"face": 0}
+            user_process_global[request.session["fake_id"]]["face"] = 0.001
             phone = request.session["phone"]
             select_imgs_fakename = request.POST.getlist("img_name")
             select_cnt = len(select_imgs_fakename)
@@ -1825,15 +1861,16 @@ def get_select_faceDetect(request):
             cnt = 0
             if select_imgs_fakename:
                 for img_index, img_fakename in enumerate(select_imgs_fakename):
-                    face_process = (img_index + 0.15) / select_cnt
+                    user_process_global[request.session["fake_id"]]["face"] = (img_index + 0.15) / select_cnt
                     pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
                     if pic.is_face:
-                        face_process = (img_index + 1) / select_cnt
+                        user_process_global[request.session["fake_id"]]["face"] = (img_index + 1) / select_cnt
+                        cnt += 1
                         continue
                     else:
                         isnotFace_cnt += 1
                         try:
-                            face_process = (img_index + 0.33) / select_cnt
+                            user_process_global[request.session["fake_id"]]["face"] = (img_index + 0.33) / select_cnt
                             pic_path = os.path.join(store_dir, img_fakename) + "." + pic.type
                             isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
                                                                                                               nowUser.phone)
@@ -1865,7 +1902,7 @@ def get_select_faceDetect(request):
                                 cnt += 1
                         except:
                             pass
-                        face_process = (img_index + 1) / select_cnt
+                        user_process_global[request.session["fake_id"]]["face"] = (img_index + 1) / select_cnt
                 if cnt < isnotFace_cnt:
                     res["faceRec_status"] = "false"
                 else:
@@ -1881,9 +1918,11 @@ def error_400(request, exception):
     error_info = 400
     return render(request, "Album/error.html", locals())
 
+
 def error_403(request, exception):
     error_info = 403
     return render(request, "Album/error.html", locals())
+
 
 def error_404(request, exception):
     error_info = 404

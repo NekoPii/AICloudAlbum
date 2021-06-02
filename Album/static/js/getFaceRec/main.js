@@ -63,9 +63,9 @@ $("#getFewFaceRec").click(function () {
                             "positionClass": "toast-top-right",
                             "preventDuplicates": true,
                             "showDuration": "100",
-                            "hideDuration": "1000",
-                            "timeOut": "1000",
-                            "extendedTimeOut": "1000",
+                            "hideDuration": "2000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "2000",
                             "showEasing": "swing",
                             "hideEasing": "linear",
                             "showMethod": "fadeIn",
@@ -106,9 +106,9 @@ $("#getFewFaceRec").click(function () {
                             "positionClass": "toast-top-right",
                             "preventDuplicates": true,
                             "showDuration": "100",
-                            "hideDuration": "1000",
-                            "timeOut": "1000",
-                            "extendedTimeOut": "1000",
+                            "hideDuration": "2000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "2000",
                             "showEasing": "swing",
                             "hideEasing": "linear",
                             "showMethod": "fadeIn",
@@ -116,9 +116,9 @@ $("#getFewFaceRec").click(function () {
                             "onclick": null,
                         };
                         if (data["faceRec_cnt"] === 0) {
-                            toastr.warning("Get Face Failed !")
+                            toastr.warning("No face can be recognized in the selected pictures !")
                         } else {
-                            toastr.info("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)");
+                            toastr.success("Successfully recognize the faces of " + data["faceRec_cnt"].toString() + "picture(s)");
                             return new Promise(function (resolve, reject) {
                                 $.confirm({
                                     title: 'Click to Face Right Now',
@@ -150,6 +150,22 @@ $("#getFewFaceRec").click(function () {
             },
             error: function () {
                 toastr.clear()
+                toastr.options = {
+                    "closeButton": false,
+                    "newestOnTop": true,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "showDuration": "100",
+                    "hideDuration": "1000",
+                    "timeOut": "1500",
+                    "extendedTimeOut": "1500",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "onclick": null,
+                };
                 toastr.error("Error , Please Try again !")
                 clearInterval(face_process);
                 $("#face-process").modal("hide");
@@ -213,9 +229,9 @@ $(".getFaceRec").click(function () {
                         "positionClass": "toast-top-right",
                         "preventDuplicates": true,
                         "showDuration": "100",
-                        "hideDuration": "1000",
-                        "timeOut": "1000",
-                        "extendedTimeOut": "1000",
+                        "hideDuration": "2000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "2000",
                         "showEasing": "swing",
                         "hideEasing": "linear",
                         "showMethod": "fadeIn",
@@ -258,9 +274,9 @@ $(".getFaceRec").click(function () {
                         "positionClass": "toast-top-right",
                         "preventDuplicates": true,
                         "showDuration": "100",
-                        "hideDuration": "1000",
-                        "timeOut": "1000",
-                        "extendedTimeOut": "1000",
+                        "hideDuration": "2000",
+                        "timeOut": "2000",
+                        "extendedTimeOut": "2000",
                         "showEasing": "swing",
                         "hideEasing": "linear",
                         "showMethod": "fadeIn",
@@ -276,7 +292,23 @@ $(".getFaceRec").click(function () {
             }, 500)
         },
         error: function () {
-            toastr.clear()
+            toastr.clear();
+            toastr.options = {
+                "closeButton": false,
+                "newestOnTop": true,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "showDuration": "100",
+                "hideDuration": "1000",
+                "timeOut": "1500",
+                "extendedTimeOut": "1500",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "onclick": null,
+            };
             toastr.error("Error , Please Try again !")
             clearInterval(face_process);
             $("#face-process").modal("hide");

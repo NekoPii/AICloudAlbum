@@ -14,6 +14,7 @@ class User(models.Model):
 
     pwd = models.CharField(max_length=200, default='',
                            validators=[validators.MinLengthValidator(0, message="用户密码不可为空")], verbose_name="密码")
+    fake_id = models.CharField(max_length=200, default="")
     now_capacity = models.FloatField(default=0)
     max_capacity = models.FloatField(default=0)
 

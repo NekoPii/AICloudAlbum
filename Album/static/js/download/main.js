@@ -32,7 +32,7 @@ $(".download_one").click(function () {
                 $("#download_process_bar").css("width", "99.99%").text("99.99%");
             }
         })
-    }, 100);
+    }, 50);
     toastr.info("Downloading ...");
     var downloadOneForm = $(this).closest('.downloadOneForm');
     $.ajax({

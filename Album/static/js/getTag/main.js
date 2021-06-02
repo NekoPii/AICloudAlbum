@@ -179,7 +179,7 @@ $(".getOneTag").click(function () {
                                     keys: ['enter'],
                                     action: function () {
                                         resolve();
-                                        window.location.href = "/tags/";
+                                        window.location.href = "/tags/" + data["now_tag"] + "/";
                                     }
                                 },
                                 No: {
