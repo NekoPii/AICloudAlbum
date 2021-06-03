@@ -68,9 +68,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="/face/">FACE</a>
-                <li class="nav-item"><a class="nav-link page-scroll" title="{{ request.session.name }}"
-                                        style="max-width:6rem; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ request.session.name }}</a>
+                <!-- Dropdown Menu -->
+                <li class="nav-item dropdown" style="margin-right: 2rem">
+                    <a class="nav-link dropdown-toggle page-scroll" id="navbarDropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false" title="{{ request.session.name }}">{{ request.session.name }}</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/loginout/"><span class="item-text">Logout</span></a>
+                    </div>
                 </li>
+                <!-- end of dropdown menu -->
 
             {% endifequal %}
 

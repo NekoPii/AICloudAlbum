@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="{% static 'vendor/pace-1.2.4/themes/blue/pace-theme-flash.css' %}">
         <link rel="stylesheet" href="{% static 'css/scrollbar.css' %}">
         <link rel="stylesheet" href="{% static 'css/unicons.css' %}">
-        <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+        <link rel="stylesheet" href="{% static 'css/navbar_welcome.css' %}">
         <link rel="stylesheet" href="{% static 'css/sidebar/style.css' %}">
     {% endcompress %}
 </head>
@@ -57,21 +57,8 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top ">
-    <!-- Text Logo - Use this if you don't have a graphic logo -->
-    <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
-    <!-- Image Logo -->
-    {% ifequal request.session.is_login None %}
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
-    {% endifequal %}
-    {% ifequal request.session.is_login True %}
-        <!--
-        <a class="menu-toggle rounded" href="#">
-            <i class="fa fa-bars" style="color:rgb(187,187,187)"></i>
-        </a>
-        -->
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
 
-    {% endifequal %}
+    <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
 
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -90,9 +77,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="/face/">FACE</a>
-                <li class="nav-item"><a class="nav-link page-scroll"
-                                        style="max-width:6rem; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
-                                        title="{{ request.session.name }}">{{ request.session.name }}</a></li>
+                <!-- Dropdown Menu -->
+                <li class="nav-item dropdown" style="margin-right: 2rem">
+                    <a class="nav-link dropdown-toggle page-scroll" id="navbarDropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false" title="{{ request.session.name }}">{{ request.session.name }}</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/loginout/"><span class="item-text">Logout</span></a>
+                    </div>
+                </li>
+                <!-- end of dropdown menu -->
 
             {% endifequal %}
 

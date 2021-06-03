@@ -18,7 +18,7 @@
 	margin-top: 0;
 	border: none;
 	border-radius: 0.25rem;
-	background-color: rgba(255,255,255,1);
+	background-color: rgba(250,250,250,.2);
 }
 
 .navbar-custom .dropdown-item {
@@ -27,7 +27,7 @@
 }
 
 .navbar-custom .dropdown-item:hover {
-    background-color: rgba(255,255,255,0);
+	background-color:rgba(250,250,250,0);
     color: rgb(187,187,187);
 }
 
