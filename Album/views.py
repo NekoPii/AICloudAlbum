@@ -5,6 +5,7 @@ import os
 import re
 import platform
 import tempfile
+import threading
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from wsgiref.util import FileWrapper
@@ -30,7 +31,7 @@ from PIL import Image
 from threading import Thread, Lock
 import time
 
-
+has_user_upload = {}
 type_sever = typeSever()
 page_num_folder = 5
 page_num_img = 10
@@ -73,6 +74,82 @@ def getFreeDiskSize():  # MB
     else:
         st = os.statvfs(store_dir)
         return st.f_bavail * st.f_frsize / 1024
+
+def getAllTF(phone, status=True):
+    getAllFaceDetect(phone)
+    getAllTag(phone)
+
+def getAllTag(phone, status=True):
+    NoneTag = models.Tag.objects.get(tag="None")
+    now_user = models.User.objects.get(phone=phone)
+    now_pics = models.Picture.objects.filter(user_id=now_user.phone, tag_id=NoneTag.id)
+    all_tag = models.Tag.objects.all()
+    cnt = 0
+    for index, p in enumerate(now_pics):
+        try:
+            now_path = os.path.join(store_dir, p.fake_name + "." + p.type)
+            if not os.path.exists(now_path):
+                raise Exception("Path not exist")
+            if p.is_tag:
+                continue
+            else:
+                global type_sever
+                now_res = type_sever.pd(now_path)
+                p.tag_id = all_tag.get(tag=now_res[0]).id
+                p.is_tag = 1
+                p.save()
+                cnt += 1
+        except:
+            pass
+    print("{}pics have been tagged".format(cnt-1))
+
+
+def getAllFaceDetect(phone="13022941500", status=True):
+    now_user = models.User.objects.get(phone=phone)
+    now_pics = models.Picture.objects.filter(user_id=now_user.phone)
+    cnt = 0
+    for img_index, pic in enumerate(now_pics):
+        if pic.is_detect_face and pic.is_face:
+            continue
+        elif pic.is_detect_face and not pic.is_face:
+            continue
+        else:
+            try:
+                pic_path = os.path.join(store_dir, pic.fake_name + "." + pic.type)
+                isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(pic_path,
+                                                                                                  now_user.phone)
+                if isFace:
+                    if recognized_faces:
+                        index = 0
+                        already_add = set()
+                        for now_recognized_face in recognized_faces:
+                            if now_recognized_face == "Not matched":
+                                newFace = models.Face(face_cover=saved_face_img_name[index],
+                                                      cnt=1, user_id=now_user.phone)
+                                newFace.save()
+                                newFacePic = models.FacePic(face_id=newFace.id, pic_id=pic.id)
+                                newFacePic.save()
+                            else:
+                                if now_recognized_face in already_add:
+                                    continue  # 同一张图片同一个人脸一次只加一次
+                                else:
+                                    already_add.add(now_recognized_face)
+                                    nowFace = models.Face.objects.get(face_cover=now_recognized_face,
+                                                                      user_id=now_user.phone)
+                                    nowFace.cnt += 1
+                                    nowFace.save()
+                                    newFacePic = models.FacePic(face_id=nowFace.id, pic_id=pic.id)
+                                    newFacePic.save()
+                            index += 1
+                    pic.is_face = 1
+                    pic.save()
+                    cnt += 1
+                pic.is_detect_face = 1
+                pic.save()
+            except:
+                pass
+
+    print("{}pics have been searched face".format(cnt))
 
 
 # ==================================== views
@@ -455,6 +532,11 @@ def mypics_folder(request):
         if not Folders:
             Folders = None
 
+        if has_user_upload.get(phone, False):
+            thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
+            thread_getAllTF.start()
+            print("Start get Tag/Face")
+            has_user_upload[phone]=False
         return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
@@ -619,6 +701,7 @@ def upload_upload_syn(request, folder_fake_name):
         initialPreviewConfig = []
 
         if all_imgs:
+            has_user_upload[user_phone] = True
             now_user = models.User.objects.get(phone=user_phone)
             ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
             ALL_folder_cover = models.FolderCover.objects.get(folder_id=ALL_folder.pk)
@@ -759,6 +842,8 @@ def upload_upload_asyn(request, folder_fake_name):
         all_imgs = request.FILES.get("upload_img", None)
 
         if all_imgs:
+            global has_user_upload
+            has_user_upload[user_phone] = True
             now_user = models.User.objects.get(phone=user_phone)
             img_path = os.path.join(store_dir, all_imgs.name)
             ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
@@ -886,6 +971,10 @@ def upload_upload_asyn(request, folder_fake_name):
                 # {"initialPreview": initialPreview, "initialPreviewConfig": initialPreviewConfig, "append": True}
                 {"status": True})
             )
+
+
+
+
         else:
             return HttpResponse(json.dumps({"status": False}))
     else:
