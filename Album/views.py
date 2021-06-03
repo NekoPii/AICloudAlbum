@@ -31,7 +31,6 @@ from PIL import Image
 from threading import Thread, Lock
 import time
 
-has_user_upload = {}
 type_sever = typeSever()
 page_num_folder = 5
 page_num_img = 10
@@ -75,9 +74,11 @@ def getFreeDiskSize():  # MB
         st = os.statvfs(store_dir)
         return st.f_bavail * st.f_frsize / 1024
 
+
 def getAllTF(phone, status=True):
     getAllFaceDetect(phone)
     getAllTag(phone)
+
 
 def getAllTag(phone, status=True):
     NoneTag = models.Tag.objects.get(tag="None")
@@ -101,7 +102,7 @@ def getAllTag(phone, status=True):
                 cnt += 1
         except:
             pass
-    print("{}pics have been tagged".format(cnt-1))
+    print("{}pics have been tagged".format(cnt - 1))
 
 
 def getAllFaceDetect(phone="13022941500", status=True):
@@ -255,6 +256,10 @@ def signup(request):
 
 
 def loginout(request):
+    phone = request.session["phone"]
+    thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
+    thread_getAllTF.start()
+    print("Start get Tag/Face")
     request.session.flush()
     return redirect("/")
 
@@ -532,11 +537,6 @@ def mypics_folder(request):
         if not Folders:
             Folders = None
 
-        if has_user_upload.get(phone, False):
-            thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
-            thread_getAllTF.start()
-            print("Start get Tag/Face")
-            has_user_upload[phone]=False
         return render(request, "Album/mypics.html", locals())
     else:
         return redirect("/login/")
@@ -701,7 +701,6 @@ def upload_upload_syn(request, folder_fake_name):
         initialPreviewConfig = []
 
         if all_imgs:
-            has_user_upload[user_phone] = True
             now_user = models.User.objects.get(phone=user_phone)
             ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
             ALL_folder_cover = models.FolderCover.objects.get(folder_id=ALL_folder.pk)
@@ -842,8 +841,6 @@ def upload_upload_asyn(request, folder_fake_name):
         all_imgs = request.FILES.get("upload_img", None)
 
         if all_imgs:
-            global has_user_upload
-            has_user_upload[user_phone] = True
             now_user = models.User.objects.get(phone=user_phone)
             img_path = os.path.join(store_dir, all_imgs.name)
             ALL_folder = models.Folder.objects.get(user_id=now_user.phone, name="ALL")
