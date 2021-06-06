@@ -39,6 +39,8 @@ zeroid = 1
 threshold = 1080
 eps = 1e-5
 
+max_capacity = 5 * 1024  # MB
+
 # Create your views here.
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
@@ -224,7 +226,7 @@ def signup(request):
                 fake_id = hash_code(str(phone), salt="user")
 
                 new_user = models.User(name=name, phone=phone, pwd=hash_code(pwd) + "-" + pwd,
-                                       max_capacity=getFreeDiskSize(), fake_id=fake_id)
+                                       max_capacity=max_capacity, fake_id=fake_id)
                 new_user.save()
 
                 new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
@@ -713,6 +715,10 @@ def upload_upload_syn(request, folder_fake_name):
                     f.write(chunk)
                 f.close()
 
+                if now_user.now_capacity + os.path.getsize(img_path) / 1024 / 1024 > now_user.max_capacity:
+                    os.remove(img_path)
+                    return HttpResponse(json.dumps({"status": False}))
+
                 with Image.open(img_path) as img:
                     h, w = img.size[0], img.size[1]
 
@@ -850,6 +856,11 @@ def upload_upload_asyn(request, folder_fake_name):
             for chunk in all_imgs.chunks():  # 分块写入
                 f.write(chunk)
             f.close()
+
+            if now_user.now_capacity + os.path.getsize(img_path) / 1024 / 1024 > now_user.max_capacity:
+                os.remove(img_path)
+                mutex_x.release()
+                return HttpResponse(json.dumps({"status": False}))
 
             with Image.open(img_path) as img:
                 h, w = img.size[0], img.size[1]
