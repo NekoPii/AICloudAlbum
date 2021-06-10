@@ -38,6 +38,9 @@ urlpatterns = [
     path("face/<str:face_cover_fake_name>/", views.faceDetailPage, name="faceDetail"),
     path("select_faceRec/", views.get_select_faceDetect, name="select_faceRec"),
     path("one_faceRec/", views.get_one_faceDetect, name="one_faceRec"),
+    path("video/", views.video, name="video"),
+    path("getVideo/", views.getVideo, name="getVideo"),
+    path("download_video/", views.downloadVideo, name="downloadVideo"),
     path("search/", views.search, name="search"),
     ## Progress
 ]

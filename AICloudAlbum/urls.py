@@ -37,6 +37,7 @@ urlpatterns = [
     path("captcha/", include("captcha.urls")),
     re_path(r"^static/(?P<path>.*)$", return_static, name="static"),
     re_path(r"^upload_imgs/(?P<path>.*)$", return_static, name="upload_imgs"),
+    re_path(r"^video/(?P<path>.*)$", return_static, name="video"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

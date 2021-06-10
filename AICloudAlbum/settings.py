@@ -136,6 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "upload_imgs"),
+    os.path.join(BASE_DIR, "video"),
     os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs"),
 ]
 
@@ -154,7 +155,7 @@ CAPTCHA_LENGTH = 4
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
 
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
     # creates absolute urls from relative ones

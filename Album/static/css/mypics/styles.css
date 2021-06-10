@@ -36,6 +36,10 @@ body {
     padding-right: 17.7px
 }
 
+#my-video #progress .process {
+    background: none;
+}
+
 .none_pics {
     background: rgba(255, 255, 255, 1);
     height: 30rem;
@@ -47,22 +51,22 @@ body {
 }
 
 .btn-solid-lg {
-	display: inline-block;
+    display: inline-block;
     margin-top: 1rem;
-	padding: 1.375rem 2.125rem 1.375rem 2.125rem;
-	border: 0.125rem solid #64b3f4;
-	border-radius: 0.25rem;
-	background-color: #64b3f4;
-	color: #fff;
-	font: 700 0.75rem/0 "Montserrat", sans-serif;
-	text-decoration: none;
-	transition: all 0.2s;
+    padding: 1.375rem 2.125rem 1.375rem 2.125rem;
+    border: 0.125rem solid #64b3f4;
+    border-radius: 0.25rem;
+    background-color: #64b3f4;
+    color: #fff;
+    font: 700 0.75rem/0 "Montserrat", sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
 }
 
 .btn-solid-lg:hover {
-	background-color: transparent;
-	color: #64b3f4;
-	text-decoration: none;
+    background-color: transparent;
+    color: #64b3f4;
+    text-decoration: none;
 }
 
 .scroll-to-top {
@@ -999,7 +1003,6 @@ body {
 
 /* Min-width width 1600px */
 @media (min-width: 1600px) {
-
 
 
     /* end of navigation */

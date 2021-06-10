@@ -1,0 +1,103 @@
+{% extends "Album/navbar_welcome.html" %}
+
+{% block title %}
+    <title>Video - Album</title>
+{% endblock %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendor/mui-player/mui-player.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mypics/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/upload/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/popbtn/main.css' %}">
+{% endblock %}
+
+{% block logo %}
+    <img src="{% static "image/AIAlbum.svg" %}" alt="alternative">
+{% endblock %}
+
+{% block main %}
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+
+    <div class="modal fade" id="download-process" tabindex="-1" role="dialog"
+         aria-labelledby="downloadProcessModalLabel"
+         aria-hidden="true" data-backdrop="static" style="overflow-y: auto;">
+        <div class="modal-dialog modal-lg mx-auto" role="document" style="max-width: 60%;margin-top:15rem;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="downloadProcessModalLabel">Download Processing ... </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div id="download_process_bar"
+                             class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="0.1" aria-valuemin="0.1" aria-valuemax="100"
+                             style="width: 0.1%;">0.1%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects -->
+    <div id="projects" class="filter" style="padding-top: 1rem;padding-bottom: 1rem">
+        <div class="container" style="padding: 0;">
+            <div class="row">
+                <div class="col-lg-12" style="padding: 0;height: 6rem;">
+                    <div class="section-title" style="font-family: 'MV Boli'">VIDEO</div>
+                    <h2 style="font-family: 'Ink Free';">AI Highlights Editing</h2>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    {% ifequal video_src None %}
+                        <div class="none_pics mx-auto">
+                            <h4>No Video yet ~</h4>
+                            <h4>Click Here to Generate</h4>
+                            <a href="/mypics/" type="button" class="btn-solid-lg small blue" title="Mypics">
+                                Mypics
+                            </a>
+                        </div>
+                    {% endifequal %}
+                    {% ifnotequal video_src None %}
+                        <input id="video_src" type="hidden" style="display: none;" value="{{ video_src }}">
+                        <input id="video_name" type="hidden" style="display: none;" value="{{ video_name }}">
+                        <div id="mui-player" class="mx-auto"></div>
+                    {% endifnotequal %}
+                    <!-- end of filter -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of filter -->
+    <!-- end of projects -->
+
+    {% ifnotequal video_src None %}
+        <form id="downloadVideoForm">
+            {% csrf_token %}
+            <input value="{{ video_name }}" type="hidden" style="display: none;"
+                   name="video_name">
+        </form>
+        <div class="container folder_func1 popbtn">
+            <div class="float-btn-group" style="bottom: 7rem;left:3rem;">
+                <button id="video_download" class="btn-float green" type="button" title="Download Video">
+                    <i class="uil uil-import"></i>
+                </button>
+            </div>
+        </div>
+    {% endifnotequal %}
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'vendor/mui-player/mui-player.min.js' %}"></script>
+    <script src="{% static 'js/popbtn/main.js' %}"></script>
+    <script src="{% static 'js/preload/main.js' %}"></script>
+    <script src="{% static 'js/download/video.js' %}"></script>
+    <script src="{% static 'js/video/main.js' %}"></script>
+{% endblock %}

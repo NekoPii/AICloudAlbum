@@ -1,14 +1,22 @@
 import cv2
 import numpy as np
+import subprocess
 import os
+
+video_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "video")
+if not os.path.exists(video_imgs_dir):
+    os.mkdir(video_imgs_dir)
 
 
 # 输入要生成视频的图片名序列，将其生成固定帧率和大小的视频，存储在给定路径中\
 # 可以给定视频文件名，不需要写路径，直接输入名字就行
 def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=12):
+    user_fake_id = video_name.rsplit("-", 1)[1]
+    for now_video_name in os.listdir(video_imgs_dir):
+        if user_fake_id in now_video_name and (now_video_name.endswith(".mp4") or now_video_name.endswith(".avi")):
+            os.remove(os.path.join(video_imgs_dir, now_video_name))
     # 在此处修改根路径
-    video_root_filepath = os.getcwd() + "/videos/"
-    video_filepath = video_root_filepath + video_name + ".avi"
+    video_filepath = os.path.join(video_imgs_dir, video_name + ".avi")
     # 每张图片展示时间
     duration_per_img = 0.5
     # 对于给出的图片，从中截取多少片段
@@ -28,13 +36,14 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=1
                 img_list.append(e_img)
     GenerateVideoWithImages(img_list, video_filepath, duration_per_img, fps, windows_size)
     # 转换格式
-    dir = video_filepath.strip(".avi")
-    avi_filepath = dir + ".avi"
-    mp4_filepath = dir + ".mp4"
+    avi_filepath = video_filepath
+    mp4_filepath = video_filepath.rsplit(".", 1)[0] + ".mp4"
     # 删除文件
     if os.path.exists(mp4_filepath):
         os.remove(mp4_filepath)
-    convert_avi_to_mp4(avi_filepath, mp4_filepath)
+    if convert_avi_to_mp4(avi_filepath, mp4_filepath):
+        if os.path.exists(avi_filepath):
+            os.remove(avi_filepath)
 
 
 # 接受一组图片序列，生成视频
@@ -98,7 +107,7 @@ def ImageFitScreenSize(img, size):
 # 给定两张在视频中邻近出现的图像，在他们之间插入过渡帧
 def SimpleTransFrame(img_prev, img_next, frame_num, video):
     for i in range(frame_num):
-        t = i / frame_num;
+        t = i / frame_num
         frame = np.zeros(img_prev.shape)
         frame[:, :, :] = img_prev[:, :, :] * (1 - t) + img_next[:, :, :] * t
         frame = frame.astype(np.uint8)
@@ -118,7 +127,7 @@ def ExtractFromImage(ori_img, size, num):
         center_m = int(img_m / 2)
         center_n = int(img_n / 2)
         # 截取窗口的大小
-        extract_ratio = min(0.75, screen_n/(img_n))
+        extract_ratio = min(0.75, screen_n / (img_n))
         extract_n = int(extract_ratio * img_n)
         extract_m = min(int(extract_n * screen_m / screen_n), img_m)
         # 起始点
@@ -143,5 +152,7 @@ def ExtractFromImage(ori_img, size, num):
 
 # 转换格式
 def convert_avi_to_mp4(avi_file_path, output_name):
-    os.popen("ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
+    cmd = subprocess.Popen(
+        "ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
+    cmd.wait()
     return True

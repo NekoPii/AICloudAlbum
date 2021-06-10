@@ -23,7 +23,7 @@ from AI.ImgClass_new.typeSever import typeSever
 from AI.ImgClass.MyImgClass import ImageClassification
 from AI.FaceDetect.FaceDetect import FaceRecogPrepared
 from AICloudAlbum import settings
-from AICloudAlbum.settings import MEDIA_ROOT
+from AI.ImgVideo.ImgToVideo import GenVideo
 from . import models
 from .forms import LoginForm, SignupForm
 import hashlib
@@ -45,9 +45,13 @@ max_capacity = 5 * 1024  # MB
 
 root_dir = os.path.dirname(os.path.dirname(__file__))
 store_dir = os.path.join(root_dir, "upload_imgs")
+video_dir = os.path.join(root_dir, "video")
 
 if not os.path.exists(store_dir):
     os.mkdir(store_dir)
+
+if not os.path.exists(video_dir):
+    os.mkdir(video_dir)
 
 store_compress_dir = os.path.join(store_dir, "compress_imgs")
 if not os.path.exists(store_compress_dir):
@@ -56,6 +60,10 @@ if not os.path.exists(store_compress_dir):
 ExistingFace_dir = os.path.join(store_dir, "ExistingFace")
 if not os.path.exists(ExistingFace_dir):
     os.mkdir(ExistingFace_dir)
+
+ExistingCode_dir = os.path.join(store_dir, "ExistingFaceCode")
+if not os.path.exists(ExistingCode_dir):
+    os.mkdir(ExistingCode_dir)
 
 
 # ==================================== 工具函数
@@ -179,7 +187,6 @@ def login(request):
                     request.session["is_login"] = True
                     request.session["phone"] = user.phone
                     request.session["name"] = user.name
-                    request.session["fake_id"] = user.fake_id
                     request.session.set_expiry(0)
                     res["loginIn"] = "true"
                     res["message"] = "Login Successfully 🌸 ~"
@@ -246,7 +253,6 @@ def signup(request):
                 request.session["is_login"] = True
                 request.session["phone"] = new_user.phone
                 request.session["name"] = new_user.name
-                request.session["fake_id"] = new_user.fake_id
                 request.session.set_expiry(0)
 
                 res["signup"] = "true"
@@ -582,6 +588,23 @@ def mypics_pics(request, folder_fake_name):
             return error_404(request, "404")
     else:
         return redirect("/login/")
+
+
+def video(request):
+    if request.session.get("is_login"):
+        name = request.session['name']
+        phone = request.session['phone']
+        user = models.User.objects.get(phone=phone)
+        fake_id = user.fake_id
+        video_src = None
+        video_name = None
+        for now_video_name in os.listdir(video_dir):
+            if fake_id in now_video_name and now_video_name.endswith(".mp4"):
+                video_src = now_video_name
+                video_name = now_video_name.rsplit("-", 1)[0] + " Eye-catching Video"
+                break
+        return render(request, "Album/video.html", locals())
+    return redirect("/login/")
 
 
 def search(request):
@@ -1876,6 +1899,59 @@ def get_select_faceDetect(request):
                 return HttpResponse(json.dumps(res))
 
         return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+def getVideo(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            phone = request.session["phone"]
+            select_imgs_fakename = request.POST.getlist("img_name")
+            select_cnt = len(select_imgs_fakename)
+            nowUser = models.User.objects.get(phone=phone)
+            res = {"video_status": None, "video_cnt": None, "select_cnt": select_cnt}
+            cnt = 0
+            img_path_list = []
+            if select_imgs_fakename:
+                for img_index, img_fakename in enumerate(select_imgs_fakename):
+                    pic = models.Picture.objects.get(user_id=nowUser.phone, fake_name=img_fakename)
+                    cnt += 1
+                    img_path_list.append(os.path.join(store_dir, pic.fake_name + "." + pic.type))
+
+                video_name = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + "-" + nowUser.fake_id
+                GenVideo(img_path_list, video_name=video_name, windows_size=(1280, 720), fps=24)
+
+            if cnt == 0:
+                res["video_status"] = "false"
+            else:
+                res["video_status"] = "true"
+            res["video_cnt"] = cnt
+            return HttpResponse(json.dumps(res))
+        return render(request, "Album/mypics.html", locals())
+    return redirect("/login/")
+
+
+def downloadVideo(request):
+    if request.session.get("is_login"):
+        if request.method == "POST":
+            phone = request.session["phone"]
+            nowUser = models.User.objects.get(phone=phone)
+            video_name = request.POST["video_name"]
+            video_name = video_name.split(" ")[0] + "-" + nowUser.fake_id
+            try:
+                video_path = os.path.join(video_dir, video_name + ".mp4")
+                with open(video_path, "rb") as f:
+                    video = f.read()
+                response = HttpResponse(video)
+                response["Content-Type"] = "application/octet-stream"
+                response["Content-Disposition"] = "attachment;filename={}".format(escape_uri_path(video_name + ".mp4"))
+                response["download_status"] = "true"
+                return response
+            except:
+                response = HttpResponse()
+                response["download_status"] = "false"
+                return response
+        return render(request, "Album/video.html", locals())
     return redirect("/login/")
 
 
