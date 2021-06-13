@@ -146,7 +146,7 @@ class FaceDetectTest(TestCase):
             'pwd': '123456'
         }
         filepath = upload_imgs_dir + "/person4.jpg"
-        isFace, face_locations, recognized_faces = FaceRecogPrepared(filepath, user.phone, True)
+        isFace, face_locations, recognized_faces = FaceRecogPrepared(filepath, user['phone'], True)
         # 展示结果
         print("isFace=" + str(isFace))
         print(face_locations)
@@ -155,7 +155,7 @@ class FaceDetectTest(TestCase):
 
         self.assertEqual(isFace, True)
         self.assertEqual(len(face_locations) == 0, False)
-        for recog in recognized_faces
+        for recog in recognized_faces:
             self.assertEqual(recog == 'Not matched', False)
 
 
