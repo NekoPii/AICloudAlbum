@@ -25,7 +25,9 @@
     <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
     <!-- Image Logo -->
     {% ifequal request.session.is_login None %}
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum-S.svg" alt="alternative"></a>
+        <a class="navbar-brand logo-image" href="">
+            <img src="/static/image/AIAlbum.svg" alt="alternative">
+        </a>
     {% endifequal %}
     {% ifequal request.session.is_login True %}
         <!--
@@ -33,7 +35,9 @@
             <i class="fa fa-bars" style="color:rgb(187,187,187)"></i>
         </a>
         -->
-        <a class="navbar-brand logo-image" href=""><img src="/static/image/AIAlbum.svg" alt="alternative"></a>
+        <a class="navbar-brand logo-image" href="">
+            <img src="/static/image/AIAlbum.svg" alt="alternative">
+        </a>
 
         <div class="modal-body" style="padding: 0">
             <form id="search_tag" class="search_form">
