@@ -74,7 +74,7 @@ from AI.FaceDetect.VisualizeDetect import VisualizeBlocks
 import Album.models as models
 import os
 
-imgs_dir = os.getcwd()
+upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "upload_imgs")
 
 class FaceDetectTest(TestCase):
     # 测试人脸识别FaceDetect模块
@@ -123,7 +123,7 @@ class FaceDetectTest(TestCase):
 
         print(new_img.fake_name)
 
-    def test_face1(self):
+    def test_user(self):
         self.maxDiff=None
         post_signup_data={
             'phone': '15989061915',
@@ -138,6 +138,19 @@ class FaceDetectTest(TestCase):
         response = self.client.post('/signup', data=post_signup_data,
                                     content_type='application/json')
         self.assertEqual(response, True)
+
+    def test_face1(self):
+        user = {
+            'phone': '15989061915',
+            'pwd': '123456'
+        }
+        filepath = upload_imgs_dir + "/person4.jpg"
+        isFace, face_locations, recognized_faces = FaceRecogPrepared(filepath, user.phone, True)
+        # 展示结果
+        print("isFace=" + str(isFace))
+        print(face_locations)
+        print(recognized_faces)
+        VisualizeBlocks(filepath, face_locations)
 
     def tearDown(self):
         # 每个测试函数执行后都删除所有数据
