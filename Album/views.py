@@ -204,6 +204,7 @@ def login(request):
     return render(request, "Album/login.html", locals())
 
 
+
 def signup(request):
     if request.session.get("is_login", None):
         return redirect("/")
