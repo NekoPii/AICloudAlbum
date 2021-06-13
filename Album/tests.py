@@ -65,8 +65,6 @@ class TestDeleteSelectImageOrigin(TestCase):
         print('test_demo')'''
 
     def test_welcome(self):
-
-
         print('test_demo2')
 
 
@@ -141,6 +139,6 @@ class FaceDetectTest(TestCase):
                                     content_type='application/json')
         self.assertEqual(response, True)
 
-        def tearDown(self):
-            # 每个测试函数执行后都删除所有数据
-            models.User.objects.all().delete()
+    def tearDown(self):
+        # 每个测试函数执行后都删除所有数据
+        models.User.objects.all().delete()
