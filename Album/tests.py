@@ -1,3 +1,5 @@
+import shutil
+
 from django.test import TestCase
 
 # Create your tests here.
@@ -16,6 +18,18 @@ import os
 class TestDeleteSelectImage(TestCase):
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir,now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir,now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir,now_img),os.path.join(store_dir,now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -71,29 +85,34 @@ class TestDeleteSelectImage(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
+
 
     def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir,now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir,now_img))
 
         print('tearDown')
 
@@ -103,8 +122,21 @@ class TestDeleteSelectImage(TestCase):
 
 
 class TestDeleteSelectImage2(TestCase):
+
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -160,29 +192,35 @@ class TestDeleteSelectImage2(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
+
+
 
     def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
 
         print('tearDown')
 
@@ -195,8 +233,21 @@ class TestDeleteSelectImage2(TestCase):
 upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "AICloudAlbum/upload_imgs")
 
 class FaceDetectTestCase1(TestCase):
+
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -252,30 +303,38 @@ class FaceDetectTestCase1(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
 
-    def test_post_user(self):
-        pass
+
+
+    def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+
+        print('tearDown')
+
 
     def test_user(self):
         self.maxDiff=None
@@ -296,14 +355,24 @@ class FaceDetectTestCase1(TestCase):
                                     content_type='application/json')
         #self.assertEqual(response, True)
 
-    def tearDown(self):
-        # 每个测试函数执行后都删除所有数据
-        models.User.objects.all().delete()
 
 class FaceDetectTestCase2(TestCase):
     # 测试人脸识别FaceDetect模块2:
+
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -359,27 +428,37 @@ class FaceDetectTestCase2(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
+
+
+
+    def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+
+        print('tearDown')
 
     def test_face(self):
         user = {
@@ -400,14 +479,24 @@ class FaceDetectTestCase2(TestCase):
         for recog in recognized_faces:
             self.assertEqual(recog == 'Not matched', False)
 
-    def tearDown(self):
-        # 每个测试函数执行后都删除所有数据
-        models.User.objects.all().delete()
 
 class FaceDetectTestCase3(TestCase):
     # 测试人脸识别FaceDetect模块3:
+
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -463,27 +552,37 @@ class FaceDetectTestCase3(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
+
+
+
+    def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+
+        print('tearDown')
 
     def test_face(self):
         user = {
@@ -505,14 +604,25 @@ class FaceDetectTestCase3(TestCase):
             self.assertEqual(isFace, True)
             self.assertEqual(len(face_locations) == 0, False)
 
-    def tearDown(self):
-        # 每个测试函数执行后都删除所有数据
-        models.User.objects.all().delete()
+
 
 class FaceDetectTestCase4(TestCase):
     # 测试人脸识别FaceDetect模块4:
+
     def setUp(self):
         print('setUp')
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        src_dir = os.path.join(store_dir, "face_img")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+        for now_img in os.listdir(src_dir):
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
         client = Client()
         models.Tag(tag="None").save()
         file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -568,27 +678,37 @@ class FaceDetectTestCase4(TestCase):
         NoneTag = models.Tag.objects.get(tag="None")
 
         for i in range(62):
-            try:
-                img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-                now_size = os.path.getsize(img_path) / 1024 / 1024
-                with Image.open(img_path) as img:
-                    h, w = img.size[0], img.size[1]
-                new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                         size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                         folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
 
-                new_img.save()
-                new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-                new_img.save()
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
 
-                now_img_name = str(new_img.fake_name) + ".jpg"
-                compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-                compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-                img_path_new = os.path.join(store_dir, now_img_name)
-                os.rename(img_path, img_path_new)
-                os.rename(compress_img_path_old, compress_img_path_new)
-            except:
-                pass
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
+
+
+
+    def tearDown(self):
+        compress_dir = os.path.join(store_dir, "compress_imgs")
+        for now_img in os.listdir(store_dir):
+            if "." in now_img:
+                os.remove(os.path.join(store_dir, now_img))
+        for now_img in os.listdir(compress_dir):
+            if "." in now_img:
+                os.remove(os.path.join(compress_dir, now_img))
+
+        print('tearDown')
 
     def test_face3(self):
         user = {
@@ -607,9 +727,7 @@ class FaceDetectTestCase4(TestCase):
             print(recognized_faces)
             VisualizeBlocks(filepath, face_locations)
 
-    def tearDown(self):
-        # 每个测试函数执行后都删除所有数据
-        models.User.objects.all().delete()
+
 
 
 
