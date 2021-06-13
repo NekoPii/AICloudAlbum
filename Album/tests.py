@@ -108,7 +108,7 @@ def tearDown():
 
 
 
-class TestDeleteSelectImage(TestCase):
+class TestDeleteSelectImage1(TestCase):
     def setUp(self):
         print("Test Case 1 of Delete Select Image \n")
         print('setUp......\n')
@@ -167,15 +167,274 @@ class TestDeleteSelectImage(TestCase):
 class TestDeleteSelectImage2(TestCase):
 
     def setUp(self):
-        print('setUp')
-        setUp()
+        print("Test Case 2 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client = Client()
+        setUp(self.client)
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown......\n')
         tearDown()
 
     def test_delete_select_images(self):
-        print("deleting.....")
+        # phone is 13600000000 (valid)
+        # user has not login (not valid)
+
+        # prepare data needed
+        phone = '13600000000'
+        folder = models.Folder.objects.get(user_id=phone, name="ALL")
+        pics = models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete = []
+        response = self.client.post("/loginout/")
+
+        for i, pic in enumerate(pics):
+            if i > 3:
+                break
+            pic_delete.append(pic.fake_name)
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name = folder.fake_name
+        url = "/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:F")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code = response.status_code
+        content = response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+        print("link to:{}\n".format(response.url))
+
+
+
+class TestDeleteSelectImage3(TestCase):
+    def setUp(self):
+        print("Test Case 3 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client=Client()
+        setUp(self.client)
+
+
+    def tearDown(self):
+        print('tearDown......\n')
+        tearDown()
+
+    def test_delete_select_images(self):
+        # phone is 13600000000 (valid)
+        # user has login (valid)
+        # folder_fake_name is the All folder's fake name (valid)
+        # select_image_list (empty)
+
+        # prepare data needed
+        phone= '13600000000'
+        folder=models.Folder.objects.get(user_id=phone, name="ALL")
+        pics=models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete=[]
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name=folder.fake_name
+        url="/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:T")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code=response.status_code
+        content=response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+
+
+
+class TestDeleteSelectImage4(TestCase):
+    def setUp(self):
+        print("Test Case 4 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client=Client()
+        setUp(self.client)
+
+
+    def tearDown(self):
+        print('tearDown......\n')
+        tearDown()
+
+    def test_delete_select_images(self):
+        # phone is 13600000000 (valid)
+        # user has login (valid)
+        # folder_fake_name is the All folder's fake name (valid)
+        # select_image_list (3 images are in the All folder and 1 image fake name has invalid char)
+
+        # prepare data needed
+        phone= '13600000000'
+        folder=models.Folder.objects.get(user_id=phone, name="ALL")
+        pics=models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete=[]
+        for i, pic in enumerate(pics):
+            if i > 3:
+                break
+            pic_delete.append(pic.fake_name)
+        pic_delete[0]=pic_delete[0][:-1]+"#"
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name=folder.fake_name
+        url="/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:T")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code=response.status_code
+        content=response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+
+
+class TestDeleteSelectImage5(TestCase):
+    def setUp(self):
+        print("Test Case 5 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client=Client()
+        setUp(self.client)
+
+
+    def tearDown(self):
+        print('tearDown......\n')
+        tearDown()
+
+    def test_delete_select_images(self):
+        # phone is 13600000000 (valid)
+        # user has login (valid)
+        # folder_fake_name is the All folder's fake name (valid)
+        # select_image_list (3 images are in the All folder and 1 image fake name is not in the database)
+
+        # prepare data needed
+        phone= '13600000000'
+        folder=models.Folder.objects.get(user_id=phone, name="ALL")
+        pics=models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete=[]
+        for i, pic in enumerate(pics):
+            if i > 3:
+                break
+            pic_delete.append(pic.fake_name)
+        pic_delete[0]=pic_delete[0][:-1]+"f"
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name=folder.fake_name
+        url="/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:T")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code=response.status_code
+        content=response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+
+
+
+class TestDeleteSelectImage6(TestCase):
+    def setUp(self):
+        print("Test Case 6 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client=Client()
+        setUp(self.client)
+
+
+    def tearDown(self):
+        print('tearDown......\n')
+        tearDown()
+
+    def test_delete_select_images(self):
+        # phone is 13600000000 (valid)
+        # user has login (valid)
+        # folder_fake_name is the All folder's fake name (valid)
+        # select_image_list (all 4 image fake name are not in the database)
+
+        # prepare data needed
+        phone= '13600000000'
+        folder=models.Folder.objects.get(user_id=phone, name="ALL")
+        pics=models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete=[]
+        for i, pic in enumerate(pics):
+            if i > 3:
+                break
+            pic_delete.append(pic.fake_name)
+        pic_delete[0]=pic_delete[0][:-3]+"abc"
+        pic_delete[1] = pic_delete[1][:-3] + "abc"
+        pic_delete[2] = pic_delete[2][:-3] + "abc"
+        pic_delete[3] = pic_delete[3][:-3] + "abc"
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name=folder.fake_name
+        url="/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:T")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code=response.status_code
+        content=response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+
+
 
 
 # testing face module
