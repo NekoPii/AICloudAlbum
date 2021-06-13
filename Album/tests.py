@@ -439,16 +439,18 @@ class TestDeleteSelectImage6(TestCase):
 
 # testing face module
 
-upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "AICloudAlbum/upload_imgs")
+upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "AICloudAlbum/upload_imgs/face_img")
 
 class FaceDetectTestCase1(TestCase):
 
     def setUp(self):
-        print('setUp')
-        setUp()
+        print("Test Case 1 of Face Detect \n")
+        print('setUp......\n')
+        self.client = Client()
+        setUp(self.client)
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown......\n')
         tearDown()
 
 
@@ -470,17 +472,31 @@ class FaceDetectTestCase1(TestCase):
         response = self.client.post('/login', data=post_login_data,
                                     content_type='application/json')
         #self.assertEqual(response, True)
+        # show input value
+        print("Input:")
+        print("phone:{}".format(post_login_data['phone']))
+        print("isLogin:T")
+
+        status_code = response.status_code
+        content = response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
 
 
 class FaceDetectTestCase2(TestCase):
     # 测试人脸识别FaceDetect模块2:
 
     def setUp(self):
-        print('setUp')
-        setUp()
+        print("Test Case 2 of Face Detect \n")
+        print('setUp......\n')
+        self.client = Client()
+        setUp(self.client)
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown......\n')
         tearDown()
 
     def test_face(self):
@@ -491,10 +507,16 @@ class FaceDetectTestCase2(TestCase):
         }
         filepath = upload_imgs_dir + "/face_9.jpg"
         isFace, face_locations, recognized_faces,saved_face_img_name = FaceRecogPrepared(filepath, user['phone'], True)
-        #         # 展示结果
-        print("isFace=" + str(isFace))
+        # 展示结果
+        print("Input:")
+        print("imageToBeDetected:"+filepath)
+        print("Output:")
+        print("isFace:" + str(isFace))
+        print("Face Locations:")
         print(face_locations)
+        print("Face Recognitions:")
         print(recognized_faces)
+        print("\n")
         VisualizeBlocks(filepath, face_locations)
 
         self.assertEqual(isFace, True)
@@ -507,11 +529,13 @@ class FaceDetectTestCase3(TestCase):
     # 测试人脸识别FaceDetect模块3:
 
     def setUp(self):
-        print('setUp')
-        setUp()
+        print("Test Case 3 of Face Detect \n")
+        print('setUp......\n')
+        self.client = Client()
+        setUp(self.client)
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown......\n')
         tearDown()
 
     def test_face(self):
@@ -526,9 +550,15 @@ class FaceDetectTestCase3(TestCase):
             isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(filepath, user['phone'],
                                                                                               True)
             # 展示结果
-            print("isFace=" + str(isFace))
+            print("Input:")
+            print("imageToBeDetected:" + filepath)
+            print("Output:")
+            print("isFace:" + str(isFace))
+            print("Face Locations:")
             print(face_locations)
+            print("Face Recognitions:")
             print(recognized_faces)
+            print("\n")
             VisualizeBlocks(filepath, face_locations)
 
             self.assertEqual(isFace, True)
@@ -540,11 +570,13 @@ class FaceDetectTestCase4(TestCase):
     # 测试人脸识别FaceDetect模块4:
 
     def setUp(self):
-        print('setUp')
-        setUp()
+        print("Test Case 4 of Face Detect \n")
+        print('setUp......\n')
+        self.client = Client()
+        setUp(self.client)
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown......\n')
         tearDown()
 
     def test_face3(self):
@@ -559,9 +591,14 @@ class FaceDetectTestCase4(TestCase):
             filepath = upload_imgs_dir + img_name
             isFace, face_locations, recognized_faces, saved_face_img_name = FaceRecogPrepared(filepath, user['phone'],                                                                                    True)
             # 展示结果
-            print("isFace=" + str(isFace))
+            print("Input:")
+            print("imageToBeDetected:" + filepath)
+            print("Output:")
+            print("isFace:" + str(isFace))
+            print("Face Locations:")
             print(face_locations)
+            print("Face Recognitions:")
             print(recognized_faces)
+            print("\n")
             VisualizeBlocks(filepath, face_locations)
-
 
