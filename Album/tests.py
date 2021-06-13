@@ -142,6 +142,7 @@ class FaceDetectTest(TestCase):
     def test_face1(self):
         user = {
             'phone': '15989061915',
+            'name': 'hhhhh',
             'pwd': '123456'
         }
         filepath = upload_imgs_dir + "/person4.jpg"
@@ -151,6 +152,12 @@ class FaceDetectTest(TestCase):
         print(face_locations)
         print(recognized_faces)
         VisualizeBlocks(filepath, face_locations)
+
+        self.assertEqual(isFace, True)
+        self.assertEqual(len(face_locations) == 0, False)
+        for recog in recognized_faces
+            self.assertEqual(recog == 'Not matched', False)
+
 
     def tearDown(self):
         # 每个测试函数执行后都删除所有数据
