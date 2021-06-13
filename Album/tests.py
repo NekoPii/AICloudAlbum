@@ -74,7 +74,7 @@ from AI.FaceDetect.VisualizeDetect import VisualizeBlocks
 import Album.models as models
 import os
 
-upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "upload_imgs")
+upload_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "AICloudAlbum/upload_imgs")
 
 class FaceDetectTest(TestCase):
     # 测试人脸识别FaceDetect模块
@@ -146,8 +146,8 @@ class FaceDetectTest(TestCase):
             'pwd': '123456'
         }
         filepath = upload_imgs_dir + "/person4.jpg"
-        isFace, face_locations, recognized_faces = FaceRecogPrepared(filepath, user['phone'], True)
-        # 展示结果
+        isFace, face_locations, recognized_faces,saved_face_img_name = FaceRecogPrepared(filepath, user['phone'], True)
+        #         # 展示结果
         print("isFace=" + str(isFace))
         print(face_locations)
         print(recognized_faces)
