@@ -8,7 +8,7 @@ from Album.views import *
 
 # testing delete_select_image module
 
-class TestDeleteSelectImageOrigin(TestCase):
+class TestDeleteSelectImage(TestCase):
     def setUp(self):
         print('setUp')
 
@@ -16,6 +16,7 @@ class TestDeleteSelectImageOrigin(TestCase):
         print('tearDown')
 
     def test_demo(self):
+        print("init.....")
         client = Client()
         models.Tag(tag="None").save()
         file=open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
@@ -52,28 +53,60 @@ class TestDeleteSelectImageOrigin(TestCase):
 
         print(new_img.fake_name)
 
-    '''      data = {
-            "phone": 'root',
-            "name": "admin",
-            "pwd": "root",
-            "re_pwd": "root",
-        }
-        response = client.post("/signup/", data)'''
-    '''
+        data = {
+                "phone": '13600000000',
+                "name": "test1",
+                "pwd": "test1",
+                "re_pwd": "test1",
+            }
+        response = client.post("/signup/", data)
+
         print(response)
+        print(models.User.objects.get(name="test1").phone)
+        print(models.User.objects.get(name="admin").phone)
+        print("upload images")
+        phone = '13600000000'
+        now_user = models.User.objects.get(name="test1")
 
-        print('test_demo')'''
+        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
 
-    def test_welcome(self):
+        NoneTag = models.Tag.objects.get(tag="None")
+
+        for i in range(62):
+            img_path = os.path.join(store_dir, "face_" + str(i + 1)+".jpg")
+            now_size = os.path.getsize(img_path) / 1024 / 1024
+            with Image.open(img_path) as img:
+                h, w = img.size[0], img.size[1]
+            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+
+            new_img.save()
+            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+            new_img.save()
+
+            now_img_name = str(new_img.fake_name) + ".jpg"
+            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1)+".jpg")
+            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+            img_path_new = os.path.join(store_dir, now_img_name)
+            os.rename(img_path, img_path_new)
+            os.rename(compress_img_path_old, compress_img_path_new)
 
 
-        print('test_demo2')
+
+    def test_upload_images(self):
+        print("demo2")
+
+
+
+
+
 
 
 # testing face module
 from AI.FaceDetect.FaceDetect import FaceRecogPrepared
 from AI.FaceDetect.VisualizeDetect import VisualizeBlocks
-import Album.models as models
+
 import os
 
 imgs_dir = os.getcwd()
