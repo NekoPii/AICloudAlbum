@@ -4,7 +4,6 @@ from django.test import TestCase
 
 # Create your tests here.
 from django.test import TestCase,Client
-from . import models
 from Album.views import *
 # testing face module
 from AI.FaceDetect.FaceDetect import FaceRecogPrepared
@@ -15,109 +14,153 @@ import os
 
 # testing delete_select_image module
 
+def setUp(client):
+    compress_dir = os.path.join(store_dir, "compress_imgs")
+    src_dir = os.path.join(store_dir, "face_img")
+    for now_img in os.listdir(store_dir):
+        if "." in now_img:
+            os.remove(os.path.join(store_dir, now_img))
+    for now_img in os.listdir(compress_dir):
+        if "." in now_img:
+            os.remove(os.path.join(compress_dir, now_img))
+    for now_img in os.listdir(src_dir):
+        shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
+        shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
+
+    models.Tag(tag="None").save()
+    file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
+    line = file.readline()
+    while line:
+        models.Tag(tag=line).save()
+        line = file.readline()
+
+    fake_id = hash_code("root", salt="user")
+
+    new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
+                           max_capacity=0, fake_id=fake_id)
+    new_user.save()
+
+    new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
+                                   cnt=0, total_size=0.0,
+                                   create_time=datetime.datetime.now(),
+                                   modify_time=datetime.datetime.now(),
+                                   )
+    new_ini_folder.save()
+    new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
+    new_ini_folder.save()
+
+    NoneTag = models.Tag.objects.get(tag="None")
+
+    new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
+                             size=0, height=0, width=0, is_tag=False, is_face=False,
+                             folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
+
+    new_img.save()
+    new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
+    new_img.save()
+
+
+    data = {
+        "phone": '13600000000',
+        "name": "test1",
+        "pwd": "test1",
+        "re_pwd": "test1",
+    }
+    response = client.post("/signup/", data)
+
+
+    phone = '13600000000'
+    now_user = models.User.objects.get(name="test1")
+
+    nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
+
+    NoneTag = models.Tag.objects.get(tag="None")
+
+    for i in range(62):
+        img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
+        now_size = os.path.getsize(img_path) / 1024 / 1024
+        with Image.open(img_path) as img:
+            h, w = img.size[0], img.size[1]
+        new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
+                                 size=now_size, height=h, width=w, is_tag=False, is_face=False,
+                                 folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
+
+        new_img.save()
+        new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
+        new_img.save()
+
+        now_img_name = str(new_img.fake_name) + ".jpg"
+        compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
+        compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
+        img_path_new = os.path.join(store_dir, now_img_name)
+        os.rename(img_path, img_path_new)
+        os.rename(compress_img_path_old, compress_img_path_new)
+
+
+def tearDown():
+    compress_dir = os.path.join(store_dir, "compress_imgs")
+    for now_img in os.listdir(store_dir):
+        if "." in now_img:
+            os.remove(os.path.join(store_dir, now_img))
+    for now_img in os.listdir(compress_dir):
+        if "." in now_img:
+            os.remove(os.path.join(compress_dir, now_img))
+
+
+
 class TestDeleteSelectImage(TestCase):
     def setUp(self):
-        print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir,now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir,now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir,now_img),os.path.join(store_dir,now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
+        print("Test Case 1 of Delete Select Image \n")
+        print('setUp......\n')
+        self.client=Client()
+        setUp(self.client)
 
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir,now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir,now_img))
-
-        print('tearDown')
+        print('tearDown......\n')
+        tearDown()
 
     def test_delete_select_images(self):
-        print("deleting.....")
+        # phone is 13600000000 (valid)
+        # user has login (valid)
+        # folder_fake_name is the All folder's fake name (valid)
+        # select_image_list (all of the 4 images are in the All folder)
+
+        # prepare data needed
+        phone= '13600000000'
+        folder=models.Folder.objects.get(user_id=phone, name="ALL")
+        pics=models.Picture.objects.filter(user_id=phone, folder_id=folder.id)
+        pic_delete=[]
+
+        for i , pic in enumerate(pics):
+            if i>3:
+                break
+            pic_delete.append(pic.fake_name)
+        data = {
+            "img_name": pic_delete
+        }
+
+        # generate folder fake name and url
+        folder_fake_name=folder.fake_name
+        url="/delete_select_img/" + folder_fake_name + "/"
+
+        # show input value
+        print("Input:")
+        print("phone:{}".format(phone))
+        print("isLogin:T")
+        print("select_image_list:{}".format(pic_delete))
+        print("folder_fake_name:{}\n".format(folder_fake_name))
+
+        # test delete_select_image function
+        response = self.client.post(url, data)
+        status_code=response.status_code
+        content=response.content
+
+        # show output value
+        print("Output:")
+        print("status:{}".format(status_code))
+        print("content:{}\n".format(content))
+
 
 
 
@@ -125,104 +168,11 @@ class TestDeleteSelectImage2(TestCase):
 
     def setUp(self):
         print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
-
-
+        setUp()
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-
         print('tearDown')
+        tearDown()
 
     def test_delete_select_images(self):
         print("deleting.....")
@@ -236,104 +186,11 @@ class FaceDetectTestCase1(TestCase):
 
     def setUp(self):
         print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
-
-
+        setUp()
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-
         print('tearDown')
+        tearDown()
 
 
     def test_user(self):
@@ -361,104 +218,11 @@ class FaceDetectTestCase2(TestCase):
 
     def setUp(self):
         print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
-
-
+        setUp()
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-
         print('tearDown')
+        tearDown()
 
     def test_face(self):
         user = {
@@ -485,104 +249,11 @@ class FaceDetectTestCase3(TestCase):
 
     def setUp(self):
         print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
-
-
+        setUp()
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-
         print('tearDown')
+        tearDown()
 
     def test_face(self):
         user = {
@@ -611,104 +282,11 @@ class FaceDetectTestCase4(TestCase):
 
     def setUp(self):
         print('setUp')
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        src_dir = os.path.join(store_dir, "face_img")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-        for now_img in os.listdir(src_dir):
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(store_dir, now_img))
-            shutil.copy(os.path.join(src_dir, now_img), os.path.join(compress_dir, now_img))
-
-        client = Client()
-        models.Tag(tag="None").save()
-        file = open("/Users/tanzhongyu/AICloudAlbum/AI/ImgClass_new/config/tags.txt")
-        line = file.readline()
-        while line:
-            models.Tag(tag=line).save()
-            line = file.readline()
-
-        fake_id = hash_code("root", salt="user")
-
-        new_user = models.User(name="admin", phone="root", pwd=hash_code("root") + "-" + "root",
-                               max_capacity=0, fake_id=fake_id)
-        new_user.save()
-
-        new_ini_folder = models.Folder(name="ALL", user_id=new_user.phone,
-                                       cnt=0, total_size=0.0,
-                                       create_time=datetime.datetime.now(),
-                                       modify_time=datetime.datetime.now(),
-                                       )
-        new_ini_folder.save()
-        new_ini_folder.fake_name = hash_code(str(new_ini_folder.pk), salt="neko_folder")
-        new_ini_folder.save()
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        new_img = models.Picture(name="empty", type="png", upload_time=datetime.datetime.now(),
-                                 size=0, height=0, width=0, is_tag=False, is_face=False,
-                                 folder_id=new_ini_folder.pk, tag_id=NoneTag.pk, user_id=new_user.phone)
-
-        new_img.save()
-        new_img.fake_name = hash_code(str(new_img.pk), salt="neko_img")
-        new_img.save()
-
-        print(new_img.fake_name)
-
-        data = {
-            "phone": '13600000000',
-            "name": "test1",
-            "pwd": "test1",
-            "re_pwd": "test1",
-        }
-        response = client.post("/signup/", data)
-
-        print(response)
-        print(models.User.objects.get(name="test1").phone)
-
-        print("upload images")
-        phone = '13600000000'
-        now_user = models.User.objects.get(name="test1")
-
-        nowFolder = models.Folder.objects.get(user_id=phone, name="ALL")
-
-        NoneTag = models.Tag.objects.get(tag="None")
-
-        for i in range(62):
-            img_path = os.path.join(store_dir, "face_" + str(i + 1) + ".jpg")
-            now_size = os.path.getsize(img_path) / 1024 / 1024
-            with Image.open(img_path) as img:
-                h, w = img.size[0], img.size[1]
-            new_img = models.Picture(name="face" + str(i + 1), type="jpg", upload_time=datetime.datetime.now(),
-                                     size=now_size, height=h, width=w, is_tag=False, is_face=False,
-                                     folder_id=nowFolder.pk, tag_id=NoneTag.pk, user_id=phone)
-
-            new_img.save()
-            new_img.fake_name = hash_code(str(new_img.pk), salt="test_img")
-            new_img.save()
-
-            now_img_name = str(new_img.fake_name) + ".jpg"
-            compress_img_path_old = os.path.join(store_compress_dir, "face_" + str(i + 1) + ".jpg")
-            compress_img_path_new = os.path.join(store_compress_dir, now_img_name)
-            img_path_new = os.path.join(store_dir, now_img_name)
-            os.rename(img_path, img_path_new)
-            os.rename(compress_img_path_old, compress_img_path_new)
-
-
+        setUp()
 
     def tearDown(self):
-        compress_dir = os.path.join(store_dir, "compress_imgs")
-        for now_img in os.listdir(store_dir):
-            if "." in now_img:
-                os.remove(os.path.join(store_dir, now_img))
-        for now_img in os.listdir(compress_dir):
-            if "." in now_img:
-                os.remove(os.path.join(compress_dir, now_img))
-
         print('tearDown')
+        tearDown()
 
     def test_face3(self):
         user = {
@@ -726,12 +304,5 @@ class FaceDetectTestCase4(TestCase):
             print(face_locations)
             print(recognized_faces)
             VisualizeBlocks(filepath, face_locations)
-
-
-
-
-
-
-
 
 
