@@ -38,6 +38,7 @@ def GenerateVideoWithImages(images, video_filepath, duration_per_img, fps, size)
     prev_img = None
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
     video = cv2.VideoWriter(video_filepath, fourcc, fps, size)
+    video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('A', 'V', 'C', '1'), fps, size)
     # 制作图片列表
     for img in images:
         # img = cv2.imread(image_filepath)
