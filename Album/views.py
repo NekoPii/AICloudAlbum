@@ -204,7 +204,6 @@ def login(request):
     return render(request, "Album/login.html", locals())
 
 
-
 def signup(request):
     if request.session.get("is_login", None):
         return redirect("/")
@@ -266,9 +265,9 @@ def signup(request):
 
 def loginout(request):
     phone = request.session["phone"]
-    #thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
-    #thread_getAllTF.start()
-    #print("Start get Tag/Face")
+    # thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
+    # thread_getAllTF.start()
+    # print("Start get Tag/Face")
     request.session.flush()
     return redirect("/")
 
@@ -601,7 +600,7 @@ def video(request):
         video_name = None
         for now_video_name in os.listdir(video_dir):
             if fake_id in now_video_name and now_video_name.endswith(".mp4"):
-                video_src = now_video_name
+                video_src = os.path.join("video/", now_video_name)
                 video_name = now_video_name.rsplit("-", 1)[0] + " Eye-catching Video"
                 break
         return render(request, "Album/video.html", locals())
@@ -1920,6 +1919,9 @@ def getVideo(request):
                     img_path_list.append(os.path.join(store_dir, pic.fake_name + "." + pic.type))
 
                 video_name = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + "-" + nowUser.fake_id
+                for now_video in os.listdir(video_dir):
+                    if nowUser.fake_id in now_video:
+                        os.remove(os.path.join(video_dir, now_video))
                 GenVideo(img_path_list, video_name=video_name, windows_size=(1280, 720), fps=24)
 
             if cnt == 0:

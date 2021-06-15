@@ -27,7 +27,7 @@ var mp = new MuiPlayer({
     container: '#mui-player',
     title: video_name,
     src: video_src,
-    preload: true,
+    preload: false,
     width: "1024",
     height: "576",
     themeColor: '#40c4ff',
