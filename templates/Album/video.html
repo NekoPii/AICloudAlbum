@@ -68,15 +68,7 @@
                     {% ifnotequal video_src None %}
                         <input id="video_src" type="hidden" style="display: none;" value="{{ video_src }}">
                         <input id="video_name" type="hidden" style="display: none;" value="{{ video_name }}">
-                        <video width="320" height="240" controls>
-                            <source src="{{ video_src }}" type="video/mp4">
-                            <source src="{{ video_src }}" type="video/ogg">
-                            <source src="{{ video_src }}" type="video/webm">
-                            <object data="{{ video_src }}" width="320" height="240">
-                                <embed src="{{ video_src }}" width="320" height="240">
-                            </object>
-                        </video>
-                        <div id="mui-player"></div>
+                        <div id="mui-player" class="mx-auto"></div>
                     {% endifnotequal %}
                     <!-- end of filter -->
                 </div> <!-- end of col -->

@@ -600,7 +600,7 @@ def video(request):
         video_name = None
         for now_video_name in os.listdir(video_dir):
             if fake_id in now_video_name and now_video_name.endswith(".mp4"):
-                video_src = os.path.join("video/", now_video_name)
+                video_src = now_video_name
                 video_name = now_video_name.rsplit("-", 1)[0] + " Eye-catching Video"
                 break
         return render(request, "Album/video.html", locals())

@@ -36,8 +36,6 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=1
 def GenerateVideoWithImages(images, video_filepath, duration_per_img, fps, size):
     # 初始化
     prev_img = None
-    fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
-    video = cv2.VideoWriter(video_filepath, fourcc, fps, size)
     video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('A', 'V', 'C', '1'), fps, size)
     # 制作图片列表
     for img in images:
