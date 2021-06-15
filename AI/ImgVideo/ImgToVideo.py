@@ -16,7 +16,7 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=1
         if user_fake_id in now_video_name and (now_video_name.endswith(".mp4") or now_video_name.endswith(".avi")):
             os.remove(os.path.join(video_imgs_dir, now_video_name))
     # 在此处修改根路径
-    video_filepath = os.path.join(video_imgs_dir, video_name + ".avi")
+    video_filepath = os.path.join(video_imgs_dir, video_name + ".mp4")
     # 每张图片展示时间
     duration_per_img = 0.5
     # 对于给出的图片，从中截取多少片段
@@ -36,21 +36,21 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=1
                 img_list.append(e_img)
     GenerateVideoWithImages(img_list, video_filepath, duration_per_img, fps, windows_size)
     # 转换格式
-    avi_filepath = video_filepath
-    mp4_filepath = video_filepath.rsplit(".", 1)[0] + ".mp4"
+    #avi_filepath = video_filepath
+    #mp4_filepath = video_filepath.rsplit(".", 1)[0] + ".mp4"
     # 删除文件
-    if os.path.exists(mp4_filepath):
-        os.remove(mp4_filepath)
-    if convert_avi_to_mp4(avi_filepath, mp4_filepath):
-        if os.path.exists(avi_filepath):
-            os.remove(avi_filepath)
+    #if os.path.exists(mp4_filepath):
+    #    os.remove(mp4_filepath)
+    #if convert_avi_to_mp4(avi_filepath, mp4_filepath):
+    #    if os.path.exists(avi_filepath):
+    #        os.remove(avi_filepath)
 
 
 # 接受一组图片序列，生成视频
 def GenerateVideoWithImages(images, video_filepath, duration_per_img, fps, size):
     # 初始化
     prev_img = None
-    video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('I', '4', '2', '0'), fps, size)
+    video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc(*'mp4v'), fps, size)
     # 制作图片列表
     for img in images:
         # img = cv2.imread(image_filepath)
@@ -151,8 +151,8 @@ def ExtractFromImage(ori_img, size, num):
 
 
 # 转换格式
-def convert_avi_to_mp4(avi_file_path, output_name):
-    cmd = subprocess.Popen(
-        "ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
-    cmd.wait()
-    return True
+#def convert_avi_to_mp4(avi_file_path, output_name):
+#    cmd = subprocess.Popen(
+#        "ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
+#    cmd.wait()
+#    return True
