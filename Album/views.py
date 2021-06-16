@@ -340,7 +340,8 @@ def ajax_faces(request):
             if f.cnt > 0:
                 cnt += 1
                 now_cover_fakename = f.face_cover.split(".")[0]
-                f.href = "/face/" + now_cover_fakename + "/"
+                now_cover_type = f.face_cover.split(".")[1]
+                f.href = "/face/" + now_cover_fakename + "-" + now_cover_type + "/"
                 f.cover_path = "/upload_imgs/ExistingFace/" + user.phone + "/" + f.face_cover
                 f.id = cnt
                 f.fake_name = now_cover_fakename
