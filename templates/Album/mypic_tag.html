@@ -225,7 +225,13 @@
                     </div>
                     <div style="margin-top: 0;margin-bottom: 0">
                         <h6 style="float: left;margin-bottom: 1rem">Tag:</h6>
-                        <b style="float: right" class="element_12">{{ p.nowtag }}</b>
+                        {% ifnotequal p.nowtag "None" %}
+                            <a style="float: right" class="element_12"
+                               href="/tags/{{ p.nowtag }}" title="{{ p.nowtag }}">{{ p.nowtag }}</a>
+                        {% endifnotequal %}
+                        {% ifequal p.nowtag "None" %}
+                            <b style="float: right" class="element_12">{{ p.nowtag }}</b>
+                        {% endifequal %}
                     </div>
                     <div class="btn-local1 mx-auto" style="margin-top: 3rem;">
                         <form class="downloadOneForm">
