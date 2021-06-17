@@ -1607,7 +1607,11 @@ def getTag(request, folder_fake_name):
 
             now_folder = models.Folder.objects.get(user_id=now_user.phone, fake_name=folder_fake_name)
 
-            now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id, tag_id=NoneTag.id)
+            if now_folder.name == "ALL":
+                now_pics = models.Picture.objects.filter(user_id=now_user.phone, tag_id=NoneTag.id)
+            else:
+                now_pics = models.Picture.objects.filter(user_id=now_user.phone, folder_id=now_folder.id,
+                                                         tag_id=NoneTag.id)
 
             all_tag = models.Tag.objects.all()
 
