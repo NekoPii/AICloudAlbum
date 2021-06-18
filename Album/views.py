@@ -265,9 +265,9 @@ def signup(request):
 
 def loginout(request):
     phone = request.session["phone"]
-    # thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
-    # thread_getAllTF.start()
-    # print("Start get Tag/Face")
+    thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
+    thread_getAllTF.start()
+    print("Start get Tag/Face")
     request.session.flush()
     return redirect("/")
 
