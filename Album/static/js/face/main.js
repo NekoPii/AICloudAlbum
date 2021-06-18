@@ -1,7 +1,7 @@
 var current_page = 1;
 var faces;
 var count;
-var page_num_face = 5;
+var page_num_face = 15;
 (function ($) {
 
     $.ajaxSetup({
