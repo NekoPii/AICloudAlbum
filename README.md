@@ -29,7 +29,7 @@
 - AI云相册的全球目标，是为智能手机、PC用户提供一个方便、私密的平台，让他们有一个地方可以安全地存储图片。 如果他们愿意，他们可以尝试使用 AI 功能来帮助他们更有效地管理自己的照片。
 - 这是我们项目的甘特图。
 
-<img src="./images/截屏2021-06-16 下午4.18.19.png" alt="截屏2021-06-16 下午4.18.19" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.18.19.png" alt="截屏2021-06-16 下午4.18.19" style="zoom:50%;" />
 
 
 
@@ -44,13 +44,13 @@
   - Views：类似于MVC中的C，负责接收请求，处理服务，返回响应。
   - Templates：类似于MVC中的V，负责封装和构造要返回的HTML。
 
-![django-MVT](./images/django-MVT.png)
+![django-MVT](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/django-MVT.png)
 
 
 
 - 下面展示了AI Cloud Album项目的详细架构，包括服务器架构、模型、视图和数据库设计。
 
-  ![django-Architecture](./images/django-Architecture.png)
+  ![django-Architecture](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/django-Architecture.png)
 
 
 
@@ -65,7 +65,7 @@
   - 图片管理：让用户管理他们上传的所有图片：如删除、查看或进行更多交互。
   - AI图像模块：通过人工智能处理、分析图像、合成视频。主要是人工智能模块有图像分类和人脸检测模块以及合成精彩时刻视频 。
 
-![ComponentDiagram1](./images/ComponentDiagram1.png)
+![ComponentDiagram1](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/ComponentDiagram1.png)
 
 
 
@@ -75,22 +75,22 @@
 
 - 推荐使用Chrome浏览器访问 AI 云相册 ALBUM ，进入**欢迎页**
 
-<img src="./images/截屏2021-06-16 下午4.45.47.png" alt="截屏2021-06-16 下午4.45.47" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.45.47.png" alt="截屏2021-06-16 下午4.45.47" style="zoom:50%;" />
 
 
 
 - 如已经注册账号，则进行登录。如未注册，请注册一个账号
 
-<img src="./images/截屏2021-06-16 下午4.45.56.png" alt="截屏2021-06-16 下午4.45.56" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.45.56.png" alt="截屏2021-06-16 下午4.45.56" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午10.33.20.png" alt="截屏2021-06-16 下午10.33.20" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午10.33.20.png" alt="截屏2021-06-16 下午10.33.20" style="zoom:50%;" />
 
 
 
 - 注册时需要输入符合电话号码标准格式的电话号码进行注册
 - 登录时需正确输入验证码
 
-<img src="./images/截屏2021-06-16 下午4.46.20.png" alt="截屏2021-06-16 下午4.46.20" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.46.20.png" alt="截屏2021-06-16 下午4.46.20" style="zoom:50%;" />
 
 
 
@@ -102,7 +102,7 @@
   - VIDEO：精彩时刻视频页
 - **Discover 按钮：跳转到MYPICS**
 
-<img src="./images/截屏2021-06-16 下午4.46.44.png" alt="截屏2021-06-16 下午4.46.44" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.46.44.png" alt="截屏2021-06-16 下午4.46.44" style="zoom:50%;" />
 
 
 
@@ -115,9 +115,9 @@
   - 选择图片进行人像识别
   - 选择图片创建精彩时刻短视频
 
-<img src="./images/截屏2021-06-16 下午4.48.25.png" alt="截屏2021-06-16 下午4.48.25" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.48.25.png" alt="截屏2021-06-16 下午4.48.25" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.48.31.png" alt="截屏2021-06-16 下午4.48.31" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.48.31.png" alt="截屏2021-06-16 下午4.48.31" style="zoom:50%;" />
 
 
 
@@ -127,15 +127,15 @@
   - 人像识别
   - 删除
 
-<img src="./images/截屏2021-06-16 下午4.48.50.png" alt="截屏2021-06-16 下午4.48.50" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.48.50.png" alt="截屏2021-06-16 下午4.48.50" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.49.15.png" alt="截屏2021-06-16 下午4.49.15" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.49.15.png" alt="截屏2021-06-16 下午4.49.15" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.49.21.png" alt="截屏2021-06-16 下午4.49.21" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.49.21.png" alt="截屏2021-06-16 下午4.49.21" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.49.34.png" alt="截屏2021-06-16 下午4.49.34" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.49.34.png" alt="截屏2021-06-16 下午4.49.34" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.49.46.png" alt="截屏2021-06-16 下午4.49.46" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.49.46.png" alt="截屏2021-06-16 下午4.49.46" style="zoom:50%;" />
 
 
 
@@ -145,17 +145,17 @@
   - 修改相册信息
   - 进入相册
 
-<img src="./images/截屏2021-06-16 下午4.50.32.png" alt="截屏2021-06-16 下午4.50.32" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.50.32.png" alt="截屏2021-06-16 下午4.50.32" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.51.01.png" alt="截屏2021-06-16 下午4.51.01" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.51.01.png" alt="截屏2021-06-16 下午4.51.01" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.52.39.png" alt="截屏2021-06-16 下午4.52.39" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.52.39.png" alt="截屏2021-06-16 下午4.52.39" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.52.56.png" alt="截屏2021-06-16 下午4.52.56" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.52.56.png" alt="截屏2021-06-16 下午4.52.56" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.54.00.png" alt="截屏2021-06-16 下午4.54.00" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.54.00.png" alt="截屏2021-06-16 下午4.54.00" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.54.05.png" alt="截屏2021-06-16 下午4.54.05" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.54.05.png" alt="截屏2021-06-16 下午4.54.05" style="zoom:50%;" />
 
 
 
@@ -167,37 +167,37 @@
   - 人像识别
   - 创建精彩时刻短视频
 
-<img src="./images/截屏2021-06-16 下午4.54.14.png" alt="截屏2021-06-16 下午4.54.14" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.54.14.png" alt="截屏2021-06-16 下午4.54.14" style="zoom:50%;" />
 
 
 
 - **上传图片功能，在“所有图片”和“相册”中都可以进行图片的上传**
 
-<img src="./images/截屏2021-06-16 下午4.54.24.png" alt="截屏2021-06-16 下午4.54.24" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.54.24.png" alt="截屏2021-06-16 下午4.54.24" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.54.32.png" alt="截屏2021-06-16 下午4.54.32" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.54.32.png" alt="截屏2021-06-16 下午4.54.32" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.55.06.png" alt="截屏2021-06-16 下午4.55.06" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.55.06.png" alt="截屏2021-06-16 下午4.55.06" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.55.46.png" alt="截屏2021-06-16 下午4.55.46" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.55.46.png" alt="截屏2021-06-16 下午4.55.46" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.55.49.png" alt="截屏2021-06-16 下午4.55.49" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.55.49.png" alt="截屏2021-06-16 下午4.55.49" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.55.56.png" alt="截屏2021-06-16 下午4.55.56" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.55.56.png" alt="截屏2021-06-16 下午4.55.56" style="zoom:50%;" />
 
 
 
 - **智能标签，使用AI（基于MobileNet，使用迁移学习技术生成的神经网络）对用户上传的图片进行单标签分类（共53个类别）。用户可以在“所有图片”、”图片相册“ 内 以及图片详情页主动对上传的图片进行智能标签。如用户忘记对上传的图片进行标签，后台程序会在用户登出后对所有未标签的图片进行智能标签。**
 
-<img src="./images/截屏2021-06-16 下午4.56.22.png" alt="截屏2021-06-16 下午4.56.22" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.56.22.png" alt="截屏2021-06-16 下午4.56.22" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.56.27.png" alt="截屏2021-06-16 下午4.56.27" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.56.27.png" alt="截屏2021-06-16 下午4.56.27" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.56.32.png" alt="截屏2021-06-16 下午4.56.32" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.56.32.png" alt="截屏2021-06-16 下午4.56.32" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.56.37.png" alt="截屏2021-06-16 下午4.56.37" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.56.37.png" alt="截屏2021-06-16 下午4.56.37" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-16 下午4.56.43.png" alt="截屏2021-06-16 下午4.56.43" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.56.43.png" alt="截屏2021-06-16 下午4.56.43" style="zoom:50%;" />
 
 
 
@@ -205,21 +205,21 @@
 
   
 
-  ![1](./images/1.jpg)
+  ![1](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/1.jpg)
 
 
 
-<img src="./images/截屏2021-06-18 下午6.21.06.png" alt="截屏2021-06-18 下午6.21.06" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.21.06.png" alt="截屏2021-06-18 下午6.21.06" style="zoom:50%;" />
 
 
 
 - **人像识别功能，使用人像识别库（face_recognition）对用户上传的人像进行识别，查看该图片中是否有人像，并对人像进行提取。用户可以在“所有图片”、”图片相册“ 内 以及图片详情页主动对上传的图片进行人像识别。如用户忘记对上传的图片进行人像识别，后台程序会在用户登出后对所有未进行人像识别的图片进行人像识别。**
 
-<img src="./images/截屏2021-06-18 下午6.38.35.png" alt="截屏2021-06-18 下午6.38.35" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.38.35.png" alt="截屏2021-06-18 下午6.38.35" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午6.37.51.png" alt="截屏2021-06-18 下午6.37.51" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.37.51.png" alt="截屏2021-06-18 下午6.37.51" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午6.37.56.png" alt="截屏2021-06-18 下午6.37.56" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.37.56.png" alt="截屏2021-06-18 下午6.37.56" style="zoom:50%;" />
 
 
 
@@ -227,27 +227,27 @@
 
   **注：为了正常播放短视频，推荐使用Chrome 浏览器。**
 
-<img src="./images/截屏2021-06-18 下午6.44.28.png" alt="截屏2021-06-18 下午6.44.28" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.44.28.png" alt="截屏2021-06-18 下午6.44.28" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午6.51.36.png" alt="截屏2021-06-18 下午6.51.36" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.51.36.png" alt="截屏2021-06-18 下午6.51.36" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午6.56.15.png" alt="截屏2021-06-18 下午6.56.15" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午6.56.15.png" alt="截屏2021-06-18 下午6.56.15" style="zoom:50%;" />
 
 
 
 - **搜索你的相册。导航栏左侧的搜索框，可输入标签或图片名称进行搜索，返回符合条件的图片集。**
 
-<img src="./images/截屏2021-06-18 下午7.02.51.png" alt="截屏2021-06-18 下午7.02.51" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午7.02.51.png" alt="截屏2021-06-18 下午7.02.51" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午7.03.18.png" alt="截屏2021-06-18 下午7.03.18" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午7.03.18.png" alt="截屏2021-06-18 下午7.03.18" style="zoom:50%;" />
 
-<img src="./images/截屏2021-06-18 下午7.03.40.png" alt="截屏2021-06-18 下午7.03.40" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午7.03.40.png" alt="截屏2021-06-18 下午7.03.40" style="zoom:50%;" />
 
 
 
 - **注销，用户点击注销按钮后会退出登录。同时系统会检查没有被标签和人像识别的图片对其进行处理。**
 
-<img src="./images/截屏2021-06-18 下午7.08.46.png" alt="截屏2021-06-18 下午7.08.46" style="zoom:50%;" />
+<img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-18 下午7.08.46.png" alt="截屏2021-06-18 下午7.08.46" style="zoom:50%;" />
 
 
 
