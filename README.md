@@ -3,11 +3,6 @@
 ​	**----Welcome to visit [AI CLOUD ALBUM](https://album.labmem.site)**
 
 
-
-[toc]
-
-
-
 ## **Background**
 
 如今，智能手机拍摄的照片越来越大。 但是由于智能手机的内存有限，用户需要一个平台来存储他们拍摄或收集的海量照片。 这就是我们开发 AI 云相册系统的原因。
