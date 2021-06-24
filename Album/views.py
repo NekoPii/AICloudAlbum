@@ -34,7 +34,7 @@ import time
 type_sever = typeSever()
 page_num_folder = 5
 page_num_img = 10
-page_num_face = 5
+page_num_face = 15
 zeroid = 1
 threshold = 1080
 eps = 1e-5
@@ -265,9 +265,9 @@ def signup(request):
 
 def loginout(request):
     phone = request.session["phone"]
-    # thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
-    # thread_getAllTF.start()
-    # print("Start get Tag/Face")
+    thread_getAllTF = threading.Thread(target=getAllTF, args=(phone, True), daemon=True)
+    thread_getAllTF.start()
+    print("Start get Tag/Face")
     request.session.flush()
     return redirect("/")
 
@@ -1928,7 +1928,6 @@ def getVideo(request):
                     if nowUser.fake_id in now_video:
                         os.remove(os.path.join(video_dir, now_video))
                 GenVideo(img_path_list, video_name=video_name, windows_size=(1280, 720), fps=24)
-
             if cnt == 0:
                 res["video_status"] = "false"
             else:

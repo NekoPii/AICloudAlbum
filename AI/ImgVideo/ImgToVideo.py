@@ -1,18 +1,26 @@
+import platform
+
 import cv2
 import numpy as np
 import subprocess
 import os
+import traceback
 
 video_imgs_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "video")
+logs_filepath = os.path.join(video_imgs_dir, "logs.txt")
 if not os.path.exists(video_imgs_dir):
     os.mkdir(video_imgs_dir)
 
 
 # 输入要生成视频的图片名序列，将其生成固定帧率和大小的视频，存储在给定路径中\
 # 可以给定视频文件名，不需要写路径，直接输入名字就行
-def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=12):
+def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=24):
+    user_fake_id = video_name.rsplit("-", 1)[1]
+    for now_video_name in os.listdir(video_imgs_dir):
+        if user_fake_id in now_video_name and (now_video_name.endswith(".mp4") or now_video_name.endswith(".avi")):
+            os.remove(os.path.join(video_imgs_dir, now_video_name))
     # 在此处修改根路径
-    video_filepath = os.path.join(video_imgs_dir, video_name + ".mp4")
+    video_filepath = os.path.join(video_imgs_dir, video_name + ".avi")
     # 每张图片展示时间
     duration_per_img = 0.5
     # 对于给出的图片，从中截取多少片段
@@ -31,12 +39,37 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=1
             for e_img in extract_list:
                 img_list.append(e_img)
     GenerateVideoWithImages(img_list, video_filepath, duration_per_img, fps, windows_size)
+    # 转换格式
+    avi_filepath = video_filepath
+    mp4_filepath = video_filepath.rsplit(".", 1)[0] + ".mp4"
+    # 删除文件
+    if os.path.exists(mp4_filepath):
+        os.remove(mp4_filepath)
+
+    logs = open(logs_filepath, "a")
+    try:
+        if convert_avi_to_mp4(avi_filepath, mp4_filepath):
+            if os.path.exists(avi_filepath):
+                os.remove(avi_filepath)
+    except Exception as e:
+        logs.write("/home/ubuntu/AICloudAlbum"+video_imgs_dir[1:])
+        logs.write(traceback.format_exc())
+    logs.close()
+
+
 
 # 接受一组图片序列，生成视频
 def GenerateVideoWithImages(images, video_filepath, duration_per_img, fps, size):
     # 初始化
     prev_img = None
-    video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('h', '2', '6', '4'), fps, size)
+    logs = open(logs_filepath, "a")
+    logs.write("ready\n")
+    video=None
+    try:
+        video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('I', '4', '2', '0'), fps, size)
+    except Exception as e:
+        logs.write(traceback.format_exc())
+    logs.close()
     # 制作图片列表
     for img in images:
         # img = cv2.imread(image_filepath)
@@ -134,3 +167,13 @@ def ExtractFromImage(ori_img, size, num):
         return img_list
     else:
         return []
+
+
+# 转换格式
+def convert_avi_to_mp4(avi_file_path, output_name):
+    if platform.system() == "Linux":
+        avi_file_path = "/home/ubuntu/AICloudAlbum" + avi_file_path[1:]
+        output_name = "/home/ubuntu/AICloudAlbum" + output_name[1:]
+    cmd = os.system(
+        "ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
+    return True
