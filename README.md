@@ -1,6 +1,6 @@
 # AICloudAlbum	
 
-## ----Welcome to visit [AI CLOUD ALBUM](http://album.mjx.ink) or [备用地址](https://album.labmem.site) **
+## Welcome to visit [AI CLOUD ALBUM](http://album.mjx.ink) or [备用地址](https://album.labmem.site) **
 
 ---
 
@@ -17,7 +17,7 @@
 - 智能：AI 图像模块内置于 AI 云相册。 你可以使用图像标签系统让AI自动对您的图像进行分类。 此外，您可以使用人脸检测系统来识别人脸，或者为您喜爱的照片生成精彩时刻。
 
 
-
+---
 
 
 ## **General Goals of the Project**
@@ -28,7 +28,7 @@
 <img src="https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/截屏2021-06-16 下午4.18.19.png" alt="截屏2021-06-16 下午4.18.19" style="zoom:50%;" />
 
 
-
+---
 
 
 ## **Software Architecture**
@@ -48,7 +48,7 @@
 
   ![django-Architecture](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/django-Architecture.png)
 
-
+---
 
 
 
@@ -63,7 +63,7 @@
 
 ![ComponentDiagram1](https://github.com/LabmemNo004/LabmemNo004.github.io/blob/master/Images/AICloudAlbum/ComponentDiagram1.png)
 
-
+---
 
 
 
