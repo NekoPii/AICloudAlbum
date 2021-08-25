@@ -8,6 +8,8 @@ face_data_path = os.path.join(upload_imgs_dir, "ExistingFace")
 face_code_path = os.path.join(upload_imgs_dir, "ExistingFaceCode")
 pad_ratio = 0.4
 
+if not os.path.exists(upload_imgs_dir):
+    os.mkdir(upload_imgs_dir)
 if not os.path.exists(face_data_path):
     os.mkdir(face_data_path)
 if not os.path.exists(face_code_path):
@@ -138,8 +140,8 @@ def AddToExistingFace(filepath, known_face_locations, recognized_faces, face_cod
 # 返回[isFace, face_locations, recognized_faces]
 # 分别为是否检测出人脸、面部识别框位置和识别出的图片名
 def FaceRecogPrepared(filepath, nowUser, isCodePrepared=True):
-    now_face_data_path=os.path.join(face_data_path,nowUser)
-    now_face_code_path=os.path.join(face_code_path,nowUser)
+    now_face_data_path = os.path.join(face_data_path, nowUser)
+    now_face_code_path = os.path.join(face_code_path, nowUser)
     if not os.path.exists(now_face_data_path):
         os.mkdir(now_face_data_path)
     if not os.path.exists(now_face_code_path):
@@ -152,5 +154,6 @@ def FaceRecogPrepared(filepath, nowUser, isCodePrepared=True):
         if not isCodePrepared:
             MakeCodeForFaceData(now_face_data_path, now_face_code_path)
         names, img_codes = FaceRecognitionWithPreprocCode(filepath, now_face_code_path, result)
-        saved_face_img_name = AddToExistingFace(filepath, result, names, img_codes, now_face_data_path, now_face_code_path)
+        saved_face_img_name = AddToExistingFace(filepath, result, names, img_codes, now_face_data_path,
+                                                now_face_code_path)
         return [True, result, names, saved_face_img_name]

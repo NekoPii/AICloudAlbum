@@ -133,12 +133,20 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "upload_imgs"),
     os.path.join(BASE_DIR, "video"),
     os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs"),
 ]
+if not os.path.exists(os.path.join(BASE_DIR, "upload_imgs")):
+    os.mkdir(os.path.join(BASE_DIR, "upload_imgs"))
+if not os.path.exists(os.path.join(BASE_DIR, "video")):
+    os.mkdir(os.path.join(BASE_DIR, "video"))
+if not os.path.exists(os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs")):
+    os.mkdir(os.path.join(os.path.join(BASE_DIR, "upload_imgs"), "compress_imgs"))
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -155,7 +163,7 @@ CAPTCHA_LENGTH = 4
 MEDIA_URL = "/upload_imgs/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "upload_imgs")
 
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
     # creates absolute urls from relative ones
