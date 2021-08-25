@@ -1,7 +1,8 @@
 # AICloudAlbum	
 
-​	** ----Welcome to visit [AI CLOUD ALBUM](http://album.mjx.ink) or [备用地址](https://album.labmem.site) **
+## ----Welcome to visit [AI CLOUD ALBUM](http://album.mjx.ink) or [备用地址](https://album.labmem.site) **
 
+---
 
 ## **Background**
 
