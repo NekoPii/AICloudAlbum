@@ -11,3 +11,4 @@ __pycache__
 /AI/FaceDetect/images/
 /static/
 /video/
+/collect_static/
