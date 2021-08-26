@@ -10,12 +10,15 @@ sudo apt-get -y install ffmpeg
 pip install --upgrade pip
 pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
+mkdir ~/AICloudAlbum
+cp -r . ~/AICloudAlbum
+cd ~/AICloudAlbum
+
 rm -r static
 yes yes | python3.8 manage.py compress
 mkdir collect_static
 yes yes | python3.8 manage.py collectstatic
 
-cd ~/AICloudAlbum
 supervisord
 supervisorctl start daphne
 mkdir /etc/nginx/conf/cert
