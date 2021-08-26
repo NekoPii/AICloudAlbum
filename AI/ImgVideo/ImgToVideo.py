@@ -48,14 +48,13 @@ def GenVideo(image_filepaths, video_name="temp", windows_size=(1280, 720), fps=2
 
     logs = open(logs_filepath, "a")
     try:
-        if convert_avi_to_mp4(avi_filepath, mp4_filepath):
-            if os.path.exists(avi_filepath):
-                os.remove(avi_filepath)
+        convert_avi_to_mp4(avi_filepath, mp4_filepath)
+        if os.path.exists(avi_filepath):
+            os.remove(avi_filepath)
     except Exception as e:
-        logs.write("/home/ubuntu/AICloudAlbum"+video_imgs_dir[1:])
+        logs.write(video_imgs_dir)
         logs.write(traceback.format_exc())
     logs.close()
-
 
 
 # 接受一组图片序列，生成视频
@@ -64,7 +63,7 @@ def GenerateVideoWithImages(images, video_filepath, duration_per_img, fps, size)
     prev_img = None
     logs = open(logs_filepath, "a")
     logs.write("ready\n")
-    video=None
+    video = None
     try:
         video = cv2.VideoWriter(video_filepath, cv2.VideoWriter_fourcc('I', '4', '2', '0'), fps, size)
     except Exception as e:
@@ -171,9 +170,8 @@ def ExtractFromImage(ori_img, size, num):
 
 # 转换格式
 def convert_avi_to_mp4(avi_file_path, output_name):
-    if platform.system() == "Linux":
-        avi_file_path = "/home/ubuntu/AICloudAlbum" + avi_file_path[1:]
-        output_name = "/home/ubuntu/AICloudAlbum" + output_name[1:]
+    # if platform.system() == "Linux":
+    #     avi_file_path = "/home/ubuntu/AICloudAlbum" + avi_file_path[1:]
+    #     output_name = "/home/ubuntu/AICloudAlbum" + output_name[1:]
     cmd = os.system(
         "ffmpeg -i {input} -c:v libx264 -crf 19 {output}".format(input=avi_file_path, output=output_name))
-    return True
