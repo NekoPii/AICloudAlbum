@@ -1,22 +1,33 @@
 #!/bin/sh
 apt-get update
+apt-get upgrade
 apt-get install -y sudo
 
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install -y wget
-sudo apt-get install -y python3.8
-sudo apt-get install -y pip
 sudo apt-get install -y build-essential cmake
+sudo apt-get install -y gcc-6 g++-6
 sudo apt-get install -y libgtk-3-dev
 sudo apt-get install -y libboost-all-dev
-sudo apt-get install -y gfortran
-sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev
+sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
+sudo apt-get install libhdf5-serial-dev
 sudo apt-get install -y openssl
+sudo apt-get install -y python3.8
+sudo apt-get install -y pip
+udo  apt-get install -y python-pip python-setuptools python-dev
 sudo apt-get install -y ffmpeg
 
-pip install --upgrade pip
-pip install Cython
-pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+mkdir ~/download
+cd ~/download
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-aarch64.sh
+sh Anaconda3-2021.05-Linux-aarch64.sh
+rm Ana*.sh
+
+sudo pip install --upgrade pip
+sudo pip install Cython
+#sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
+sudo pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 mkdir ~/AICloudAlbum
 cp -r . ~/AICloudAlbum
