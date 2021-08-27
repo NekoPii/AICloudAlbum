@@ -5,12 +5,10 @@ apt-get install -y sudo
 apt-get install -y vim
 
 sudo cp -f ./sources.list /etc/apt/sources.list
-sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install -y python3.8
-sudo apt-get install -y pip
+sudo apt-get install -y pip3
 sudo apt-get install -y wget
 sudo apt-get install -y build-essential cmake
 sudo apt-get install -y gcc-6 g++-6
