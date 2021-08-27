@@ -1,6 +1,6 @@
 #!/bin/sh
 apt-get update
-apt-get install sudo
+apt-get install -y sudo
 
 sudo apt-get update
 sudo apt-get install -y wget
