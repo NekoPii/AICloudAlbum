@@ -2,7 +2,9 @@
 apt-get update
 apt-get upgrade
 apt-get install -y sudo
+apt-get install -y vim
 
+sudo mv -f ./sources.list /etc/apt/sources.list
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get upgrade
