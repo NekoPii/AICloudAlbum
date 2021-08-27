@@ -3,29 +3,30 @@ apt-get update
 apt-get upgrade
 apt-get install -y sudo
 apt-get install -y vim
-
 sudo cp -f ./sources.list /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get upgrade
+
+#sudo apt-get install -y software-properties-common
+#sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get install -y python3.8
-sudo apt-get install -y pip3
-sudo apt-get install -y wget
+sudo apt-get install -y pip
+sudo pip install --upgrade pip
 sudo apt-get install -y build-essential cmake
-sudo apt-get install -y gcc-6 g++-6
 sudo apt-get install -y libgtk-3-dev
 sudo apt-get install -y libboost-all-dev
 sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
 sudo apt-get install -y libhdf5-serial-dev
 sudo apt-get install -y openssl
 sudo apt-get install -y ffmpeg
+sudo apt-get install -y wget
 
-#mkdir ~/download
-#cd ~/download
-#wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-aarch64.sh
-#sh -y Anaconda3-2021.05-Linux-aarch64.sh
-#rm Ana*.sh
+mkdir ~/download
+cd ~/download
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-aarch64.sh
+sh Anaconda3-2021.05-Linux-aarch64.sh
+rm Ana*.sh
 
-sudo pip install --upgrade pip
 sudo pip install Cython
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
@@ -46,7 +47,7 @@ rm nginx-*.tar.gz
 wget http://nginx.org/download/nginx-1.19.7.tar.gz
 tar -zxvf nginx-1.19.7.tar.gz
 cd /usr/local/nginx/nginx-1.19.7
-./configure --prefix=/usr/local/nginx --with-http_ssl_module
+./configure --prefix=/usr/local/nginx/nginx-1.19.7 --with-http_ssl_module
 make install
 cd /usr/local/nginx/conf
 mkdir cert
