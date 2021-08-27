@@ -1,5 +1,9 @@
 #!/bin/sh
+apt-get update
+apt-get install sudo
+
 sudo apt-get update
+sudo apt-get install -y wget
 sudo apt-get install -y python3.8
 sudo apt-get install -y build-essential cmake
 sudo apt-get install -y libgtk-3-dev
