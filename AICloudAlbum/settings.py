@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'AICloudAlbum.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if platform.system() == "Linux":
-    db_name = "aicloudalbumdb"
-else:
-    db_name = "aicloudalbumdb_test"
+# if platform.system() == "Linux":
+db_name = "aicloudalbumdb_db"
+# else:
+#     db_name = "aicloudalbumdb_test"
 
 DATABASES = {
     'default': {
