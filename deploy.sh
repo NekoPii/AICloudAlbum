@@ -5,13 +5,17 @@ apt-get install -y sudo
 sudo apt-get update
 sudo apt-get install -y wget
 sudo apt-get install -y python3.8
+sudo apt-get install -y pip
 sudo apt-get install -y build-essential cmake
 sudo apt-get install -y libgtk-3-dev
 sudo apt-get install -y libboost-all-dev
+sudo apt-get install -y gfortran
+sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev
+sudo apt-get install -y openssl
 sudo apt-get install -y ffmpeg
-sudo apt-get install -y pip
 
 pip install --upgrade pip
+pip install Cython
 pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 mkdir ~/AICloudAlbum
@@ -25,10 +29,10 @@ yes yes | python3.8 manage.py collectstatic
 
 cd /usr/local
 mkdir nginx
-cd nginx
+cd /usr/local/nginx
 wget http://nginx.org/download/nginx-1.19.7.tar.gz
 tar -zxvf nginx-1.19.7.tar.gz
-cd nginx-1.19.7
+cd /usr/local/nginx/nginx-1.19.7
 ./configure --prefix=/usr/local/nginx --with-http_ssl_module
 make install
 cd /usr/local/nginx/conf
