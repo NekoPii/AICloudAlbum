@@ -30,6 +30,7 @@ yes yes | python3.8 manage.py collectstatic
 cd /usr/local
 mkdir nginx
 cd /usr/local/nginx
+rm nginx-*.tar.gz
 wget http://nginx.org/download/nginx-1.19.7.tar.gz
 tar -zxvf nginx-1.19.7.tar.gz
 cd /usr/local/nginx/nginx-1.19.7
