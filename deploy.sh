@@ -3,6 +3,7 @@ apt-get update
 apt-get upgrade
 apt-get install -y sudo
 
+sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install -y python3.8
