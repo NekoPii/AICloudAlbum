@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  web:
+    build: ./
+    image: "aicloudalbum:latest"
+    container_name: "aicloudalbum"
+    expose:
+      - "9191"
+  #  daphne:
+  #    image: "aicloudalbum-daphne:latest"
+  #    container_name: "daphne-aicloudalbum"
+  #    command: bash -c "daphne -p 9191 AICloudAlbum.asgi:application"
+  #    ports:
+  #      - "9191:9191"
+  #    expose:
+  #      - "9191"
+  #    depends_on:
+  #      - python
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./collect_static:/usr/share/nginx/html/static
+      - ./nginx/cert:/usr/share/nginx/ssl
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+    links:
+      - web
+#  supervisor:
+#    build:
+#      context: .
+#    command:
+#      - bash -c "supervisord"
+#      - bash -c "supervisorctl start daphne"
+#    depends_on:
+#      - python
+#      - nginx
+#    ports:
+#      - "9191:9191"
+#    expose:
+#      - "9191"
+

@@ -12,3 +12,4 @@ __pycache__
 /static/
 /video/
 /collect_static/
+/nginx/cert/
