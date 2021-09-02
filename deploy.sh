@@ -23,11 +23,15 @@ sudo apt-get install -y ffmpeg wget
 
 # Build Dlib
 cd /
+rm -r dlib
 git clone https://github.com/davisking/dlib.git
 until(($? == 0))
 do
   rm -r dlib
   git clone https://github.com/davisking/dlib.git
+  if [ $? -eq 0 ];then
+    break
+  fi
 done
 cd dlib
 mkdir build;cd build
