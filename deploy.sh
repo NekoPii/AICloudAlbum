@@ -23,6 +23,7 @@ sudo apt-get install -y ffmpeg wget
 
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install -r requirements.txt -i $pip_source
+sudo $python -m pip install tensorflow -i $pip_source
 
 cd /
 mkdir -p /AICloudAlbum
