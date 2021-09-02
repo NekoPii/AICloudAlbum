@@ -19,11 +19,12 @@ sudo apt-get install -y build-essential cmake
 sudo apt-get install -y libgtk-3-dev libboost-all-dev
 sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
 sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev
+sudo apt-get install -y mysql-client libmysqlclient-dev libcrypto++-dev
 sudo apt-get install -y ffmpeg wget
 
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install -r requirements.txt -i $pip_source
-sudo $python -m pip install tensorflow -i $pip_source
+sudo $python -m pip install --no-cache-dir tensorflow -i $pip_source
 
 cd /
 mkdir -p /AICloudAlbum
