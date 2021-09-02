@@ -23,7 +23,6 @@ sudo apt-get install -y ffmpeg wget
 
 # Build Dlib
 cd /
-try
 git clone https://github.com/davisking/dlib.git
 until(($? == 0))
 do
