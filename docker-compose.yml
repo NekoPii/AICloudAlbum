@@ -5,7 +5,6 @@ services:
     build: ./
     image: "aicloudalbum:latest"
     container_name: "aicloudalbum"
-    command: bash -c "daphne -p 9192 AICloudAlbum.asgi:application"
     expose:
       - "9192"
   nginx:
