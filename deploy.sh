@@ -43,6 +43,7 @@ $python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 cd /AICloudAlbum
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install --no-cache-dir -r requirements.txt -i $pip_source
+sudo $python -m pip install supervisor -i $pip_source
 
 rm -r static
 yes yes | $python manage.py compress
@@ -60,9 +61,8 @@ cd /usr/local/nginx/$nginx
 ./configure --prefix=/usr/local/nginx --with-http_ssl_module
 make && make install
 cd /usr/local/nginx/conf
-mkdir -p cert
-mv -f ./nginx/cert /usr/local/nginx/conf/cert/
-mv -f ./nginx/nginx.conf /usr/local/nginx/conf/nginx.conf
+cp -f -r /AICloudAlbum/nginx/cert /usr/local/nginx/conf/
+cp -f -r /AICloudAlbum/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf
 cd /usr/local/nginx/sbin
 ./nginx
 ./nginx -s reload

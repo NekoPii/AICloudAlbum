@@ -11,9 +11,6 @@ services:
       - "9192"
   nginx:
     build: ./nginx
-    volumes:
-      - ./collect_static:/usr/share/nginx/html/static
-      - ./nginx/cert:/usr/share/nginx/ssl
     ports:
       - "80:80"
       - "443:443"
