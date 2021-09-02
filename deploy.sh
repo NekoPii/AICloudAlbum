@@ -20,7 +20,6 @@ sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-
 sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev
 sudo apt-get install -y ffmpeg wget
 
-sudo $python -m pip install Cython -i $pip_source
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install -r requirements.txt -i $pip_source
 
