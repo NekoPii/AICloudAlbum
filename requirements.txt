@@ -60,6 +60,7 @@ service-identity==21.1.0
 six==1.15.0
 sqlparse==0.4.1
 supervisor
+tensorflow
 tensorboard==2.6.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.0
