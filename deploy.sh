@@ -15,12 +15,21 @@ sudo apt-get install -y $python
 sudo apt-get install -y python3-pip
 sudo $python -m pip3 install --upgrade pip -i $pip_source
 sudo $python -m pip install --upgrade pip -i $pip_source
-sudo apt-get install -y build-essential cmake
-sudo apt-get install -y libgtk-3-dev libboost-all-dev
+sudo apt-get install -y build-essential libboost-all-dev cmake libgtk-3-dev
 sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
 sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev libx11-dev
 sudo apt-get install -y mysql-client libmysqlclient-dev libcrypto++-dev
 sudo apt-get install -y ffmpeg wget
+
+# Build Dlib
+cd /
+git clone https://github.com/davisking/dlib.git
+cd dlib
+mkdir build;cd build
+cmake .. -DDLIB_USE_CUDA=0 -DUSE_AVX_INSTRUCTIONS=1
+cmake --build .
+cd ..
+python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install --no-cache-dir -r requirements.txt -i $pip_source
