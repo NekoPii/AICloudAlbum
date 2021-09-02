@@ -18,7 +18,7 @@ sudo $python -m pip install --upgrade pip -i $pip_source
 sudo apt-get install -y build-essential cmake
 sudo apt-get install -y libgtk-3-dev libboost-all-dev
 sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
-sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev
+sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev libx11-dev
 sudo apt-get install -y mysql-client libmysqlclient-dev libcrypto++-dev
 sudo apt-get install -y ffmpeg wget
 
