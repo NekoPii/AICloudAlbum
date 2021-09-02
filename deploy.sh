@@ -23,13 +23,19 @@ sudo apt-get install -y ffmpeg wget
 
 # Build Dlib
 cd /
+try
 git clone https://github.com/davisking/dlib.git
+until(($? == 0))
+do
+  rm -r dlib
+  git clone https://github.com/davisking/dlib.git
+done
 cd dlib
 mkdir build;cd build
 cmake .. -DDLIB_USE_CUDA=0 -DUSE_AVX_INSTRUCTIONS=1
 cmake --build .
 cd ..
-python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
+$python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install --no-cache-dir -r requirements.txt -i $pip_source
