@@ -40,19 +40,14 @@ cmake --build .
 cd ..
 $python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
+cd /AICloudAlbum
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install --no-cache-dir -r requirements.txt -i $pip_source
-
-cd /
-mkdir -p /AICloudAlbum
-cp -r . /AICloudAlbum
-cd /AICloudAlbum
 
 rm -r static
 yes yes | $python manage.py compress
 mkdir -p collect_static
 yes yes | $python manage.py collectstatic
-
 
 # Build Nginx
 cd /usr/local
