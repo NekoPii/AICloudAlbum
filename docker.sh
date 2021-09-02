@@ -6,6 +6,9 @@ echo  '{
 systemctl daemon-reload
 systemctl restart docker
 
+apt-get update
+apt-get install -y git
+
 cd /
 rm -r AICloudAlbum
 git clone https://github.com/NeKoSaNnn/AICloudAlbum.git
@@ -19,3 +22,4 @@ do
 done
 cd AICloudAlbum
 git checkout mjx
+sh deploy.sh

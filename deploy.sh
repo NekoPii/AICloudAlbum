@@ -6,7 +6,7 @@ nginx="nginx-1.19.7"
 
 apt-get update
 apt-get upgrade
-apt-get install -y sudo vim
+apt-get install -y sudo vim git
 sudo cp -f ./sources.list /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -60,7 +60,6 @@ tar -zxvf "$nginx".tar.gz
 cd /usr/local/nginx/$nginx
 ./configure --prefix=/usr/local/nginx --with-http_ssl_module
 make && make install
-cd /usr/local/nginx/conf
 cp -f -r /AICloudAlbum/nginx/cert /usr/local/nginx/conf/
 cp -f -r /AICloudAlbum/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf
 cd /usr/local/nginx/sbin
@@ -68,5 +67,6 @@ cd /usr/local/nginx/sbin
 ./nginx -s reload
 
 # Build Supervisor
+cd /AICloudAlbum
 supervisord -c supervisord.conf
 supervisorctl start daphne
