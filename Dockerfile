@@ -21,4 +21,4 @@ RUN yes yes | python manage.py collectstatic
 RUN echo_supervisord_conf > /etc/supervisord.conf
 RUN supervisord -c /AICloudAlbum/supervisord.conf
 RUN supervisorctl start daphne
-EXPOSE 80 8000 9192
+EXPOSE 80 8000 9193

@@ -1,5 +1,5 @@
 FROM nginx:latest
-EXPOSE 443 80 9192
+EXPOSE 443 80 9193
 RUN rm /etc/nginx/conf.d/default.conf \
     && mkdir -p /AICloudAlbum_log \
     && mkdir -p /usr/share/nginx/html/static \
