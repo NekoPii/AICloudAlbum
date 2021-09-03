@@ -43,6 +43,7 @@ $python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 cd /AICloudAlbum
 #sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.6.0-cp38-cp38-manylinux2010_x86_64.whl
 sudo $python -m pip install -r requirements.txt -i $pip_source
+sudo $python -m pip install --no-cache-dir tensorflow -i $pip_source
 sudo $python -m pip install rcssmin --install-option="--without-c-extensions" -i $pip_source
 sudo $python -m pip install supervisor daphne pymysql django-simple-captcha django-compressor -i $pip_source
 
@@ -69,5 +70,6 @@ cd /usr/local/nginx/sbin
 
 # Build Supervisor
 cd /AICloudAlbum
-supervisord -c supervisord.conf
-supervisorctl start daphne
+daphne AICloudAlbum.asgi:application -p 9194
+#supervisord -c supervisord.conf
+#supervisorctl start daphne
