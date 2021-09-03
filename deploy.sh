@@ -18,7 +18,7 @@ sudo $python -m pip install --upgrade pip -i $pip_source
 sudo apt-get install -y build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev
 sudo apt-get install -y libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran
 sudo apt-get install -y libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev
-sudo apt-get install -y mysql-client libmysqlclient-dev libcrypto++-dev
+sudo apt-get install -y mysql-client libmysqlclient-dev libcrypto++-dev python-setuptools python3-setuptools
 sudo apt-get install -y ffmpeg wget
 
 # Build Dlib
