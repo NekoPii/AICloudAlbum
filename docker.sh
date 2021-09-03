@@ -6,6 +6,9 @@ echo  '{
 systemctl daemon-reload
 systemctl restart docker
 
+# Docker 必须映射端口才能访问
+docker run -it -p 80:80 -p 443:443 -p 9194:9194 ubuntu:18.04 /bin/bash
+
 apt-get update
 apt-get install -y git
 

@@ -12,7 +12,7 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 sudo apt-get install -y $python
-sudo apt-get install -y python3-pip
+sudo apt-get install -y python3-pip python3.8-dev
 sudo $python -m pip3 install --upgrade pip -i $pip_source
 sudo $python -m pip install --upgrade pip -i $pip_source
 sudo apt-get install -y build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev
@@ -34,10 +34,11 @@ do
   fi
 done
 cd dlib
-mkdir build;cd build
+mkdir -p build;cd build
 cmake .. -DDLIB_USE_CUDA=0 -DUSE_AVX_INSTRUCTIONS=1
 cmake --build .
 cd ..
+python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 $python setup.py install --yes USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
 cd /AICloudAlbum
@@ -45,7 +46,13 @@ cd /AICloudAlbum
 sudo $python -m pip install -r requirements.txt -i $pip_source
 sudo $python -m pip install --no-cache-dir tensorflow -i $pip_source
 sudo $python -m pip install rcssmin --install-option="--without-c-extensions" -i $pip_source
-sudo $python -m pip install supervisor daphne pymysql django-simple-captcha django-compressor -i $pip_source
+# 使用交换分区
+sudo dd if=/dev/zero of=/swapfile bs=64M count=16
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo $python -m pip install supervisor daphne pymysql django-simple-captcha django-compressor matplotlib face-recognition -i $pip_source
+sudo swapoff /swapfile
+sudo rm /swapfile
 
 rm -r static
 yes yes | $python manage.py compress

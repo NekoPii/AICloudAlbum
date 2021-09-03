@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y gettext python3-dev libpq-dev && \
 RUN mkdir -p /AICloudAlbum
 WORKDIR /AICloudAlbum
 ADD . /AICloudAlbum
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
 ##RUN if [ ! -f "tensorflow-2.4.0-cp37-none-linux_aarch64.whl" ];  \
 ##    then wget https://github.com/lhelontra/tensorflow-on-arm/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_aarch64.whl; \
 ##    fi
