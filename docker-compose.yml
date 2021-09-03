@@ -5,8 +5,8 @@ services:
     build: ./
     image: "aicloudalbum:latest"
     container_name: "aicloudalbum"
-#    ports:
-#      - "9193:9193"
+    ports:
+      - "9193:9193"
     expose:
       - "9193"
   nginx:
@@ -16,6 +16,7 @@ services:
       - "443:443"
     expose:
       - "80"
+      - "443"
     depends_on:
       - web
     links:
