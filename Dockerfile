@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y gettext libpq-dev && \
     apt-get install -y build-essential libboost-all-dev cmake boost libx11-dev libgtk-3-dev pkg-config libboost-python-dev \
     libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran \
     libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev \
-    mysql-client libmysqlclient-dev libcrypto++-dev python-setuptools python3-setuptools \
+    libcrypto++-dev python-setuptools python3-setuptools \
     gfortran libhdf5-serial-dev openssl ffmpeg wget
 RUN mkdir -p /AICloudAlbum
 WORKDIR /AICloudAlbum
