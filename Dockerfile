@@ -5,7 +5,8 @@ RUN mkdir -p /AICloudAlbum
 WORKDIR /AICloudAlbum
 ADD . /AICloudAlbum
 RUN cp /AICloudAlbum/sources.list /etc/apt/sources.list
-RUN apt-key adv --keyserver kerserver.ubuntu.com --recv-keys 40976EAF437D05B5 && \
+RUN apt-get update && \
+    apt-key adv --keyserver kerserver.ubuntu.com --recv-keys 40976EAF437D05B5 && \
     apt-key adv --keyserver kerserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 RUN apt-get update && apt-get install -y gettext libpq-dev && \
     apt-get install -y build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev \
