@@ -7,10 +7,11 @@ ADD . /AICloudAlbum
 RUN cp /AICloudAlbum/sources.list /etc/apt/sources.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
-RUN apt-get update && apt-get install -y gettext libpq-dev && \
+RUN apt-get update &&
     apt-get install -y build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev \
     libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran \
     libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev \
+    gettext libpq-dev \
     libcrypto++-dev python-setuptools python3-setuptools \
     gfortran libhdf5-serial-dev openssl ffmpeg wget
 
