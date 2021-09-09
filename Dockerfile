@@ -14,7 +14,6 @@ RUN apt-get update --fix-missing && \
     gettext libpq-dev \
     libcrypto++-dev python-setuptools python3-setuptools \
     gfortran libhdf5-serial-dev openssl ffmpeg wget
-
 RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
 RUN pip install supervisor daphne pymysql django-simple-captcha django-compressor matplotlib opencv-python -i https://mirrors.aliyun.com/pypi/simple/
 ##RUN if [ ! -f "tensorflow-2.4.0-cp37-none-linux_aarch64.whl" ];  \
