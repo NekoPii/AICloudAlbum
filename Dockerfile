@@ -15,11 +15,15 @@ RUN apt-get update --fix-missing && \
     libcrypto++-dev python-setuptools python3-setuptools \
     gfortran libhdf5-serial-dev openssl ffmpeg wget
 RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
-RUN pip install supervisor daphne pymysql django-simple-captcha django-compressor matplotlib opencv-python -i https://mirrors.aliyun.com/pypi/simple/
+RUN pip install supervisor daphne pymysql django-simple-captcha django-compressor matplotlib opencv-python cmake Cython -i https://mirrors.aliyun.com/pypi/simple/
 ##RUN if [ ! -f "tensorflow-2.4.0-cp37-none-linux_aarch64.whl" ];  \
 ##    then wget https://github.com/lhelontra/tensorflow-on-arm/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_aarch64.whl; \
 ##    fi
 #RUN pip install tensorflow-2.4.0-cp37-none-linux_aarch64.whl
+# 使用交换分区
+RUN dd if=/dev/zero of=/swapfile bs=64M count=16 && mkswap /swapfile && swapon /swapfile &&\
+    pip install dlib -i https://mirrors.aliyun.com/pypi/simple/ && \
+    swapoff /swapfile && rm /swapfile
 RUN pip install -r /AICloudAlbum/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 RUN rm -r static
 RUN yes yes | python manage.py compress
