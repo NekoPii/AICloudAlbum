@@ -8,7 +8,7 @@ ADD . /AICloudAlbum
 #RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5 && \
 #    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 RUN apt-get update --fix-missing && \
-    apt-get install -y build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev \
+    apt-get install -y sudo build-essential libboost-all-dev cmake libx11-dev libgtk-3-dev pkg-config libboost-python-dev \
     libopenblas-dev liblapack-dev libatlas-base-dev libblas-dev gfortran \
     libhdf5-serial-dev openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev \
     gettext libpq-dev \
@@ -21,9 +21,9 @@ RUN pip install supervisor daphne pymysql django-simple-captcha django-compresso
 ##    fi
 #RUN pip install tensorflow-2.4.0-cp37-none-linux_aarch64.whl
 # 使用交换分区
-RUN dd if=/dev/zero of=/swapfile bs=64M count=16 && mkswap /swapfile && swapon /swapfile &&\
+RUN sudo dd if=/dev/zero of=/swapfile bs=64M count=16 && sudo mkswap /swapfile && sudo swapon /swapfile &&\
     pip install dlib -i https://mirrors.aliyun.com/pypi/simple/ && \
-    swapoff /swapfile && rm /swapfile
+    sudo swapoff /swapfile && sudo rm /swapfile
 RUN pip install -r /AICloudAlbum/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 RUN rm -r static
 RUN yes yes | python manage.py compress
